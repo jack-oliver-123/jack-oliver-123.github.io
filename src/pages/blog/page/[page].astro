@@ -1,0 +1,24 @@
+---
+import type { Page } from 'astro';
+import Pagination from '@/components/Pagination.astro';
+import PostList from '@/components/PostList.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getAllPosts, type BlogPost } from '@/lib/posts';
+import { POSTS_PER_PAGE } from '@/lib/site';
+
+interface Props {
+  page: Page<BlogPost>;
+}
+
+export async function getStaticPaths({ paginate }: { paginate: (data: BlogPost[], options: { pageSize: number }) => unknown }) {
+  const posts = await getAllPosts();
+  return paginate(posts, { pageSize: POSTS_PER_PAGE });
+}
+
+const { page } = Astro.props as Props;
+---
+
+<PageLayout title={`全部文章 · 第 ${page.currentPage} 页`} description="按时间倒序排列，继续浏览更早写下的内容。" eyebrow="文章索引">
+  <PostList posts={page.data} />
+  <Pagination currentPage={page.currentPage} totalPages={page.lastPage} />
+</PageLayout>

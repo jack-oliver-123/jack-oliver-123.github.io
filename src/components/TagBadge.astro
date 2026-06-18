@@ -1,0 +1,15 @@
+---
+import { slugifyTag } from '@/lib/tags';
+
+interface Props {
+  tag: string;
+  count?: number;
+}
+
+const { tag, count } = Astro.props;
+---
+
+<a class="tag-badge" href={`/tags/${slugifyTag(tag)}/`}>
+  <span>{tag}</span>
+  {typeof count === 'number' && <small>{count}</small>}
+</a>

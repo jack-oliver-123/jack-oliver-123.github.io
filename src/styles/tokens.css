@@ -1,0 +1,39 @@
+:root {
+  color-scheme: light;
+  --color-page: #f7f5f2;
+  --color-surface: #fbfaf7;
+  --color-text: #1f2328;
+  --color-muted: #5b6470;
+  --color-faint: #7a817c;
+  --color-border: #d9d3cb;
+  --color-line: #e7e1d8;
+  --color-accent: #7a5c43;
+  --color-accent-strong: #5d3f2b;
+  --color-tag: #f0ebe4;
+  --color-code: #f2eee8;
+
+  --font-sans: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+
+  --container: 1120px;
+  --content: 740px;
+  --aside: 220px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-focus: 0 0 0 3px color-mix(in srgb, var(--color-accent) 28%, transparent);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-page: #141516;
+  --color-surface: #1a1c1f;
+  --color-text: #ece7df;
+  --color-muted: #a8a098;
+  --color-faint: #7f827e;
+  --color-border: #34373b;
+  --color-line: #2a2d31;
+  --color-accent: #c7a27a;
+  --color-accent-strong: #e1bc91;
+  --color-tag: #24282c;
+  --color-code: #202327;
+}

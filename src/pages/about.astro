@@ -1,0 +1,26 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { SITE } from '@/lib/site';
+---
+
+<PageLayout title="关于" description="这里是 Jack Oliver 的个人博客，用来保存技术实践、写作方法和日常思考。" eyebrow="关于这个站点">
+  <div class="prose page-prose">
+    <p>你好，这里是 {SITE.author} 的个人博客。</p>
+
+    <p>这个站点会以简体中文记录我正在理解的事：前端工程、工具链、写作习惯，以及一些日常里的观察。它不是一个复杂的作品展示页，而更像一本持续更新的笔记本。</p>
+
+    <h2>我会写什么</h2>
+    <ul>
+      <li>技术实践里的取舍与复盘；</li>
+      <li>搭建工具、博客和工作流的过程；</li>
+      <li>读书、学习和写作留下来的片段；</li>
+      <li>暂时还没有标准答案的问题。</li>
+    </ul>
+
+    <h2>为什么保持简洁</h2>
+    <p>我希望界面不要抢走文字的注意力。这个博客使用纸张色、细分隔线和边注式信息，把日期、标签和索引放在较安静的位置，让正文成为页面中心。</p>
+
+    <h2>联系与订阅</h2>
+    <p>你可以在 <a href={SITE.social.github}>GitHub</a> 找到我，也可以通过 <a href={SITE.social.rss}>RSS</a> 订阅后续文章。</p>
+  </div>
+</PageLayout>

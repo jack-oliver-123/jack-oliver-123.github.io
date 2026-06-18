@@ -1,0 +1,21 @@
+---
+import { formatDate, getReadingTime, type BlogPost } from '@/lib/posts';
+import TagBadge from './TagBadge.astro';
+
+interface Props {
+  post: BlogPost;
+  body?: string;
+  compact?: boolean;
+}
+
+const { post, body = '', compact = false } = Astro.props;
+---
+
+<div class:list={["article-meta", { "article-meta--compact": compact }]}>
+  <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, compact ? 'short' : 'long')}</time>
+  {!compact && post.data.updatedDate && <span>更新于 {formatDate(post.data.updatedDate, 'long')}</span>}
+  {!compact && <span>{getReadingTime(body)}</span>}
+  <div class="article-meta__tags">
+    {post.data.tags.map((tag) => <TagBadge tag={tag} />)}
+  </div>
+</div>

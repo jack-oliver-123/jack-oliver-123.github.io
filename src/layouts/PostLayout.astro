@@ -1,0 +1,41 @@
+---
+import type { BlogPost } from '@/lib/posts';
+import { getAdjacentPosts, getAllPosts, getPostUrl } from '@/lib/posts';
+import ArticleMeta from '@/components/ArticleMeta.astro';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const posts = await getAllPosts();
+const { previous, next } = getAdjacentPosts(posts, post.id);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} bodyClass="post-page">
+  <article class="post-layout">
+    <a class="back-link" href="/blog/">← 返回全部文章</a>
+
+    <header class="post-hero">
+      <aside class="post-hero__note">
+        <span>文章</span>
+        <span>{String(posts.findIndex((item) => item.id === post.id) + 1).padStart(2, '0')}</span>
+      </aside>
+      <div>
+        <h1>{post.data.title}</h1>
+        <p>{post.data.description}</p>
+        <ArticleMeta post={post} body={post.body} />
+      </div>
+    </header>
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <nav class="post-neighbors" aria-label="相邻文章">
+      {previous ? <a href={getPostUrl(previous)}><span>上一篇</span>{previous.data.title}</a> : <span></span>}
+      {next ? <a href={getPostUrl(next)}><span>下一篇</span>{next.data.title}</a> : <span></span>}
+    </nav>
+  </article>
+</BaseLayout>

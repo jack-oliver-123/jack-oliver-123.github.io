@@ -1,0 +1,26 @@
+---
+import { formatDate, getPostUrl, type BlogPost } from '@/lib/posts';
+import TagBadge from './TagBadge.astro';
+
+interface Props {
+  year: string;
+  posts: BlogPost[];
+}
+
+const { year, posts } = Astro.props;
+---
+
+<section class="archive-year" aria-labelledby={`archive-${year}`}>
+  <h2 id={`archive-${year}`}>{year}</h2>
+  <ol>
+    {posts.map((post) => (
+      <li>
+        <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, 'short')}</time>
+        <a href={getPostUrl(post)}>{post.data.title}</a>
+        <span>
+          {post.data.tags.slice(0, 2).map((tag) => <TagBadge tag={tag} />)}
+        </span>
+      </li>
+    ))}
+  </ol>
+</section>

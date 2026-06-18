@@ -1,0 +1,19 @@
+---
+import TagBadge from '@/components/TagBadge.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getAllPosts } from '@/lib/posts';
+import { getTagGroups } from '@/lib/tags';
+
+const tags = getTagGroups(await getAllPosts());
+---
+
+<PageLayout title="全部标签" description="把文章按主题重新排列，方便从一个词继续阅读。" eyebrow="主题索引">
+  <div class="tag-index">
+    {tags.map((tag) => (
+      <div class="tag-index__item">
+        <TagBadge tag={tag.name} count={tag.count} />
+        <p>{tag.count} 篇文章</p>
+      </div>
+    ))}
+  </div>
+</PageLayout>

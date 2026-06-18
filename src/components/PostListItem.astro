@@ -1,0 +1,26 @@
+---
+import { formatDate, getPostUrl, type BlogPost } from '@/lib/posts';
+import TagBadge from './TagBadge.astro';
+
+interface Props {
+  post: BlogPost;
+  index?: number;
+}
+
+const { post, index } = Astro.props;
+---
+
+<article class="post-list-item">
+  <aside class="post-list-item__note" aria-label="文章信息">
+    {typeof index === 'number' && <span class="post-list-item__index">{String(index + 1).padStart(2, '0')}</span>}
+    <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate, 'short')}</time>
+  </aside>
+
+  <div class="post-list-item__body">
+    <h2><a href={getPostUrl(post)}>{post.data.title}</a></h2>
+    <p>{post.data.description}</p>
+    <div class="post-list-item__tags">
+      {post.data.tags.map((tag) => <TagBadge tag={tag} />)}
+    </div>
+  </div>
+</article>

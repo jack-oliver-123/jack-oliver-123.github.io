@@ -1,0 +1,26 @@
+---
+import { SITE } from '@/lib/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <a class="site-mark" href="/" aria-label="返回首页">
+    <span class="site-mark__symbol">札</span>
+    <span>{SITE.title}</span>
+  </a>
+
+  <nav class="site-nav" aria-label="主导航">
+    {SITE.nav.map((item) => {
+      const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
+      return (
+        <a href={item.href} aria-current={isActive ? 'page' : undefined}>
+          {item.label}
+        </a>
+      );
+    })}
+  </nav>
+
+  <ThemeToggle />
+</header>

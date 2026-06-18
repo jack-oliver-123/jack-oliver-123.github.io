@@ -1,0 +1,22 @@
+---
+import PostList from '@/components/PostList.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getAllPosts } from '@/lib/posts';
+import { getTagGroups, unslugifyTag } from '@/lib/tags';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const tags = getTagGroups(posts);
+  return tags.map((tag) => ({
+    params: { tag: tag.name },
+    props: { tag: tag.name, posts: tag.posts },
+  }));
+}
+
+const tag = Astro.props.tag ?? unslugifyTag(Astro.params.tag ?? '');
+const posts = Astro.props.posts ?? [];
+---
+
+<PageLayout title={tag} description={`这个标签下共有 ${posts.length} 篇文章。`} eyebrow="标签">
+  <PostList posts={posts} emptyText="这个标签下暂时没有文章。" />
+</PageLayout>

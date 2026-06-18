@@ -1,0 +1,22 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  basePath?: string;
+}
+
+const { currentPage, totalPages, basePath = '/blog' } = Astro.props;
+
+const getPageHref = (page: number) => {
+  if (page <= 1) return `${basePath}/`;
+  return `${basePath}/page/${page}/`;
+};
+---
+
+{totalPages > 1 && (
+  <nav class="pagination" aria-label="文章分页">
+    <a class:list={[{ disabled: currentPage <= 1 }]} href={currentPage > 1 ? getPageHref(currentPage - 1) : undefined}>上一页</a>
+    <span>第 {currentPage} 页 / 共 {totalPages} 页</span>
+    <a class:list={[{ disabled: currentPage >= totalPages }]} href={currentPage < totalPages ? getPageHref(currentPage + 1) : undefined}>下一页</a>
+  </nav>
+)}

@@ -1,0 +1,19 @@
+---
+import type { BlogPost } from '@/lib/posts';
+import PostListItem from './PostListItem.astro';
+
+interface Props {
+  posts: BlogPost[];
+  emptyText?: string;
+}
+
+const { posts, emptyText = '暂时还没有文章。' } = Astro.props;
+---
+
+{posts.length > 0 ? (
+  <div class="post-list">
+    {posts.map((post, index) => <PostListItem post={post} index={index} />)}
+  </div>
+) : (
+  <p class="empty-state">{emptyText}</p>
+)}

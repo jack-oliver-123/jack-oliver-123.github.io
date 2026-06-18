@@ -1,0 +1,14 @@
+---
+import ArchiveYearGroup from '@/components/ArchiveYearGroup.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getArchiveYears } from '@/lib/archive';
+import { getAllPosts } from '@/lib/posts';
+
+const archiveYears = getArchiveYears(await getAllPosts());
+---
+
+<PageLayout title="归档" description="按年份收拢所有文章，像翻阅一本持续更新的目录。" eyebrow="时间索引">
+  <div class="archive-list">
+    {archiveYears.map((group) => <ArchiveYearGroup year={group.year} posts={group.posts} />)}
+  </div>
+</PageLayout>

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="页面未找到" description="你访问的内容可能已移动，或链接有误。">
+  <section class="not-found">
+    <p class="eyebrow">404</p>
+    <h1>页面未找到</h1>
+    <p>你访问的内容可能已移动，或链接有误。可以返回首页，或者继续浏览文章列表。</p>
+    <div class="home-hero__actions">
+      <a class="button" href="/">返回首页</a>
+      <a class="button button--ghost" href="/blog/">前往文章列表</a>
+    </div>
+  </section>
+</BaseLayout>

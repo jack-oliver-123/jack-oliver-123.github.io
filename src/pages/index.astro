@@ -1,0 +1,49 @@
+---
+import PostList from '@/components/PostList.astro';
+import TagBadge from '@/components/TagBadge.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getFeaturedPosts } from '@/lib/posts';
+import { getTagGroups } from '@/lib/tags';
+import { SITE } from '@/lib/site';
+
+const posts = await getFeaturedPosts(6);
+const tags = getTagGroups(posts).slice(0, 8);
+---
+
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <section class="home-hero">
+    <aside class="home-hero__note">
+      <span>个人札记</span>
+      <span>简体中文</span>
+    </aside>
+    <div>
+      <p class="eyebrow">纸张边注式极简博客</p>
+      <h1>一页一页写下正在理解的事。</h1>
+      <p>这里记录技术实践、写作方法、工具选择和日常思考。页面保持克制，把注意力留给文章本身。</p>
+      <div class="home-hero__actions">
+        <a class="button" href="/blog/">阅读全部文章</a>
+        <a class="button button--ghost" href="/rss.xml">订阅 RSS</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-block" aria-labelledby="latest-posts">
+    <div class="section-heading">
+      <p class="eyebrow">最新文章</p>
+      <h2 id="latest-posts">最近写下的内容</h2>
+      <a href="/blog/">查看全部</a>
+    </div>
+    <PostList posts={posts} />
+  </section>
+
+  <section class="section-block" aria-labelledby="featured-tags">
+    <div class="section-heading">
+      <p class="eyebrow">主题索引</p>
+      <h2 id="featured-tags">从标签进入</h2>
+      <a href="/tags/">全部标签</a>
+    </div>
+    <div class="tag-cloud">
+      {tags.map((tag) => <TagBadge tag={tag.name} count={tag.count} />)}
+    </div>
+  </section>
+</BaseLayout>

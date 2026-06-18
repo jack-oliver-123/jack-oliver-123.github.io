@@ -1,0 +1,33 @@
+<button class="theme-toggle" type="button" aria-label="切换深浅色模式" data-theme-toggle>
+  <span data-theme-label>跟随系统</span>
+</button>
+
+<script>
+  type ThemeName = 'light' | 'dark';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+  const label = document.querySelector<HTMLElement>('[data-theme-label]');
+
+  const labels: Record<ThemeName, string> = {
+    light: '浅色',
+    dark: '深色',
+  };
+
+  function isThemeName(theme: string | undefined): theme is ThemeName {
+    return theme === 'light' || theme === 'dark';
+  }
+
+  function applyTheme(theme: ThemeName) {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+    if (label) label.textContent = labels[theme];
+  }
+
+  const currentTheme = document.documentElement.dataset.theme;
+  if (label) label.textContent = isThemeName(currentTheme) ? labels[currentTheme] : '跟随系统';
+
+  button?.addEventListener('click', () => {
+    const nextTheme: ThemeName = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(nextTheme);
+  });
+</script>

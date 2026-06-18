@@ -1,0 +1,177 @@
+---
+type Heading = {
+  depth: number;
+  slug: string;
+  text: string;
+};
+
+interface Props {
+  headings: Heading[];
+}
+
+const headings = Astro.props.headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const hasHeadings = headings.length > 0;
+---
+
+{hasHeadings && (
+  <aside class="toc-panel" data-toc-panel aria-label="文章目录">
+    <div class="toc-panel__header">
+      <span>文章目录</span>
+      <button class="toc-panel__toggle" type="button" aria-label="收起文章目录" aria-expanded="true" data-toc-toggle>
+        <svg class="toc-panel__icon toc-panel__icon--collapse" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5 5 12l7 7" />
+          <path d="M19 5 12 12l7 7" />
+        </svg>
+        <svg class="toc-panel__icon toc-panel__icon--expand" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 5l7 7-7 7" />
+          <path d="M12 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="toc-panel__nav" data-toc-nav>
+      {headings.map((heading) => (
+        <a
+          class:list={["toc-panel__link", `toc-panel__link--depth-${heading.depth}`]}
+          href={`#${heading.slug}`}
+          data-toc-link={heading.slug}
+        >
+          {heading.text}
+        </a>
+      ))}
+    </nav>
+  </aside>
+)}
+
+<script>
+  type TocState = 'expanded' | 'collapsed';
+
+  const panel = document.querySelector<HTMLElement>('[data-toc-panel]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-toc-toggle]');
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]'));
+
+  function setTocState(state: TocState) {
+    if (!panel || !toggle) return;
+
+    panel.dataset.state = state;
+    toggle.setAttribute('aria-expanded', state === 'expanded' ? 'true' : 'false');
+    toggle.setAttribute('aria-label', state === 'expanded' ? '收起文章目录' : '展开文章目录');
+    localStorage.setItem('toc-state', state);
+  }
+
+  const savedState = localStorage.getItem('toc-state');
+  setTocState(savedState === 'collapsed' ? 'collapsed' : 'expanded');
+
+  toggle?.addEventListener('click', () => {
+    const nextState = panel?.dataset.state === 'collapsed' ? 'expanded' : 'collapsed';
+    setTocState(nextState);
+  });
+
+  const headings = links
+    .map((link) => {
+      const id = link.dataset.tocLink;
+      return id ? document.getElementById(id) : null;
+    })
+    .filter((heading): heading is HTMLElement => Boolean(heading));
+
+  let lockedHeadingId = '';
+  let lockedScrollY = 0;
+  let ticking = false;
+
+  function activateHeading(id: string) {
+    links.forEach((link) => {
+      link.toggleAttribute('aria-current', link.dataset.tocLink === id);
+    });
+  }
+
+  function getReadingLine() {
+    return Math.min(Math.max(window.innerHeight * 0.32, 150), 260);
+  }
+
+  function isNearPageBottom() {
+    return window.scrollY > 0 && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 8;
+  }
+
+  function getActiveHeadingId() {
+    if (isNearPageBottom()) return headings.at(-1)?.id;
+
+    const readingLine = getReadingLine();
+    let activeHeading = headings[0];
+
+    for (const heading of headings) {
+      if (heading.getBoundingClientRect().top <= readingLine) {
+        activeHeading = heading;
+      } else {
+        break;
+      }
+    }
+
+    return activeHeading?.id;
+  }
+
+  function updateActiveHeading() {
+    ticking = false;
+
+    if (lockedHeadingId) {
+      if (Math.abs(window.scrollY - lockedScrollY) < 80) {
+        activateHeading(lockedHeadingId);
+        return;
+      }
+      lockedHeadingId = '';
+    }
+
+    const nearestHeadingId = getActiveHeadingId();
+    if (nearestHeadingId) activateHeading(nearestHeadingId);
+  }
+
+  function requestActiveHeadingUpdate() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(updateActiveHeading);
+  }
+
+  function unlockActiveHeading() {
+    lockedHeadingId = '';
+    lockedScrollY = 0;
+    requestActiveHeadingUpdate();
+  }
+
+  window.addEventListener('wheel', unlockActiveHeading, { passive: true });
+  window.addEventListener('touchmove', unlockActiveHeading, { passive: true });
+  window.addEventListener('keydown', (event) => {
+    if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) {
+      unlockActiveHeading();
+    }
+  });
+
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      const id = link.dataset.tocLink;
+      if (id) {
+        lockedHeadingId = id;
+        lockedScrollY = window.scrollY;
+        activateHeading(id);
+      }
+
+      if (window.matchMedia('(max-width: 820px)').matches) {
+        setTocState('collapsed');
+      }
+    });
+  });
+
+  if (headings.length > 0) {
+    const initialHash = decodeURIComponent(window.location.hash.replace('#', ''));
+    activateHeading(initialHash && document.getElementById(initialHash) ? initialHash : getActiveHeadingId() ?? headings[0].id);
+
+    window.addEventListener('scroll', requestActiveHeadingUpdate, { passive: true });
+    window.addEventListener('resize', requestActiveHeadingUpdate);
+    window.addEventListener('hashchange', () => {
+      const id = decodeURIComponent(window.location.hash.replace('#', ''));
+      if (id && document.getElementById(id)) {
+        lockedHeadingId = id;
+        lockedScrollY = window.scrollY;
+        activateHeading(id);
+      }
+    });
+  }
+</script>

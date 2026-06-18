@@ -1,15 +1,20 @@
 ---
+import type { MarkdownHeading } from 'astro';
 import type { BlogPost } from '@/lib/posts';
 import { getAdjacentPosts, getAllPosts, getPostUrl } from '@/lib/posts';
 import ArticleMeta from '@/components/ArticleMeta.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   post: BlogPost;
+  headings: MarkdownHeading[];
 }
 
-const { post } = Astro.props;
+const { post, headings } = Astro.props;
 const posts = await getAllPosts();
+const tocHeadings = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
+const hasToc = tocHeadings.length > 0;
 const { previous, next } = getAdjacentPosts(posts, post.id);
 ---
 
@@ -29,13 +34,18 @@ const { previous, next } = getAdjacentPosts(posts, post.id);
       </div>
     </header>
 
-    <div class="prose">
-      <slot />
-    </div>
+    <div class:list={["post-reading-grid", { "post-reading-grid--without-toc": !hasToc }]}>
+      {hasToc && <TableOfContents headings={tocHeadings} />}
+      <div>
+        <div class="prose">
+          <slot />
+        </div>
 
-    <nav class="post-neighbors" aria-label="相邻文章">
-      {previous ? <a href={getPostUrl(previous)}><span>上一篇</span>{previous.data.title}</a> : <span></span>}
-      {next ? <a href={getPostUrl(next)}><span>下一篇</span>{next.data.title}</a> : <span></span>}
-    </nav>
+        <nav class="post-neighbors" aria-label="相邻文章">
+          {previous ? <a href={getPostUrl(previous)}><span>上一篇</span>{previous.data.title}</a> : <span></span>}
+          {next ? <a href={getPostUrl(next)}><span>下一篇</span>{next.data.title}</a> : <span></span>}
+        </nav>
+      </div>
+    </div>
   </article>
 </BaseLayout>

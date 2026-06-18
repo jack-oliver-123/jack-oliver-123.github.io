@@ -22,6 +22,7 @@
 .prose h3,
 .prose h4 {
   position: relative;
+  scroll-margin-top: 32px;
   margin: 2.4em 0 0.75em;
   color: var(--color-text);
   line-height: 1.25;

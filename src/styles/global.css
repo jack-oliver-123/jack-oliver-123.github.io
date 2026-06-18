@@ -90,16 +90,13 @@ svg {
   text-decoration: none;
 }
 
-.site-mark__symbol {
-  display: inline-grid;
-  width: 32px;
-  height: 32px;
-  place-items: center;
+.site-mark__avatar {
+  width: 34px;
+  height: 34px;
   border: 1px solid var(--color-border);
   border-radius: 50%;
-  color: var(--color-accent-strong);
-  font-size: 15px;
   background: color-mix(in srgb, var(--color-surface) 76%, transparent);
+  object-fit: cover;
 }
 
 .site-nav {

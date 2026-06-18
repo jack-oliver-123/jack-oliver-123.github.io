@@ -1,0 +1,23 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getAllPosts } from '@/lib/posts';
+import { getSeriesGroups } from '@/lib/series';
+
+const seriesGroups = getSeriesGroups(await getAllPosts());
+---
+
+<PageLayout title="全部系列" description="把一级目录视为系列，系列详情页会继续按子目录展开章节树。" eyebrow="系列索引">
+  {seriesGroups.length > 0 ? (
+    <div class="series-index">
+      {seriesGroups.map((series) => (
+        <a class="series-index__item" href={`/series/${series.slug}/`}>
+          <span>系列</span>
+          <h2>{series.name}</h2>
+          <p>{series.count} 篇文章</p>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="empty-state">暂时还没有系列文章。</p>
+  )}
+</PageLayout>

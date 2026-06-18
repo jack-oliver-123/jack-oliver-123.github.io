@@ -47,7 +47,7 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 
 ### 内容模型
 
-博客文章放在 `src/content/blog/`，格式为 Markdown 或 MDX。可以用子文件夹按项目或主题分类，例如 `src/content/blog/agentcode/00.agentcode.md`。内容集合会递归读取子目录，子文件夹也会进入文章 ID 和发布路径；草稿文章即使不发布，也必须保留完整 frontmatter 才能通过 Astro 校验。
+博客文章放在 `src/content/blog/`，格式为 Markdown 或 MDX。可以用子文件夹按项目或主题分类，例如 `src/content/blog/docker/linux-docker/install-mysql.md`。内容集合会递归读取子目录，子文件夹也会进入文章 ID 和发布路径；一级子文件夹会自动成为系列名，一级以下目录会在系列详情页中递归展开为章节树，根目录文章不属于系列；草稿文章即使不发布，也必须保留完整 frontmatter 才能通过 Astro 校验。
 
 `src/content.config.ts` 使用 Astro v6 风格的 `glob()` loader 定义内容集合：
 
@@ -66,7 +66,7 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 - `getAdjacentPosts()` 为文章页生成上一篇/下一篇链接。
 - 文章日期优先使用 frontmatter 中手写的 `pubDate` / `updatedDate`；未填写时，从 Git 首次提交时间和最后修改提交时间自动推导。
 
-标签和归档的分组逻辑分别在 `src/lib/tags.ts` 和 `src/lib/archive.ts`。
+标签、归档和系列的分组逻辑分别在 `src/lib/tags.ts`、`src/lib/archive.ts` 和 `src/lib/series.ts`。系列分组必须基于 `getAllPosts()` 的结果派生，按一级文件夹自动归类；系列详情页要把一级以下目录递归渲染为章节树，并按同级目录名/文件名的数字前缀排序。
 
 `src/lib/search.ts` 负责全站搜索的文本清理、标准化、打分和命中片段生成。搜索索引必须复用 `getAllPosts()` 生成，避免草稿文章进入搜索结果。
 
@@ -77,7 +77,8 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 - `/`：首页
 - `/blog/`：文章列表
 - `/blog/page/[page]/`：分页文章列表
-- `/posts/[slug]/`：文章详情页
+- `/posts/[...slug]/`：文章详情页，支持子文件夹文章生成多级路径
+- `/series/` 和 `/series/[series]/`：系列页
 - `/search/`：全站搜索页
 - `/search-index.json`：构建期生成的静态搜索索引
 - `/tags/` 和 `/tags/[tag]/`：标签页
@@ -94,7 +95,7 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 
 ### 文章渲染与文章目录
 
-`src/pages/posts/[slug].astro` 使用 `astro:content` 的 `render(post)`，并把 `Content` 和 `headings` 一起传给 `PostLayout`。
+`src/pages/posts/[...slug].astro` 使用 `astro:content` 的 `render(post)`，并把 `Content` 和 `headings` 一起传给 `PostLayout`。文章路由使用 rest route，以支持 `src/content/blog/agentcode/00.agentcode.md` 这类子文件夹文章生成 `/posts/agentcode/00.agentcode/`。
 
 `PostLayout` 只保留 H2/H3 标题，并且仅在存在这些标题时渲染 `src/components/TableOfContents.astro`。文章目录的行为：
 
@@ -110,7 +111,7 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 样式拆分为：
 
 - `src/styles/tokens.css`：浅色/深色主题变量、字体、容器宽度、圆角和焦点样式。
-- `src/styles/global.css`：站点外壳、导航、文章列表、搜索页、归档、文章布局、文章目录、页脚和响应式规则。
+- `src/styles/global.css`：站点外壳、导航、文章列表、系列页、搜索页、归档、文章布局、文章目录、页脚和响应式规则。
 - `src/styles/prose.css`：Markdown/MDX 正文排版、标题、代码、表格、引用块，以及标题跳转所需的 `scroll-margin-top`。
 
 当前设计依赖 CSS 变量和系统中文字体栈。除非用户明确要求重做视觉风格，否则不要引入与现有风格割裂的组件样式。

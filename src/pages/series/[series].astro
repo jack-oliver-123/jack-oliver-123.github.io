@@ -1,0 +1,25 @@
+---
+import SeriesTree from '@/components/SeriesTree.astro';
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getAllPosts } from '@/lib/posts';
+import { getSeriesGroups, getSeriesBySlug } from '@/lib/series';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return getSeriesGroups(posts).map((series) => ({
+    params: { series: series.slug },
+    props: { series },
+  }));
+}
+
+const allPosts = await getAllPosts();
+const series = Astro.props.series ?? getSeriesBySlug(allPosts, Astro.params.series ?? '');
+---
+
+<PageLayout
+  title={series?.name ?? '系列'}
+  description={series ? `这个系列共 ${series.count} 篇文章，按目录递归展开为章节树。` : '这个系列下暂时没有文章。'}
+  eyebrow="系列"
+>
+  {series ? <SeriesTree node={series.tree} /> : <p class="empty-state">这个系列下暂时没有文章。</p>}
+</PageLayout>

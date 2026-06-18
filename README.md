@@ -10,7 +10,8 @@
 - 使用纸张色、细线、边注和中文排版建立阅读节奏；
 - 支持浅色 / 深色模式；
 - 支持基于静态索引的全站搜索；
-- 保留首页、文章、搜索、标签、归档、关于、RSS 等基础内容结构。
+- 支持按文章子文件夹自动生成系列页；
+- 保留首页、文章、系列、搜索、标签、归档、关于、RSS 等基础内容结构。
 
 ## 本地开发
 
@@ -53,7 +54,17 @@ src/content/blog/agentcode/00.agentcode.md
 src/content/blog/agentcode/01.letaispeak.md
 ```
 
-子文件夹会进入文章路径。比如 `src/content/blog/agentcode/00.agentcode.md` 发布后会对应类似 `/posts/agentcode/00agentcode/` 的地址。文件可以先设为 `draft: true`，但仍然必须写完整 frontmatter，否则 Astro 校验会失败。
+子文件夹会进入文章路径，也会自动生成系列页。比如 `src/content/blog/agentcode/00.agentcode.md` 发布后会归入 `agentcode` 系列，并对应类似 `/posts/agentcode/00.agentcode/` 的文章地址。文件可以先设为 `draft: true`，但仍然必须写完整 frontmatter，否则 Astro 校验会失败。
+
+系列规则：
+
+- 一级子文件夹就是系列名，例如 `docker`、`agent-code`；
+- 一级以下目录会在系列详情页中递归展开为章节树；
+- 根目录文章不属于任何系列；
+- `/series/` 会展示全部系列；
+- `/series/docker/` 会展示 `docker` 系列，并按 `linux-docker`、`win-docker` 等子目录分组；
+- 同一级目录或文章按名称开头的数字前缀排序，建议使用 `00.`、`01.`、`02.` 这类命名；
+- 章节标题直接使用目录名，暂不使用额外元信息文件。
 
 每篇文章使用 Markdown 或 MDX。Frontmatter 示例：
 
@@ -98,7 +109,7 @@ src/
 ├─ components/    # 导航、页脚、文章列表、标签等组件
 ├─ content/blog/  # Markdown / MDX 文章
 ├─ layouts/       # 页面布局和文章布局
-├─ lib/           # 文章、搜索、标签、归档、站点配置等工具
-├─ pages/         # Astro 路由页面，包含搜索页和搜索索引端点
+├─ lib/           # 文章、系列、搜索、标签、归档、站点配置等工具
+├─ pages/         # Astro 路由页面，包含系列页、搜索页和搜索索引端点
 └─ styles/        # 设计 token、全局样式、正文排版
 ```

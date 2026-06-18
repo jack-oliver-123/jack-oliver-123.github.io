@@ -1,0 +1,51 @@
+---
+import { formatDate, getPostUrl } from '@/lib/posts';
+import type { SeriesChapterNode, SeriesTreeNode } from '@/lib/series';
+
+interface Props {
+  node: SeriesChapterNode;
+  isRoot?: boolean;
+}
+
+const { node, isRoot = true } = Astro.props;
+
+function getHeadingTag(depth: number) {
+  return `h${Math.min(depth + 1, 6)}` as keyof HTMLElementTagNameMap;
+}
+---
+
+<ol class:list={["series-tree", { "series-tree--nested": !isRoot }]}>
+  {node.children.map((child: SeriesTreeNode) => {
+    if (child.kind === 'post') {
+      return (
+        <li class="series-tree__node">
+          <article class="series-tree__post">
+            <time class="series-tree__post-date" datetime={child.post.data.pubDate.toISOString()}>
+              {formatDate(child.post.data.pubDate, 'short')}
+            </time>
+            <div>
+              <p class="series-tree__post-title">
+                <a href={getPostUrl(child.post)}>{child.post.data.title}</a>
+              </p>
+              <p class="series-tree__post-description">{child.post.data.description}</p>
+            </div>
+          </article>
+        </li>
+      );
+    }
+
+    const HeadingTag = getHeadingTag(child.depth);
+
+    return (
+      <li class="series-tree__node series-tree__node--chapter">
+        <section class="series-tree__chapter" aria-labelledby={`series-${child.path.join('-')}`}>
+          <header class="series-tree__heading">
+            <HeadingTag id={`series-${child.path.join('-')}`}>{child.name}</HeadingTag>
+            <span>{child.count} 篇文章</span>
+          </header>
+          <Astro.self node={child} isRoot={false} />
+        </section>
+      </li>
+    );
+  })}
+</ol>

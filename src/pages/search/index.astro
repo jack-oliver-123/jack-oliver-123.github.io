@@ -1,0 +1,163 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+---
+
+<PageLayout title="搜索" description="输入关键词，在标题、摘要、标签和正文中查找文章。" eyebrow="全站搜索">
+  <section class="search-page" data-search-page>
+    <form class="search-form" role="search" action="/search/" method="get" data-search-form>
+      <label class="search-form__label" for="site-search">关键词</label>
+      <div class="search-form__row">
+        <input
+          class="search-form__input"
+          id="site-search"
+          name="q"
+          type="search"
+          placeholder="搜索文章标题、标签或正文"
+          autocomplete="off"
+          data-search-input
+        />
+        <button class="search-form__button" type="submit">搜索</button>
+      </div>
+    </form>
+
+    <p class="search-summary" aria-live="polite" data-search-summary>输入关键词开始搜索。</p>
+    <div class="search-results" data-search-results></div>
+  </section>
+</PageLayout>
+
+<script>
+  import { searchDocuments, type SearchDocument, type SearchResult } from '@/lib/search';
+
+  const input = document.querySelector<HTMLInputElement>('[data-search-input]');
+  const form = document.querySelector<HTMLFormElement>('[data-search-form]');
+  const summary = document.querySelector<HTMLElement>('[data-search-summary]');
+  const resultsContainer = document.querySelector<HTMLElement>('[data-search-results]');
+
+  let documents: SearchDocument[] = [];
+  let debounceTimer = 0;
+
+  function setSummary(text: string) {
+    if (summary) summary.textContent = text;
+  }
+
+  function clearResults() {
+    resultsContainer?.replaceChildren();
+  }
+
+  function createTextElement(tagName: keyof HTMLElementTagNameMap, text: string, className?: string) {
+    const element = document.createElement(tagName);
+    element.textContent = text;
+    if (className) element.className = className;
+    return element;
+  }
+
+  function createTagLink(tag: string) {
+    const link = document.createElement('a');
+    link.className = 'tag-badge';
+    link.href = `/tags/${encodeURIComponent(tag)}/`;
+    link.textContent = tag;
+    return link;
+  }
+
+  function createResultElement(result: SearchResult, index: number) {
+    const article = document.createElement('article');
+    article.className = 'post-list-item search-result';
+
+    const note = document.createElement('aside');
+    note.className = 'post-list-item__note';
+    note.setAttribute('aria-label', '文章信息');
+    note.append(
+      createTextElement('span', String(index + 1).padStart(2, '0'), 'post-list-item__index'),
+      createTextElement('time', result.dateLabel)
+    );
+
+    const body = document.createElement('div');
+    body.className = 'post-list-item__body';
+
+    const title = document.createElement('h2');
+    const link = document.createElement('a');
+    link.href = result.url;
+    link.textContent = result.title;
+    title.append(link);
+
+    const snippet = createTextElement('p', result.snippet || result.description, 'search-result__snippet');
+
+    const tags = document.createElement('div');
+    tags.className = 'post-list-item__tags search-result__tags';
+    result.tags.forEach((tag) => tags.append(createTagLink(tag)));
+
+    body.append(title, snippet, tags);
+    article.append(note, body);
+    return article;
+  }
+
+  function renderResults(query: string) {
+    const trimmedQuery = query.trim();
+    clearResults();
+
+    if (!trimmedQuery) {
+      setSummary('输入关键词开始搜索。');
+      return;
+    }
+
+    const results = searchDocuments(documents, trimmedQuery);
+
+    if (results.length === 0) {
+      setSummary('没有找到匹配的文章。可以换一个标题、标签或正文关键词试试。');
+      return;
+    }
+
+    setSummary(`找到 ${results.length} 篇相关文章。`);
+    const list = document.createElement('div');
+    list.className = 'post-list';
+    results.forEach((result, index) => list.append(createResultElement(result, index)));
+    resultsContainer?.append(list);
+  }
+
+  function syncUrl(query: string) {
+    const url = new URL(window.location.href);
+    const trimmedQuery = query.trim();
+
+    if (trimmedQuery) {
+      url.searchParams.set('q', trimmedQuery);
+    } else {
+      url.searchParams.delete('q');
+    }
+
+    window.history.replaceState({}, '', url);
+  }
+
+  function queueSearch() {
+    if (!input) return;
+
+    window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(() => {
+      syncUrl(input.value);
+      renderResults(input.value);
+    }, 180);
+  }
+
+  async function loadSearchIndex() {
+    try {
+      const response = await fetch('/search-index.json');
+      if (!response.ok) throw new Error('搜索索引加载失败');
+      documents = await response.json();
+      renderResults(input?.value ?? '');
+    } catch {
+      setSummary('搜索索引加载失败，请稍后再试。');
+    }
+  }
+
+  const initialQuery = new URLSearchParams(window.location.search).get('q') ?? '';
+  if (input) input.value = initialQuery;
+
+  input?.addEventListener('input', queueSearch);
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!input) return;
+    syncUrl(input.value);
+    renderResults(input.value);
+  });
+
+  loadSearchIndex();
+</script>

@@ -1,13 +1,10 @@
 ---
 title: "构建一个完整的 Ubuntu 24.04 LTS 服务器环境镜像"
 description: "一个完整的Ubuntu 24.04LTS服务器环境镜像的搭建示例"
-pubDate: 2026-06-18
-updatedDate: 2026-06-18
 tags: ["Ubuntu"]
 draft: false
 featured: true
 ---
-
 
 ## 文件结构
 

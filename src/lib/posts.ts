@@ -1,11 +1,96 @@
+import { execFileSync } from 'node:child_process';
+import { existsSync, statSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { getCollection, type CollectionEntry } from 'astro:content';
 
-export type BlogPost = CollectionEntry<'blog'>;
+export type BlogPost = CollectionEntry<'blog'> & {
+  data: CollectionEntry<'blog'>['data'] & {
+    pubDate: Date;
+    updatedDate?: Date;
+  };
+};
+
+type PostDates = {
+  createdAt?: Date;
+  updatedAt?: Date;
+};
+
+const postDateCache = new Map<string, PostDates>();
+const projectRoot = fileURLToPath(new URL('../../', import.meta.url));
+
+function getPostFilePath(postId: string) {
+  for (const extension of ['md', 'mdx']) {
+    const filePath = `src/content/blog/${postId}.${extension}`;
+    if (existsSync(new URL(`../../${filePath}`, import.meta.url))) return filePath;
+  }
+
+  return `src/content/blog/${postId}.md`;
+}
+
+function getGitTimestamp(args: string[]) {
+  try {
+    return execFileSync('git', args, {
+      cwd: projectRoot,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+  } catch {
+    return '';
+  }
+}
+
+function parseGitDate(value: string) {
+  const timestamp = Number(value);
+  return Number.isFinite(timestamp) && timestamp > 0 ? new Date(timestamp * 1000) : undefined;
+}
+
+function getFileDates(filePath: string) {
+  try {
+    const stats = statSync(new URL(`../../${filePath}`, import.meta.url));
+    return {
+      createdAt: stats.birthtime,
+      updatedAt: stats.mtime,
+    };
+  } catch {
+    return {};
+  }
+}
+
+function getPostDates(postId: string) {
+  const cached = postDateCache.get(postId);
+  if (cached) return cached;
+
+  const filePath = getPostFilePath(postId);
+  const fileDates = getFileDates(filePath);
+  const dates = {
+    createdAt: parseGitDate(getGitTimestamp(['log', '--follow', '--diff-filter=A', '--format=%ct', '--', filePath]).split('\n').at(-1) ?? '') ?? fileDates.createdAt,
+    updatedAt: parseGitDate(getGitTimestamp(['log', '-1', '--format=%ct', '--', filePath])) ?? fileDates.updatedAt,
+  };
+
+  postDateCache.set(postId, dates);
+  return dates;
+}
+
+function resolvePostDates(post: CollectionEntry<'blog'>) {
+  const postDates = getPostDates(post.id);
+  const pubDate = post.data.pubDate ?? postDates.createdAt ?? postDates.updatedAt ?? new Date();
+  const updatedDate = post.data.updatedDate ?? postDates.updatedAt;
+
+  return {
+    ...post,
+    data: {
+      ...post.data,
+      pubDate,
+      updatedDate: updatedDate && updatedDate.getTime() > pubDate.getTime() ? updatedDate : undefined,
+    },
+  } satisfies BlogPost;
+}
 
 export async function getAllPosts() {
   const posts = await getCollection('blog');
   return posts
     .filter((post) => !post.data.draft)
+    .map(resolvePostDates)
     .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 }
 

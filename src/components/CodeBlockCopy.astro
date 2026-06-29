@@ -1,0 +1,124 @@
+<script>
+  const COPY_IDLE_TEXT = '复制';
+  const COPY_SUCCESS_TEXT = '已复制';
+  const COPY_ERROR_TEXT = '复制失败';
+  const COPY_RESET_DELAY = 1800;
+
+  type CopyState = 'idle' | 'success' | 'error';
+
+  const resetTimers = new WeakMap<HTMLButtonElement, number>();
+
+  function fallbackCopyText(text: string, restoreFocusTo: HTMLButtonElement) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.top = '0';
+    textarea.style.left = '-9999px';
+    textarea.style.opacity = '0';
+
+    document.body.append(textarea);
+    textarea.focus();
+    textarea.select();
+
+    try {
+      return document.execCommand('copy');
+    } catch {
+      return false;
+    } finally {
+      textarea.remove();
+      restoreFocusTo.focus({ preventScroll: true });
+    }
+  }
+
+  async function copyText(text: string, restoreFocusTo: HTMLButtonElement) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        // 在权限受限或非安全上下文中继续尝试兼容性复制。
+      }
+    }
+
+    return fallbackCopyText(text, restoreFocusTo);
+  }
+
+  function getStateLabel(state: CopyState) {
+    if (state === 'success') return COPY_SUCCESS_TEXT;
+    if (state === 'error') return COPY_ERROR_TEXT;
+    return COPY_IDLE_TEXT;
+  }
+
+  function getStateAriaLabel(state: CopyState) {
+    if (state === 'success') return '代码块已复制';
+    if (state === 'error') return '代码块复制失败';
+    return '复制代码块';
+  }
+
+  function setButtonState(button: HTMLButtonElement, state: CopyState) {
+    button.textContent = getStateLabel(state);
+    button.dataset.copyState = state;
+    button.setAttribute('aria-label', getStateAriaLabel(state));
+  }
+
+  function scheduleReset(button: HTMLButtonElement) {
+    const activeTimer = resetTimers.get(button);
+    if (activeTimer) window.clearTimeout(activeTimer);
+
+    const resetTimer = window.setTimeout(() => {
+      setButtonState(button, 'idle');
+      resetTimers.delete(button);
+    }, COPY_RESET_DELAY);
+
+    resetTimers.set(button, resetTimer);
+  }
+
+  function createCopyButton() {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'code-copy-button';
+    button.dataset.copyButton = '';
+    button.setAttribute('aria-live', 'polite');
+    button.setAttribute('aria-atomic', 'true');
+    setButtonState(button, 'idle');
+    return button;
+  }
+
+  function wrapCodeBlock(pre: HTMLPreElement) {
+    if (pre.closest('.code-copy-shell')) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-copy-shell';
+
+    const button = createCopyButton();
+    pre.parentNode?.insertBefore(wrapper, pre);
+    wrapper.append(pre, button);
+  }
+
+  function enhanceCodeBlocks(root: HTMLElement) {
+    if (root.dataset.codeCopyReady === 'true') return;
+    root.dataset.codeCopyReady = 'true';
+
+    root.querySelectorAll<HTMLPreElement>('pre').forEach(wrapCodeBlock);
+
+    root.addEventListener('click', async (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const button = target.closest('[data-copy-button]');
+      if (!(button instanceof HTMLButtonElement)) return;
+
+      const shell = button.closest('.code-copy-shell');
+      const pre = shell?.querySelector('pre');
+      const code = pre?.querySelector('code');
+      const text = (code ?? pre)?.textContent ?? '';
+
+      const copied = text.length > 0 && await copyText(text, button);
+      setButtonState(button, copied ? 'success' : 'error');
+      scheduleReset(button);
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-code-copy-root]').forEach(enhanceCodeBlocks);
+</script>

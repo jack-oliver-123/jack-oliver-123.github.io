@@ -93,7 +93,7 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 - `src/layouts/PageLayout.astro` 用统一的页面介绍区包装普通索引类页面。
 - `src/layouts/PostLayout.astro` 包装文章页，计算相邻文章，渲染文章元信息、可选文章目录、正文和上一篇/下一篇导航。
 
-### 文章渲染与文章目录
+### 文章渲染、文章目录与代码块复制
 
 `src/pages/posts/[...slug].astro` 使用 `astro:content` 的 `render(post)`，并把 `Content` 和 `headings` 一起传给 `PostLayout`。文章路由使用 rest route，以支持 `src/content/blog/agentcode/00.agentcode.md` 这类子文件夹文章生成 `/posts/agentcode/00.agentcode/`。
 
@@ -104,7 +104,9 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 - 支持折叠，状态保存在 `localStorage` 的 `toc-state`；
 - 使用滚动、hash 和点击锁定逻辑高亮当前标题。
 
-修改文章目录行为时，要同时检查 `TableOfContents.astro` 和 `src/styles/global.css` 中的 `.toc-panel*` 样式。
+文章页代码块复制由 `PostLayout` 挂载 `src/components/CodeBlockCopy.astro` 做客户端渐进增强，只作用于 `.prose[data-code-copy-root]` 中的代码块。按钮文案为 `复制` / `已复制` / `复制失败`，复制时优先使用 Clipboard API，失败后回退到隐藏 `textarea` 加 `document.execCommand('copy')`。禁用 JavaScript 时不输出复制按钮，保留原始代码块阅读体验。
+
+修改文章目录行为时，要同时检查 `TableOfContents.astro` 和 `src/styles/global.css` 中的 `.toc-panel*` 样式。修改代码块复制行为时，要同时检查 `CodeBlockCopy.astro` 和 `src/styles/prose.css` 中的 `.code-copy-*` 样式。
 
 ### 样式系统
 
@@ -112,7 +114,7 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 
 - `src/styles/tokens.css`：浅色/深色主题变量、字体、容器宽度、圆角和焦点样式。
 - `src/styles/global.css`：站点外壳、导航、文章列表、系列页、搜索页、归档、文章布局、文章目录、页脚和响应式规则。
-- `src/styles/prose.css`：Markdown/MDX 正文排版、标题、代码、表格、引用块，以及标题跳转所需的 `scroll-margin-top`。
+- `src/styles/prose.css`：Markdown/MDX 正文排版、标题、代码、代码块复制按钮、表格、引用块，以及标题跳转所需的 `scroll-margin-top`。
 
 当前设计依赖 CSS 变量和系统中文字体栈。除非用户明确要求重做视觉风格，否则不要引入与现有风格割裂的组件样式。
 

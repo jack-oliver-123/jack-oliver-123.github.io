@@ -14,7 +14,8 @@
 .prose ol,
 .prose blockquote,
 .prose pre,
-.prose table {
+.prose table,
+.prose .code-copy-shell {
   margin: 1.25em 0;
 }
 
@@ -86,6 +87,47 @@
   border: 0;
   background: transparent;
   font-size: 0.9em;
+}
+
+.prose .code-copy-shell {
+  position: relative;
+}
+
+.prose .code-copy-shell pre {
+  margin: 0;
+  padding-top: 44px;
+}
+
+.prose .code-copy-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+  min-height: 30px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: var(--color-faint);
+  border: 1px solid color-mix(in srgb, var(--color-line) 82%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface) 76%, transparent);
+  font: 12px / 1.4 var(--font-mono);
+  letter-spacing: 0.04em;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease, opacity 160ms ease;
+}
+
+.prose .code-copy-button:hover,
+.prose .code-copy-button:focus-visible {
+  color: var(--color-accent-strong);
+  border-color: var(--color-border);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+}
+
+.prose .code-copy-button[data-copy-state="success"] {
+  color: var(--color-accent-strong);
+}
+
+.prose .code-copy-button[data-copy-state="error"] {
+  color: var(--color-muted);
 }
 
 .prose table {

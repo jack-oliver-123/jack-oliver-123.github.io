@@ -3,6 +3,7 @@ import type { MarkdownHeading } from 'astro';
 import type { BlogPost } from '@/lib/posts';
 import { getAdjacentPosts, getAllPosts, getPostUrl } from '@/lib/posts';
 import ArticleMeta from '@/components/ArticleMeta.astro';
+import CodeBlockCopy from '@/components/CodeBlockCopy.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
 import BaseLayout from './BaseLayout.astro';
 
@@ -37,9 +38,10 @@ const { previous, next } = getAdjacentPosts(posts, post.id);
     <div class:list={["post-reading-grid", { "post-reading-grid--without-toc": !hasToc }]}>
       {hasToc && <TableOfContents headings={tocHeadings} />}
       <div>
-        <div class="prose">
+        <div class="prose" data-code-copy-root>
           <slot />
         </div>
+        <CodeBlockCopy />
 
         <nav class="post-neighbors" aria-label="相邻文章">
           {previous ? <a href={getPostUrl(previous)}><span>上一篇</span>{previous.data.title}</a> : <span></span>}

@@ -47,7 +47,9 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 
 ### 内容模型
 
-博客文章放在 `src/content/blog/`，格式为 Markdown 或 MDX。可以用子文件夹按项目或主题分类，例如 `src/content/blog/docker/linux-docker/install-mysql.md`。内容集合会递归读取子目录，子文件夹也会进入文章 ID 和发布路径；一级子文件夹会自动成为系列名，一级以下目录会在系列详情页中递归展开为章节树，根目录文章不属于系列；草稿文章即使不发布，也必须保留完整 frontmatter 才能通过 Astro 校验。
+博客文章放在 `src/content/blog/`，格式为 Markdown 或 MDX。可以用子文件夹按项目或主题分类，例如 `src/content/blog/docker/database/01.install-mysql.md`。内容集合会递归读取子目录，子文件夹也会进入文章 ID 和发布路径；一级子文件夹会自动成为系列名，一级以下目录会在系列详情页中递归展开为章节树，根目录文章不属于系列；草稿文章即使不发布，也必须保留完整 frontmatter 才能通过 Astro 校验。
+
+Docker 系列按中间件类型分目录组织（`database/`、`messaging/`、`search/`、`storage/`、`gateway/`、`microservice/`、`monitoring/`），每篇文章同时覆盖 Linux 和 Windows 平台，统一使用 Docker Compose 部署，文件名格式为 `{序号}.install-{中间件}.md`。
 
 `src/content.config.ts` 使用 Astro v6 风格的 `glob()` loader 定义内容集合：
 

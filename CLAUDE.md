@@ -5,7 +5,7 @@
 ## 必须遵守
 
 - 所有面向用户或维护者的内容都使用简体中文，包括站点界面、文章辅助文案、SEO/RSS 元信息、README、提交说明中的主体内容，以及本 `CLAUDE.md`。
-- 修改代码、配置、内容结构或部署流程后，如果这些变化会影响未来维护方式，必须同步更新相关文档，优先检查 `README.md` 和 `CLAUDE.md`。
+- 每次开发完新功能或修改代码后，最后都要检查是否需要更新相关文档；代码、配置、内容结构、部署流程等变化都可能需要同步更新 `CLAUDE.md` 或 `README.md`，需要时必须更新。
 - 不要把顶部导航改成侧边导航；文章页左侧的是文章目录（TOC），只服务于当前文章标题跳转。
 - 保持当前“纸张边注式极简博客”的克制阅读风格，除非用户明确要求重新设计。
 
@@ -47,7 +47,7 @@ GitHub Pages 部署由 `.github/workflows/deploy.yml` 负责。
 
 ### 内容模型
 
-博客文章放在 `src/content/blog/`，格式为 Markdown 或 MDX。可以用子文件夹按项目或主题分类，例如 `src/content/blog/docker/database/01.install-mysql.md`。内容集合会递归读取子目录，子文件夹也会进入文章 ID 和发布路径；一级子文件夹会自动成为系列名，一级以下目录会在系列详情页中递归展开为章节树，根目录文章不属于系列；草稿文章即使不发布，也必须保留完整 frontmatter 才能通过 Astro 校验。
+博客文章放在 `src/content/blog/`，格式为 Markdown 或 MDX。可以用子文件夹按项目或主题分类，例如 `src/content/blog/agent-code/00.agent-code.md`、`src/content/blog/git/00.Git常用命令.md` 或 `src/content/blog/docker/database/01.install-mysql.md`。内容集合会递归读取子目录，子文件夹也会进入文章 ID 和发布路径；一级子文件夹会自动成为系列名，一级以下目录会在系列详情页中递归展开为章节树，根目录文章不属于系列；草稿文章即使不发布，也必须保留完整 frontmatter 才能通过 Astro 校验。
 
 Docker 系列按中间件类型分目录组织（`database/`、`messaging/`、`search/`、`storage/`、`gateway/`、`microservice/`、`monitoring/`），每篇文章同时覆盖 Linux 和 Windows 平台，统一使用 Docker Compose 部署，文件名格式为 `{序号}.install-{中间件}.md`。
 
@@ -66,11 +66,12 @@ Docker 系列按中间件类型分目录组织（`database/`、`messaging/`、`s
 - `formatDate()` 使用 `zh-CN` 格式化日期。
 - `getReadingTime()` 使用中文字符数和拉丁单词数估算阅读时间。
 - `getAdjacentPosts()` 为文章页生成上一篇/下一篇链接。
-- 文章日期优先使用 frontmatter 中手写的 `pubDate` / `updatedDate`；未填写时，从 Git 首次提交时间和最后修改提交时间自动推导。
+- 文章日期优先使用 frontmatter 中手写的 `pubDate` / `updatedDate`；未填写时，从 Git 首次提交时间和最后修改提交时间自动推导，再回退到文件系统时间。
+- 日期推导通过 `git log --follow` 读取具体文章文件历史，因此 CI 必须保留完整 Git 历史；新增文章时如果希望发布时间稳定可直接填写 `pubDate`。
 
 标签、归档和系列的分组逻辑分别在 `src/lib/tags.ts`、`src/lib/archive.ts` 和 `src/lib/series.ts`。系列分组必须基于 `getAllPosts()` 的结果派生，按一级文件夹自动归类；系列详情页要把一级以下目录递归渲染为章节树，并按同级目录名/文件名的数字前缀排序。
 
-`src/lib/search.ts` 负责全站搜索的文本清理、标准化、打分和命中片段生成。搜索索引必须复用 `getAllPosts()` 生成，避免草稿文章进入搜索结果。
+`src/lib/search.ts` 负责全站搜索的文本清理、标准化、打分和命中片段生成。`src/pages/search-index.json.ts` 在构建期把文章标题、摘要、标签、正文、URL 和日期序列化为静态 JSON；搜索索引必须复用 `getAllPosts()` 生成，避免草稿文章进入搜索结果。
 
 ### 路由与布局
 
@@ -97,7 +98,7 @@ Docker 系列按中间件类型分目录组织（`database/`、`messaging/`、`s
 
 ### 文章渲染、文章目录与代码块复制
 
-`src/pages/posts/[...slug].astro` 使用 `astro:content` 的 `render(post)`，并把 `Content` 和 `headings` 一起传给 `PostLayout`。文章路由使用 rest route，以支持 `src/content/blog/agentcode/00.agentcode.md` 这类子文件夹文章生成 `/posts/agentcode/00.agentcode/`。
+`src/pages/posts/[...slug].astro` 使用 `astro:content` 的 `render(post)`，并把 `Content` 和 `headings` 一起传给 `PostLayout`。文章路由使用 rest route，以支持 `src/content/blog/agent-code/00.agent-code.md` 这类子文件夹文章生成 `/posts/agent-code/00.agent-code/`。
 
 `PostLayout` 只保留 H2/H3 标题，并且仅在存在这些标题时渲染 `src/components/TableOfContents.astro`。文章目录的行为：
 
@@ -122,7 +123,7 @@ Docker 系列按中间件类型分目录组织（`database/`、`messaging/`、`s
 
 ### 元信息与资源
 
-`src/components/Head.astro` 集中处理 SEO 元信息、canonical、RSS 链接、favicon、Open Graph、Twitter Card，以及初始主题选择。
+`src/components/Head.astro` 集中处理 SEO 元信息、canonical、RSS 链接、favicon、Open Graph、Twitter Card，以及初始主题选择。初始主题脚本会读取 `localStorage.theme`，没有手动设置时跟随系统深浅色；`src/components/ThemeToggle.astro` 只在浅色和深色之间切换，并把选择写回 `localStorage`。
 
 当前图片约定：
 
@@ -136,6 +137,7 @@ Docker 系列按中间件类型分目录组织（`database/`、`messaging/`、`s
 
 ## 内容约定
 
+- 所有新增或修改的文章文件应继续放在 `src/content/blog/` 下，文件名会直接影响文章 ID、URL 和系列排序；涉及空格、中文或大小写的现有文件名不要随意重命名，避免改变公开链接。
 - 所有可见 UI 文案和博客辅助内容保持简体中文。
 - 技术名称可以保留官方写法，例如 `Astro`、`MDX`、`GitHub Actions`、包名或命令名。
 - 公开路由使用稳定英文路径，例如 `/blog/`、`/tags/`、`/archive/`、`/about/`，但页面标题和导航标签必须使用简体中文。

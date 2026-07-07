@@ -28,7 +28,7 @@ export type SeriesGroup = {
 };
 
 export function slugifySeries(series: string) {
-  return encodeURIComponent(series);
+  return series;
 }
 
 export function unslugifySeries(series: string) {

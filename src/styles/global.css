@@ -4,6 +4,7 @@
 
 html {
   min-width: 320px;
+  overflow-x: hidden;
   background: var(--color-page);
   color: var(--color-text);
   font-family: var(--font-sans);

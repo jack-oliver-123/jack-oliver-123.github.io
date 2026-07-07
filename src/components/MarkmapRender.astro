@@ -1,0 +1,67 @@
+<script>
+  const ROOT_SELECTOR = '[data-code-copy-root]';
+  const PRE_SELECTOR = 'pre:has(code.language-markmap)';
+
+  interface MarkmapBlock {
+    container: HTMLDivElement;
+    svg: SVGSVGElement;
+    src: string;
+  }
+
+  async function init() {
+    const root = document.querySelector<HTMLElement>(ROOT_SELECTOR);
+    if (!root) return;
+
+    const pres = Array.from(root.querySelectorAll<HTMLPreElement>(PRE_SELECTOR));
+    if (pres.length === 0) return;
+
+    const blocks: MarkmapBlock[] = pres.map((pre) => {
+      const src = (pre.querySelector('code')?.textContent ?? '').trim();
+      const container = document.createElement('div');
+      container.className = 'markmap-diagram markmap-loading';
+      container.setAttribute('role', 'img');
+      container.setAttribute('aria-label', '思维导图');
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.style.width = '100%';
+      svg.style.height = '400px';
+      container.appendChild(svg);
+
+      pre.replaceWith(container);
+      return { container, svg, src };
+    });
+
+    try {
+      const CDN_LIB = 'https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.js';
+      const CDN_VIEW = 'https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js';
+
+      // @ts-ignore — CDN dynamic imports have no type declarations
+      const [libModule, viewModule] = await Promise.all([
+        import(/* @vite-ignore */ CDN_LIB),
+        import(/* @vite-ignore */ CDN_VIEW),
+      ]);
+
+      const { Transformer } = libModule;
+      const { Markmap } = viewModule;
+      const transformer = new Transformer();
+
+      for (const { container, svg, src } of blocks) {
+        try {
+          const { root: data } = transformer.transform(src);
+          Markmap.create(svg, { autoFit: true, duration: 0 }, data);
+          container.classList.remove('markmap-loading');
+        } catch {
+          container.classList.remove('markmap-loading');
+          container.dataset.markmapError = 'true';
+        }
+      }
+    } catch {
+      for (const { container } of blocks) {
+        container.classList.remove('markmap-loading');
+        container.dataset.markmapError = 'true';
+      }
+    }
+  }
+
+  init();
+</script>

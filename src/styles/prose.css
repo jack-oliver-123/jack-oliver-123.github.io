@@ -204,6 +204,45 @@
   content: '图表渲染失败';
 }
 
+/* Markmap 思维导图 */
+.prose .markmap-diagram {
+  margin: 1.25em 0;
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 68%, transparent);
+}
+
+.prose .markmap-diagram svg {
+  display: block;
+  width: 100%;
+  min-height: 300px;
+}
+
+.prose .markmap-loading {
+  min-height: 200px;
+  background: linear-gradient(
+    90deg,
+    var(--color-code) 25%,
+    color-mix(in srgb, var(--color-line) 30%, transparent) 50%,
+    var(--color-code) 75%
+  );
+  background-size: 200% 100%;
+  animation: mermaid-shimmer 1.5s ease-in-out infinite;
+}
+
+.prose .markmap-diagram[data-markmap-error] {
+  padding: 1em;
+  border-style: dashed;
+  color: var(--color-muted);
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.prose .markmap-diagram[data-markmap-error]::after {
+  content: '思维导图渲染失败';
+}
+
 @media (max-width: 820px) {
   .prose {
     font-size: 16px;

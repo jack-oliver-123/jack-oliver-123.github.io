@@ -32,8 +32,8 @@
     });
 
     try {
-      const CDN_LIB = 'https://cdn.jsdelivr.net/npm/markmap-lib@0.18/dist/browser/index.mjs';
-      const CDN_VIEW = 'https://cdn.jsdelivr.net/npm/markmap-view@0.18/dist/browser/index.js';
+      const CDN_LIB = 'https://esm.sh/markmap-lib@0.18?bundle-deps';
+      const CDN_VIEW = 'https://esm.sh/markmap-view@0.18?bundle-deps';
 
       // @ts-ignore — CDN dynamic imports have no type declarations
       const [libModule, viewModule] = await Promise.all([

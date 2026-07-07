@@ -1,0 +1,78 @@
+<script>
+  const ROOT_SELECTOR = '[data-code-copy-root]';
+  const PRE_SELECTOR = 'pre:has(code.language-mermaid)';
+
+  function getMermaidTheme(): string {
+    return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
+  }
+
+  interface MermaidBlock {
+    container: HTMLDivElement;
+    src: string;
+  }
+
+  let renderToken = 0;
+
+  async function renderAll(blocks: MermaidBlock[], mermaid: any, token: number) {
+    mermaid.initialize({ startOnLoad: false, theme: getMermaidTheme() });
+
+    for (const { container, src } of blocks) {
+      if (token !== renderToken) return;
+
+      const id = `mermaid-${Math.random().toString(36).slice(2, 9)}`;
+      try {
+        const { svg } = await mermaid.render(id, src);
+        if (token !== renderToken) return;
+        container.innerHTML = svg;
+        container.classList.remove('mermaid-loading');
+        container.removeAttribute('data-mermaid-error');
+      } catch {
+        container.classList.remove('mermaid-loading');
+        container.dataset.mermaidError = 'true';
+      }
+    }
+  }
+
+  async function init() {
+    const root = document.querySelector<HTMLElement>(ROOT_SELECTOR);
+    if (!root) return;
+
+    const pres = Array.from(root.querySelectorAll<HTMLPreElement>(PRE_SELECTOR));
+    if (pres.length === 0) return;
+
+    const blocks: MermaidBlock[] = pres.map((pre) => {
+      const src = (pre.querySelector('code')?.textContent ?? '').trim();
+      const diagramType = src.split(/[\s\n]/)[0] ?? '图表';
+      const container = document.createElement('div');
+      container.className = 'mermaid-diagram mermaid-loading';
+      container.setAttribute('aria-label', `Mermaid 图表：${diagramType}`);
+      container.setAttribute('role', 'img');
+      pre.replaceWith(container);
+      return { container, src };
+    });
+
+    try {
+      const CDN = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+      // @ts-ignore — CDN dynamic import has no type declarations
+      const { default: mermaid } = await import(/* @vite-ignore */ CDN);
+
+      renderToken++;
+      await renderAll(blocks, mermaid, renderToken);
+
+      new MutationObserver(() => {
+        renderToken++;
+        renderAll(blocks, mermaid, renderToken);
+      }).observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['data-theme'],
+      });
+    } catch {
+      for (const { container } of blocks) {
+        container.classList.remove('mermaid-loading');
+        container.dataset.mermaidError = 'true';
+      }
+    }
+  }
+
+  init();
+</script>

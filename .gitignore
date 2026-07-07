@@ -5,6 +5,9 @@ node_modules/
 dist/
 .astro/
 
+# obsidian相关的设置
+\src\content\blog\.obsidian
+
 # 日志
 npm-debug.log*
 yarn-debug.log*

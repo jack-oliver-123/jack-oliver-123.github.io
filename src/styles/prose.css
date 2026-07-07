@@ -152,3 +152,54 @@
   border: 0;
   border-top: 1px solid var(--color-line);
 }
+
+/* Mermaid 图表 */
+.prose .mermaid-diagram {
+  margin: 1.25em 0;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.prose .mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+.prose .mermaid-loading {
+  min-height: 120px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--color-code) 25%,
+    color-mix(in srgb, var(--color-line) 30%, transparent) 50%,
+    var(--color-code) 75%
+  );
+  background-size: 200% 100%;
+  animation: mermaid-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes mermaid-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prose .mermaid-loading {
+    animation: none;
+  }
+}
+
+.prose .mermaid-diagram[data-mermaid-error] {
+  padding: 1em;
+  border: 1px dashed var(--color-line);
+  border-radius: var(--radius-md);
+  color: var(--color-muted);
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.prose .mermaid-diagram[data-mermaid-error]::after {
+  content: '图表渲染失败';
+}

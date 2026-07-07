@@ -48,7 +48,7 @@
       for (const { container, svg, src } of blocks) {
         try {
           const { root: data } = transformer.transform(src);
-          Markmap.create(svg, { autoFit: true, duration: 0 }, data);
+          Markmap.create(svg, { autoFit: true, duration: 0, initialExpandLevel: 1 }, data);
           container.classList.remove('markmap-loading');
         } catch {
           container.classList.remove('markmap-loading');

@@ -11,7 +11,15 @@ const pathname = Astro.url.pathname;
     <span>{SITE.title}</span>
   </a>
 
-  <nav class="site-nav" aria-label="主导航">
+  <button class="nav-toggle" type="button" aria-label="展开导航菜单" aria-expanded="false" data-nav-toggle>
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+      <line class="nav-toggle__bar nav-toggle__bar--top" x1="3" y1="5" x2="17" y2="5" />
+      <line class="nav-toggle__bar nav-toggle__bar--mid" x1="3" y1="10" x2="17" y2="10" />
+      <line class="nav-toggle__bar nav-toggle__bar--bot" x1="3" y1="15" x2="17" y2="15" />
+    </svg>
+  </button>
+
+  <nav class="site-nav" aria-label="主导航" data-site-nav>
     {SITE.nav.map((item) => {
       const isActive = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
       return (
@@ -20,7 +28,34 @@ const pathname = Astro.url.pathname;
         </a>
       );
     })}
+    <div class="site-nav__footer">
+      <ThemeToggle />
+    </div>
   </nav>
 
-  <ThemeToggle />
+  <div class="theme-toggle-desktop">
+    <ThemeToggle />
+  </div>
 </header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const nav = document.querySelector<HTMLElement>('[data-site-nav]');
+
+  if (toggle && nav) {
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!expanded));
+      nav.classList.toggle('site-nav--open');
+      document.body.classList.toggle('nav-open');
+    });
+
+    nav.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) {
+        toggle.setAttribute('aria-expanded', 'false');
+        nav.classList.remove('site-nav--open');
+        document.body.classList.remove('nav-open');
+      }
+    });
+  }
+</script>

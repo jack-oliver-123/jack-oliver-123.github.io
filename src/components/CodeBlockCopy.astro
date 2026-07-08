@@ -87,6 +87,7 @@
 
   function wrapCodeBlock(pre: HTMLPreElement) {
     if (pre.querySelector('code.language-mermaid')) return;
+    if (pre.querySelector('code.language-markmap')) return;
     if (pre.closest('.code-copy-shell')) return;
 
     const wrapper = document.createElement('div');

@@ -32,17 +32,8 @@
     });
 
     try {
-      const CDN_LIB = 'https://esm.sh/markmap-lib@0.18?bundle-deps';
-      const CDN_VIEW = 'https://esm.sh/markmap-view@0.18?bundle-deps';
-
-      // @ts-ignore — CDN dynamic imports have no type declarations
-      const [libModule, viewModule] = await Promise.all([
-        import(/* @vite-ignore */ CDN_LIB),
-        import(/* @vite-ignore */ CDN_VIEW),
-      ]);
-
-      const { Transformer } = libModule;
-      const { Markmap } = viewModule;
+      const { Transformer } = await import('markmap-lib');
+      const { Markmap } = await import('markmap-view');
       const transformer = new Transformer();
 
       for (const { container, svg, src } of blocks) {

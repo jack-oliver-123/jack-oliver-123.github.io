@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" style="max-width:600px;width:100%" font-family="sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#333" stroke-width="1"/>
+    </marker>
+    <marker id="arrBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#3498db" stroke-width="1"/>
+    </marker>
+    <marker id="arrRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#e74c3c" stroke-width="1"/>
+    </marker>
+  </defs>
+
+  <!-- Keys -->
+  <rect x="30" y="40" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="70" y="62" font-size="13" fill="#3498db" text-anchor="middle" font-weight="bold">"张三"</text>
+
+  <rect x="30" y="120" width="80" height="36" fill="#fff" stroke="#e74c3c" stroke-width="1.5" rx="4"/>
+  <text x="70" y="142" font-size="13" fill="#e74c3c" text-anchor="middle" font-weight="bold">"李四"</text>
+
+  <!-- Arrow from keys to hashCode -->
+  <line x1="110" y1="58" x2="165" y2="58" stroke="#3498db" stroke-width="1.5" marker-end="url(#arrBlue)"/>
+  <line x1="110" y1="138" x2="165" y2="138" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrRed)"/>
+
+  <!-- hashCode() box -->
+  <rect x="168" y="30" width="110" height="50" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+  <text x="223" y="52" font-size="11" fill="#333" text-anchor="middle">hashCode()</text>
+  <text x="223" y="70" font-size="10" fill="#666" text-anchor="middle">→ 746382</text>
+
+  <rect x="168" y="110" width="110" height="50" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+  <text x="223" y="132" font-size="11" fill="#333" text-anchor="middle">hashCode()</text>
+  <text x="223" y="150" font-size="10" fill="#666" text-anchor="middle">→ 891246</text>
+
+  <!-- Arrow to index calculation -->
+  <line x1="278" y1="55" x2="325" y2="55" stroke="#3498db" stroke-width="1.5" marker-end="url(#arrBlue)"/>
+  <line x1="278" y1="135" x2="325" y2="135" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrRed)"/>
+
+  <!-- Index calculation -->
+  <rect x="328" y="30" width="100" height="50" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+  <text x="378" y="50" font-size="10" fill="#333" text-anchor="middle">% capacity</text>
+  <text x="378" y="68" font-size="11" fill="#3498db" text-anchor="middle" font-weight="bold">→ index=2</text>
+
+  <rect x="328" y="110" width="100" height="50" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+  <text x="378" y="130" font-size="10" fill="#333" text-anchor="middle">% capacity</text>
+  <text x="378" y="148" font-size="11" fill="#e74c3c" text-anchor="middle" font-weight="bold">→ index=2</text>
+
+  <!-- Converging arrows to same bucket -->
+  <line x1="428" y1="58" x2="480" y2="88" stroke="#3498db" stroke-width="1.5" marker-end="url(#arrBlue)"/>
+  <line x1="428" y1="135" x2="480" y2="108" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrRed)"/>
+
+  <!-- Collision indicator -->
+  <text x="480" y="80" font-size="14" fill="#e74c3c" text-anchor="middle" font-weight="bold">冲突!</text>
+
+  <!-- Bucket -->
+  <rect x="470" y="88" width="50" height="36" fill="#fff" stroke="#333" stroke-width="2" rx="2"/>
+  <text x="495" y="110" font-size="11" fill="#333" text-anchor="middle">桶[2]</text>
+
+  <!-- Arrow to linked list -->
+  <line x1="520" y1="106" x2="555" y2="106" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Process label -->
+  <text x="70" y="25" font-size="11" fill="#666" text-anchor="middle">Key</text>
+  <text x="223" y="18" font-size="11" fill="#666" text-anchor="middle">哈希计算</text>
+  <text x="378" y="18" font-size="11" fill="#666" text-anchor="middle">取模定位</text>
+
+  <!-- Linked list resolution -->
+  <text x="300" y="210" font-size="12" fill="#333" text-anchor="middle" font-weight="bold">冲突解决：链地址法</text>
+
+  <!-- Bucket array snippet -->
+  <rect x="120" y="235" width="50" height="30" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+  <text x="145" y="254" font-size="10" fill="#666" text-anchor="middle">[2]</text>
+
+  <!-- Arrow -->
+  <line x1="170" y1="250" x2="210" y2="250" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Node 1 -->
+  <rect x="213" y="232" width="120" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="273" y="254" font-size="11" fill="#3498db" text-anchor="middle">张三:138xxxx</text>
+
+  <!-- Arrow -->
+  <line x1="333" y1="250" x2="373" y2="250" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Node 2 -->
+  <rect x="376" y="232" width="120" height="36" fill="#fff" stroke="#e74c3c" stroke-width="1.5" rx="4"/>
+  <text x="436" y="254" font-size="11" fill="#e74c3c" text-anchor="middle">李四:139xxxx</text>
+
+  <!-- null -->
+  <line x1="496" y1="250" x2="530" y2="250" stroke="#333" stroke-width="1.5"/>
+  <text x="540" y="254" font-size="10" fill="#999">null</text>
+
+  <!-- Explanation -->
+  <text x="300" y="295" font-size="11" fill="#666" text-anchor="middle">查找时：hash定位桶 → 在链表中用 equals() 逐一比较 Key</text>
+
+  <!-- Title -->
+  <text x="300" y="315" font-size="12" fill="#333" text-anchor="middle">哈希冲突：不同 Key 映射到相同桶位</text>
+</svg>

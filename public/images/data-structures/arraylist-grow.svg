@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 220" style="max-width:600px;width:100%" font-family="sans-serif">
+  <!-- Title -->
+  <text x="300" y="22" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">ArrayList 1.5 倍扩容示意</text>
+
+  <!-- Old array (full, 6 cells) -->
+  <g transform="translate(20, 50)">
+    <text x="90" y="-8" text-anchor="middle" font-size="11" fill="#e74c3c">旧数组（已满）</text>
+    <rect x="0" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="15" y="21" text-anchor="middle" font-size="11" fill="#333">A</text>
+    <rect x="30" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="45" y="21" text-anchor="middle" font-size="11" fill="#333">B</text>
+    <rect x="60" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="75" y="21" text-anchor="middle" font-size="11" fill="#333">C</text>
+    <rect x="90" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="105" y="21" text-anchor="middle" font-size="11" fill="#333">D</text>
+    <rect x="120" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="135" y="21" text-anchor="middle" font-size="11" fill="#333">E</text>
+    <rect x="150" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="165" y="21" text-anchor="middle" font-size="11" fill="#333">F</text>
+    <text x="90" y="52" text-anchor="middle" font-size="11" fill="#666">oldCapacity = 6</text>
+  </g>
+
+  <!-- Arrow -->
+  <g transform="translate(215, 58)">
+    <line x1="0" y1="16" x2="60" y2="16" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+    <text x="30" y="6" text-anchor="middle" font-size="10" fill="#e74c3c">扩容</text>
+  </g>
+
+  <!-- New array (9 cells, first 6 filled) -->
+  <g transform="translate(290, 50)">
+    <text x="135" y="-8" text-anchor="middle" font-size="11" fill="#3498db">新数组（1.5 倍）</text>
+    <rect x="0" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="15" y="21" text-anchor="middle" font-size="11" fill="#333">A</text>
+    <rect x="30" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="45" y="21" text-anchor="middle" font-size="11" fill="#333">B</text>
+    <rect x="60" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="75" y="21" text-anchor="middle" font-size="11" fill="#333">C</text>
+    <rect x="90" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="105" y="21" text-anchor="middle" font-size="11" fill="#333">D</text>
+    <rect x="120" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="135" y="21" text-anchor="middle" font-size="11" fill="#333">E</text>
+    <rect x="150" y="0" width="30" height="32" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="165" y="21" text-anchor="middle" font-size="11" fill="#333">F</text>
+    <!-- Empty cells -->
+    <rect x="180" y="0" width="30" height="32" fill="#fafafa" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" rx="2"/>
+    <rect x="210" y="0" width="30" height="32" fill="#fafafa" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" rx="2"/>
+    <rect x="240" y="0" width="30" height="32" fill="#fafafa" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" rx="2"/>
+    <text x="135" y="52" text-anchor="middle" font-size="11" fill="#666">newCapacity = 9</text>
+  </g>
+
+  <!-- Copy annotation -->
+  <path d="M 110,105 C 110,135 390,135 390,105" fill="none" stroke="#3498db" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowBlue)"/>
+  <text x="250" y="145" text-anchor="middle" font-size="11" fill="#3498db">Arrays.copyOf — 复制全部元素</text>
+
+  <!-- Formula -->
+  <rect x="100" y="165" width="400" height="36" fill="#f9f9f9" stroke="#ddd" stroke-width="1" rx="4"/>
+  <text x="300" y="188" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1) = 6 + 3 = 9</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3498db"/>
+    </marker>
+  </defs>
+</svg>

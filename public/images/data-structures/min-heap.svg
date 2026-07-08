@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" style="max-width:600px;width:100%" font-family="sans-serif">
+  <!-- Level 1: Root -->
+  <line x1="240" y1="50" x2="140" y2="130" stroke="#666" stroke-width="1.5"/>
+  <line x1="240" y1="50" x2="340" y2="130" stroke="#666" stroke-width="1.5"/>
+  <!-- Level 2 -->
+  <line x1="140" y1="130" x2="80" y2="210" stroke="#666" stroke-width="1.5"/>
+  <line x1="140" y1="130" x2="200" y2="210" stroke="#666" stroke-width="1.5"/>
+  <line x1="340" y1="130" x2="280" y2="210" stroke="#666" stroke-width="1.5"/>
+  <line x1="340" y1="130" x2="400" y2="210" stroke="#666" stroke-width="1.5"/>
+  <!-- Level 3 (leaf of left-left) -->
+  <line x1="80" y1="210" x2="50" y2="280" stroke="#666" stroke-width="1.5"/>
+
+  <!-- Root node (blue highlight) -->
+  <circle cx="240" cy="50" r="24" fill="#fff" stroke="#3498db" stroke-width="2"/>
+  <text x="240" y="56" text-anchor="middle" font-size="16" font-weight="bold" fill="#3498db">1</text>
+
+  <!-- Level 2 nodes -->
+  <circle cx="140" cy="130" r="24" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="140" y="136" text-anchor="middle" font-size="16" fill="#333">3</text>
+
+  <circle cx="340" cy="130" r="24" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="340" y="136" text-anchor="middle" font-size="16" fill="#333">5</text>
+
+  <!-- Level 3 nodes -->
+  <circle cx="80" cy="210" r="24" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="80" y="216" text-anchor="middle" font-size="16" fill="#333">7</text>
+
+  <circle cx="200" cy="210" r="24" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="200" y="216" text-anchor="middle" font-size="16" fill="#333">9</text>
+
+  <circle cx="280" cy="210" r="24" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="280" y="216" text-anchor="middle" font-size="16" fill="#333">8</text>
+
+  <circle cx="400" cy="210" r="24" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="400" y="216" text-anchor="middle" font-size="16" fill="#333">6</text>
+
+  <!-- Level 4 node -->
+  <circle cx="50" cy="280" r="24" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="50" y="286" text-anchor="middle" font-size="16" fill="#333">10</text>
+
+  <!-- Annotation -->
+  <text x="370" y="56" text-anchor="start" font-size="12" fill="#3498db">← 根节点最小</text>
+  <text x="240" y="312" text-anchor="middle" font-size="12" fill="#666">父节点 ≤ 子节点（最小堆）</text>
+</svg>

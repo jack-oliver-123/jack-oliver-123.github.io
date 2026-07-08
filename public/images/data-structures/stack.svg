@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 280" width="100%" style="max-width:600px">
+  <!-- 栈容器 -->
+  <rect x="120" y="40" width="120" height="200" rx="4" fill="none" stroke="#333" stroke-width="2"/>
+  <!-- 底部封闭线 -->
+  <line x1="120" y1="240" x2="240" y2="240" stroke="#333" stroke-width="2.5"/>
+
+  <!-- 栈内元素 -->
+  <rect x="130" y="180" width="100" height="40" rx="3" fill="#fff" stroke="#666" stroke-width="1.5"/>
+  <text x="180" y="205" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#333">A</text>
+
+  <rect x="130" y="130" width="100" height="40" rx="3" fill="#fff" stroke="#666" stroke-width="1.5"/>
+  <text x="180" y="155" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#333">B</text>
+
+  <rect x="130" y="80" width="100" height="40" rx="3" fill="#fff" stroke="#3498db" stroke-width="2"/>
+  <text x="180" y="105" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#333">C</text>
+
+  <!-- 栈顶标注 -->
+  <line x1="242" y1="60" x2="242" y2="120" stroke="#3498db" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="270" y="95" font-family="sans-serif" font-size="12" fill="#3498db">栈顶(top)</text>
+
+  <!-- 栈底标注 -->
+  <text x="270" y="225" font-family="sans-serif" font-size="12" fill="#666">栈底</text>
+  <line x1="242" y1="210" x2="242" y2="235" stroke="#666" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+  <!-- push 箭头 -->
+  <path d="M70,50 L70,80 L125,80" fill="none" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <text x="45" y="45" font-family="sans-serif" font-size="13" fill="#e74c3c" font-weight="bold">push</text>
+
+  <!-- pop 箭头 -->
+  <path d="M125,55 L70,55 L70,30" fill="none" stroke="#3498db" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="50" y="25" font-family="sans-serif" font-size="13" fill="#3498db" font-weight="bold">pop</text>
+
+  <!-- LIFO 标注 -->
+  <text x="180" y="268" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#666">后进先出 (LIFO)</text>
+
+  <!-- 箭头标记定义 -->
+  <defs>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#3498db" stroke-width="1.5"/>
+    </marker>
+  </defs>
+</svg>

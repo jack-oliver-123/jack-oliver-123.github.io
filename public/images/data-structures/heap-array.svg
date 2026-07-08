@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 380" style="max-width:600px;width:100%" font-family="sans-serif">
+  <!-- Tree section -->
+  <!-- Edges -->
+  <line x1="260" y1="45" x2="150" y2="110" stroke="#666" stroke-width="1.5"/>
+  <line x1="260" y1="45" x2="370" y2="110" stroke="#666" stroke-width="1.5"/>
+  <line x1="150" y1="110" x2="95" y2="175" stroke="#666" stroke-width="1.5"/>
+  <line x1="150" y1="110" x2="205" y2="175" stroke="#666" stroke-width="1.5"/>
+  <line x1="370" y1="110" x2="315" y2="175" stroke="#666" stroke-width="1.5"/>
+  <line x1="370" y1="110" x2="425" y2="175" stroke="#666" stroke-width="1.5"/>
+
+  <!-- Tree nodes -->
+  <circle cx="260" cy="45" r="20" fill="#fff" stroke="#3498db" stroke-width="2"/>
+  <text x="260" y="51" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">10</text>
+
+  <circle cx="150" cy="110" r="20" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="150" y="116" text-anchor="middle" font-size="14" fill="#333">20</text>
+
+  <circle cx="370" cy="110" r="20" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="370" y="116" text-anchor="middle" font-size="14" fill="#333">30</text>
+
+  <circle cx="95" cy="175" r="20" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="95" y="181" text-anchor="middle" font-size="14" fill="#333">50</text>
+
+  <circle cx="205" cy="175" r="20" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="205" y="181" text-anchor="middle" font-size="14" fill="#333">40</text>
+
+  <circle cx="315" cy="175" r="20" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="315" y="181" text-anchor="middle" font-size="14" fill="#333">80</text>
+
+  <circle cx="425" cy="175" r="20" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="425" y="181" text-anchor="middle" font-size="14" fill="#333">60</text>
+
+  <!-- Dashed lines connecting tree nodes to array -->
+  <line x1="260" y1="65" x2="110" y2="270" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="150" y1="130" x2="178" y2="270" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="370" y1="130" x2="246" y2="270" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="95" y1="195" x2="314" y2="270" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="205" y1="195" x2="382" y2="270" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="315" y1="195" x2="450" y2="270" stroke="#999" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Array section -->
+  <!-- Array label -->
+  <text x="30" y="295" text-anchor="start" font-size="13" fill="#666">数组：</text>
+
+  <!-- Array cells -->
+  <rect x="80" y="275" width="68" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="114" y="298" text-anchor="middle" font-size="14" font-weight="bold" fill="#3498db">10</text>
+
+  <rect x="148" y="275" width="68" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="182" y="298" text-anchor="middle" font-size="14" fill="#333">20</text>
+
+  <rect x="216" y="275" width="68" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="250" y="298" text-anchor="middle" font-size="14" fill="#333">30</text>
+
+  <rect x="284" y="275" width="68" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="318" y="298" text-anchor="middle" font-size="14" fill="#333">50</text>
+
+  <rect x="352" y="275" width="68" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="386" y="298" text-anchor="middle" font-size="14" fill="#333">40</text>
+
+  <rect x="420" y="275" width="68" height="36" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="454" y="298" text-anchor="middle" font-size="14" fill="#333">80</text>
+
+  <!-- Index labels -->
+  <text x="114" y="330" text-anchor="middle" font-size="11" fill="#666">0</text>
+  <text x="182" y="330" text-anchor="middle" font-size="11" fill="#666">1</text>
+  <text x="250" y="330" text-anchor="middle" font-size="11" fill="#666">2</text>
+  <text x="318" y="330" text-anchor="middle" font-size="11" fill="#666">3</text>
+  <text x="386" y="330" text-anchor="middle" font-size="11" fill="#666">4</text>
+  <text x="454" y="330" text-anchor="middle" font-size="11" fill="#666">5</text>
+
+  <!-- Formula annotations -->
+  <text x="260" y="360" text-anchor="middle" font-size="11" fill="#666">左孩子 = 2i+1　　右孩子 = 2i+2　　父节点 = (i-1)/2</text>
+
+  <!-- Section labels -->
+  <text x="260" y="235" text-anchor="middle" font-size="12" fill="#999">↕ 层序对应 ↕</text>
+</svg>

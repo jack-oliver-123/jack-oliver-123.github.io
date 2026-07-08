@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" style="max-width:600px;width:100%;height:auto;font-family:sans-serif">
+  <!-- 左半边: Comparable -->
+  <rect x="30" y="50" width="250" height="220" rx="6" fill="white" stroke="#3498db" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="155" y="35" font-size="13" fill="#3498db" text-anchor="middle" font-weight="bold">Comparable — 自然排序</text>
+
+  <!-- 类框 -->
+  <rect x="70" y="90" width="170" height="80" rx="4" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="155" y="115" font-size="12" fill="#333" text-anchor="middle" font-weight="bold">Student</text>
+  <line x1="70" y1="125" x2="240" y2="125" stroke="#ddd" stroke-width="1"/>
+  <text x="155" y="145" font-size="11" fill="#666" text-anchor="middle">implements Comparable</text>
+  <text x="155" y="163" font-size="11" fill="#3498db" text-anchor="middle">compareTo(other)</text>
+
+  <!-- 自身循环箭头 -->
+  <path d="M240,110 C270,90 270,140 240,130" fill="none" stroke="#3498db" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+  <text x="85" y="200" font-size="11" fill="#666">排序逻辑在类内部</text>
+  <text x="85" y="218" font-size="11" fill="#666">一个类只有一种自然序</text>
+  <text x="85" y="236" font-size="11" fill="#666">需要修改原始类代码</text>
+
+  <!-- 右半边: Comparator -->
+  <rect x="320" y="50" width="250" height="220" rx="6" fill="white" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="445" y="35" font-size="13" fill="#e74c3c" text-anchor="middle" font-weight="bold">Comparator — 定制排序</text>
+
+  <!-- 目标类框 -->
+  <rect x="380" y="90" width="130" height="45" rx="4" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="445" y="118" font-size="12" fill="#333" text-anchor="middle">Student</text>
+
+  <!-- 比较器框 -->
+  <rect x="360" y="170" width="170" height="50" rx="4" fill="white" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="445" y="192" font-size="11" fill="#e74c3c" text-anchor="middle" font-weight="bold">AgeComparator</text>
+  <text x="445" y="210" font-size="11" fill="#666" text-anchor="middle">compare(s1, s2)</text>
+
+  <!-- 外部箭头指向目标类 -->
+  <path d="M445,170 L445,137" fill="none" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+  <text x="340" y="248" font-size="11" fill="#666">排序逻辑在外部类</text>
+  <text x="340" y="266" font-size="11" fill="#666">可以有多个比较器</text>
+
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#3498db"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="4" refY="6" orient="auto">
+      <polygon points="0,6 4,0 8,6" fill="#e74c3c"/>
+    </marker>
+  </defs>
+
+  <!-- 底部对比 -->
+  <line x1="30" y1="295" x2="570" y2="295" stroke="#eee" stroke-width="1"/>
+  <text x="155" y="320" font-size="11" fill="#3498db" text-anchor="middle">一个类只能有一种 compareTo</text>
+  <text x="445" y="320" font-size="11" fill="#e74c3c" text-anchor="middle">同一个类可以有多个 Comparator</text>
+  <text x="155" y="345" font-size="11" fill="#666" text-anchor="middle">java.lang 包，无需 import</text>
+  <text x="445" y="345" font-size="11" fill="#666" text-anchor="middle">java.util 包，需要 import</text>
+</svg>

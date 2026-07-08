@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 380" style="max-width:600px;width:100%;height:auto;font-family:sans-serif">
+  <!-- 坐标轴 -->
+  <line x1="60" y1="320" x2="560" y2="320" stroke="#333" stroke-width="1.5"/>
+  <line x1="60" y1="320" x2="60" y2="30" stroke="#333" stroke-width="1.5"/>
+  <!-- 箭头 -->
+  <polygon points="560,320 550,315 550,325" fill="#333"/>
+  <polygon points="60,30 55,40 65,40" fill="#333"/>
+  <!-- 轴标签 -->
+  <text x="540" y="345" font-size="13" fill="#333">n（数据规模）</text>
+  <text x="15" y="40" font-size="13" fill="#333">执行次数</text>
+
+  <!-- O(1) 水平线 -->
+  <line x1="60" y1="300" x2="530" y2="300" stroke="#27ae60" stroke-width="2"/>
+  <text x="535" y="304" font-size="12" fill="#27ae60" font-weight="bold">O(1)</text>
+
+  <!-- O(log n) 缓慢上升 -->
+  <path d="M60,300 C150,280 250,260 350,250 C420,244 480,238 530,235" fill="none" stroke="#3498db" stroke-width="2"/>
+  <text x="535" y="239" font-size="12" fill="#3498db" font-weight="bold">O(log n)</text>
+
+  <!-- O(n) 线性 -->
+  <line x1="60" y1="300" x2="530" y2="130" stroke="#f39c12" stroke-width="2"/>
+  <text x="535" y="134" font-size="12" fill="#f39c12" font-weight="bold">O(n)</text>
+
+  <!-- O(n log n) 略陡 -->
+  <path d="M60,300 C150,275 250,230 350,170 C420,130 480,95 530,70" fill="none" stroke="#9b59b6" stroke-width="2"/>
+  <text x="535" y="74" font-size="12" fill="#9b59b6" font-weight="bold">O(n log n)</text>
+
+  <!-- O(n²) 陡峭抛物线 -->
+  <path d="M60,300 C120,295 180,280 240,255 C300,220 360,165 400,110 C430,70 455,45 480,38" fill="none" stroke="#e74c3c" stroke-width="2"/>
+  <text x="485" y="42" font-size="12" fill="#e74c3c" font-weight="bold">O(n²)</text>
+
+  <!-- 网格参考线 -->
+  <line x1="60" y1="250" x2="560" y2="250" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="60" y1="200" x2="560" y2="200" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="60" y1="150" x2="560" y2="150" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+  <line x1="60" y1="100" x2="560" y2="100" stroke="#eee" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+  <!-- 底部说明 -->
+  <text x="300" y="372" font-size="11" fill="#666" text-anchor="middle">随着 n 增大，不同复杂度的执行次数差距越来越大</text>
+</svg>

@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 320" style="max-width:600px;width:100%;height:auto;font-family:sans-serif">
+  <!-- 左侧: equals() -->
+  <rect x="60" y="100" width="160" height="50" rx="6" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="140" y="130" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">equals() == true</text>
+
+  <!-- 右侧: hashCode() -->
+  <rect x="380" y="100" width="160" height="50" rx="6" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="460" y="130" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">hashCode() 相等</text>
+
+  <!-- 规则1: equals true → hashCode 必须相等 (绿色实线) -->
+  <line x1="220" y1="115" x2="378" y2="115" stroke="#27ae60" stroke-width="2" marker-end="url(#arrowGreen)"/>
+  <text x="300" y="105" font-size="11" fill="#27ae60" text-anchor="middle" font-weight="bold">必须相等</text>
+
+  <!-- 规则2: hashCode 相等 → equals 不一定 true (红色虚线) -->
+  <line x1="380" y1="140" x2="222" y2="140" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowRedLeft)"/>
+  <text x="300" y="160" font-size="11" fill="#e74c3c" text-anchor="middle">不一定为 true（哈希冲突）</text>
+
+  <!-- 下方补充: equals false -->
+  <rect x="60" y="210" width="160" height="50" rx="6" fill="white" stroke="#999" stroke-width="1.5"/>
+  <text x="140" y="240" font-size="13" fill="#666" text-anchor="middle">equals() == false</text>
+
+  <rect x="380" y="210" width="160" height="50" rx="6" fill="white" stroke="#999" stroke-width="1.5"/>
+  <text x="460" y="240" font-size="13" fill="#666" text-anchor="middle">hashCode()</text>
+
+  <line x1="220" y1="235" x2="378" y2="235" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGray)"/>
+  <text x="300" y="225" font-size="11" fill="#666" text-anchor="middle">可能相等，也可能不等</text>
+
+  <!-- 顶部总结 -->
+  <text x="300" y="30" font-size="14" fill="#333" text-anchor="middle" font-weight="bold">equals 与 hashCode 的契约关系</text>
+
+  <!-- 底部关键规则 -->
+  <rect x="100" y="280" width="400" height="30" rx="4" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="300" y="300" font-size="11" fill="#333" text-anchor="middle">核心规则：覆写 equals 就必须同时覆写 hashCode，保证相等对象有相同哈希值</text>
+
+  <!-- 右侧冲突说明 -->
+  <text x="555" y="130" font-size="10" fill="#e74c3c">哈希冲突</text>
+  <text x="555" y="145" font-size="10" fill="#e74c3c">不可避免</text>
+
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#27ae60"/>
+    </marker>
+    <marker id="arrowRedLeft" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+      <polygon points="8,0 0,3 8,6" fill="#e74c3c"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0,0 8,3 0,6" fill="#999"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 680" style="max-width:600px;width:100%" font-family="sans-serif">
+  <defs>
+    <marker id="arw" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#333" stroke-width="1"/>
+    </marker>
+    <marker id="arwBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#3498db" stroke-width="1"/>
+    </marker>
+  </defs>
+
+  <!-- Step 1: put(key, value) -->
+  <rect x="160" y="10" width="200" height="40" fill="#fff" stroke="#333" stroke-width="2" rx="20"/>
+  <text x="260" y="35" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">put(key, value)</text>
+
+  <line x1="260" y1="50" x2="260" y2="75" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- Step 2: 计算 hash -->
+  <rect x="170" y="78" width="180" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="260" y="100" font-size="12" fill="#333" text-anchor="middle">计算 hash(key)</text>
+
+  <line x1="260" y1="114" x2="260" y2="139" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- Step 3: 定位桶 -->
+  <rect x="170" y="142" width="180" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="260" y="164" font-size="12" fill="#333" text-anchor="middle">index = hash & (n-1)</text>
+
+  <line x1="260" y1="178" x2="260" y2="203" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- Decision 1: 桶是否为空 -->
+  <polygon points="260,206 380,240 260,274 140,240" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="260" y="244" font-size="11" fill="#333" text-anchor="middle">桶为空？</text>
+
+  <!-- Yes - 直接插入 -->
+  <line x1="380" y1="240" x2="440" y2="240" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="400" y="232" font-size="10" fill="#666">是</text>
+  <rect x="443" y="222" width="70" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="478" y="244" font-size="11" fill="#3498db" text-anchor="middle">直接插入</text>
+
+  <!-- No - 遍历链表 -->
+  <line x1="260" y1="274" x2="260" y2="299" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="270" y="290" font-size="10" fill="#666">否</text>
+
+  <!-- Step: 遍历桶内节点 -->
+  <rect x="165" y="302" width="190" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="4"/>
+  <text x="260" y="324" font-size="12" fill="#333" text-anchor="middle">遍历桶内链表/树</text>
+
+  <line x1="260" y1="338" x2="260" y2="363" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- Decision 2: 找到相同 key？ -->
+  <polygon points="260,366 380,400 260,434 140,400" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="260" y="396" font-size="11" fill="#333" text-anchor="middle">找到相同</text>
+  <text x="260" y="410" font-size="11" fill="#333" text-anchor="middle">Key？</text>
+
+  <!-- Yes - 更新 value -->
+  <line x1="380" y1="400" x2="440" y2="400" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="400" y="392" font-size="10" fill="#666">是</text>
+  <rect x="443" y="382" width="70" height="36" fill="#fff" stroke="#e74c3c" stroke-width="1.5" rx="4"/>
+  <text x="478" y="404" font-size="11" fill="#e74c3c" text-anchor="middle">更新Value</text>
+
+  <!-- No - 尾插 -->
+  <line x1="260" y1="434" x2="260" y2="459" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="270" y="450" font-size="10" fill="#666">否</text>
+
+  <rect x="185" y="462" width="150" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="260" y="484" font-size="12" fill="#3498db" text-anchor="middle">尾部插入新节点</text>
+
+  <line x1="260" y1="498" x2="260" y2="523" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+
+  <!-- Decision 3: 是否树化 -->
+  <polygon points="260,526 390,560 260,594 130,560" fill="#fff" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="260" y="556" font-size="11" fill="#333" text-anchor="middle">链表长度</text>
+  <text x="260" y="570" font-size="11" fill="#333" text-anchor="middle">≥ 8？</text>
+
+  <!-- Yes - 树化 -->
+  <line x1="390" y1="560" x2="440" y2="560" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arwBlue)"/>
+  <text x="405" y="552" font-size="10" fill="#666">是</text>
+  <rect x="443" y="542" width="70" height="36" fill="#fff" stroke="#e74c3c" stroke-width="1.5" rx="4"/>
+  <text x="478" y="564" font-size="11" fill="#e74c3c" text-anchor="middle">转红黑树</text>
+
+  <!-- No - continue -->
+  <line x1="260" y1="594" x2="260" y2="619" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="270" y="610" font-size="10" fill="#666">否</text>
+
+  <!-- Decision 4: 是否扩容 -->
+  <polygon points="260,622 380,652 260,682 140,652" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="260" y="648" font-size="11" fill="#333" text-anchor="middle">size &gt;</text>
+  <text x="260" y="662" font-size="11" fill="#333" text-anchor="middle">阈值？</text>
+
+  <!-- Yes - 扩容 -->
+  <line x1="380" y1="652" x2="440" y2="652" stroke="#333" stroke-width="1.5" marker-end="url(#arw)"/>
+  <text x="400" y="644" font-size="10" fill="#666">是</text>
+  <rect x="443" y="634" width="70" height="36" fill="#fff" stroke="#e74c3c" stroke-width="1.5" rx="4"/>
+  <text x="478" y="656" font-size="11" fill="#e74c3c" text-anchor="middle">resize()</text>
+
+  <!-- No label -->
+  <text x="140" y="666" font-size="10" fill="#666">否 → 结束</text>
+
+  <!-- Side annotations -->
+  <text x="20" y="100" font-size="10" fill="#666">① 扰动函数</text>
+  <text x="20" y="115" font-size="10" fill="#666">减少冲突</text>
+
+  <text x="20" y="164" font-size="10" fill="#666">② 位运算替代</text>
+  <text x="20" y="179" font-size="10" fill="#666">取模（更快）</text>
+
+  <text x="20" y="560" font-size="10" fill="#666">③ 且容量≥64</text>
+  <text x="20" y="575" font-size="10" fill="#666">才会树化</text>
+
+  <text x="20" y="652" font-size="10" fill="#666">④ 阈值 =</text>
+  <text x="20" y="667" font-size="10" fill="#666">容量 × 0.75</text>
+</svg>

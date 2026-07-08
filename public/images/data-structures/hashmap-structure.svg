@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 420" style="max-width:600px;width:100%" font-family="sans-serif">
+  <!-- Array (table) -->
+  <text x="60" y="20" font-size="13" fill="#333" text-anchor="middle" font-weight="bold">数组(table)</text>
+  <g transform="translate(30, 30)">
+    <rect x="0" y="0" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="25" font-size="11" fill="#666" text-anchor="middle">0</text>
+    <rect x="0" y="40" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="65" font-size="11" fill="#666" text-anchor="middle">1</text>
+    <rect x="0" y="80" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="105" font-size="11" fill="#3498db" text-anchor="middle" font-weight="bold">2</text>
+    <rect x="0" y="120" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="145" font-size="11" fill="#666" text-anchor="middle">3</text>
+    <rect x="0" y="160" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="185" font-size="11" fill="#3498db" text-anchor="middle" font-weight="bold">4</text>
+    <rect x="0" y="200" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="225" font-size="11" fill="#e74c3c" text-anchor="middle" font-weight="bold">5</text>
+    <rect x="0" y="240" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="265" font-size="11" fill="#666" text-anchor="middle">6</text>
+    <rect x="0" y="280" width="60" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="30" y="305" font-size="11" fill="#3498db" text-anchor="middle" font-weight="bold">7</text>
+  </g>
+
+  <!-- Linked list from bucket 2 -->
+  <line x1="90" y1="140" x2="130" y2="140" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="130" y="122" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="170" y="144" font-size="10" fill="#333" text-anchor="middle">name:张三</text>
+  <line x1="210" y1="140" x2="240" y2="140" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="240" y="122" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="280" y="144" font-size="10" fill="#333" text-anchor="middle">age:25</text>
+
+  <!-- Label: 链表 -->
+  <text x="210" y="115" font-size="11" fill="#3498db" text-anchor="middle">链表</text>
+
+  <!-- Linked list from bucket 4 -->
+  <line x1="90" y1="220" x2="130" y2="220" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="130" y="202" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="170" y="224" font-size="10" fill="#333" text-anchor="middle">id:1001</text>
+  <line x1="210" y1="220" x2="240" y2="220" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="240" y="202" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="280" y="224" font-size="10" fill="#333" text-anchor="middle">id:1011</text>
+  <line x1="320" y1="220" x2="350" y2="220" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="350" y="202" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="390" y="224" font-size="10" fill="#333" text-anchor="middle">id:1021</text>
+
+  <!-- Linked list from bucket 7 -->
+  <line x1="90" y1="340" x2="130" y2="340" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="130" y="322" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="170" y="344" font-size="10" fill="#333" text-anchor="middle">key7:val</text>
+  <line x1="210" y1="340" x2="240" y2="340" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="240" y="322" width="80" height="36" fill="#fff" stroke="#3498db" stroke-width="1.5" rx="4"/>
+  <text x="280" y="344" font-size="10" fill="#333" text-anchor="middle">key17:val</text>
+
+  <!-- Red-black tree from bucket 5 -->
+  <line x1="90" y1="260" x2="130" y2="260" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+  <!-- Tree root -->
+  <circle cx="170" cy="260" r="16" fill="#fff" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="170" y="264" font-size="9" fill="#333" text-anchor="middle">k5</text>
+  <!-- Left child -->
+  <line x1="158" y1="273" x2="140" y2="295" stroke="#e74c3c" stroke-width="1.2"/>
+  <circle cx="135" cy="300" r="14" fill="#fff" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="135" y="304" font-size="9" fill="#333" text-anchor="middle">k2</text>
+  <!-- Right child -->
+  <line x1="182" y1="273" x2="200" y2="295" stroke="#e74c3c" stroke-width="1.2"/>
+  <circle cx="205" cy="300" r="14" fill="#fff" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="205" y="304" font-size="9" fill="#333" text-anchor="middle">k8</text>
+  <!-- Left-left -->
+  <line x1="125" y1="312" x2="112" y2="332" stroke="#e74c3c" stroke-width="1.2"/>
+  <circle cx="108" cy="338" r="12" fill="#fff" stroke="#e74c3c" stroke-width="1.2"/>
+  <text x="108" y="342" font-size="8" fill="#333" text-anchor="middle">k1</text>
+  <!-- Left-right -->
+  <line x1="145" y1="312" x2="155" y2="332" stroke="#e74c3c" stroke-width="1.2"/>
+  <circle cx="158" cy="338" r="12" fill="#fff" stroke="#e74c3c" stroke-width="1.2"/>
+  <text x="158" y="342" font-size="8" fill="#333" text-anchor="middle">k3</text>
+  <!-- Right-left -->
+  <line x1="195" y1="312" x2="185" y2="332" stroke="#e74c3c" stroke-width="1.2"/>
+  <circle cx="182" cy="338" r="12" fill="#fff" stroke="#e74c3c" stroke-width="1.2"/>
+  <text x="182" y="342" font-size="8" fill="#333" text-anchor="middle">k6</text>
+  <!-- Right-right -->
+  <line x1="215" y1="312" x2="228" y2="332" stroke="#e74c3c" stroke-width="1.2"/>
+  <circle cx="232" cy="338" r="12" fill="#fff" stroke="#e74c3c" stroke-width="1.2"/>
+  <text x="232" y="342" font-size="8" fill="#333" text-anchor="middle">k9</text>
+
+  <!-- Label: 红黑树 -->
+  <text x="170" y="380" font-size="11" fill="#e74c3c" text-anchor="middle">红黑树(链表长度≥8时转换)</text>
+
+  <!-- Null markers for empty buckets -->
+  <text x="105" y="55" font-size="10" fill="#999">null</text>
+  <text x="105" y="95" font-size="10" fill="#999">null</text>
+  <text x="105" y="175" font-size="10" fill="#999">null</text>
+  <text x="105" y="295" font-size="10" fill="#999">null</text>
+
+  <!-- Title -->
+  <text x="310" y="410" font-size="13" fill="#333" text-anchor="middle">HashMap 内部结构：数组 + 链表 + 红黑树</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#333" stroke-width="1"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="none" stroke="#e74c3c" stroke-width="1"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 200" style="max-width:600px;width:100%" font-family="sans-serif">
+  <!-- Title -->
+  <text x="300" y="24" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">顺序表（数组）内存结构</text>
+
+  <!-- Array cells with data -->
+  <g transform="translate(50, 45)">
+    <!-- Filled cells -->
+    <rect x="0" y="0" width="50" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="25" y="25" text-anchor="middle" font-size="13" fill="#333">10</text>
+
+    <rect x="50" y="0" width="50" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="75" y="25" text-anchor="middle" font-size="13" fill="#333">20</text>
+
+    <rect x="100" y="0" width="50" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="125" y="25" text-anchor="middle" font-size="13" fill="#333">30</text>
+
+    <rect x="150" y="0" width="50" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="175" y="25" text-anchor="middle" font-size="13" fill="#333">40</text>
+
+    <rect x="200" y="0" width="50" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="225" y="25" text-anchor="middle" font-size="13" fill="#333">50</text>
+
+    <rect x="250" y="0" width="50" height="40" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="275" y="25" text-anchor="middle" font-size="13" fill="#333">60</text>
+
+    <!-- Empty cells (dashed) -->
+    <rect x="300" y="0" width="50" height="40" fill="#fafafa" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" rx="2"/>
+    <rect x="350" y="0" width="50" height="40" fill="#fafafa" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" rx="2"/>
+    <rect x="400" y="0" width="50" height="40" fill="#fafafa" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" rx="2"/>
+    <rect x="450" y="0" width="50" height="40" fill="#fafafa" stroke="#999" stroke-width="1.5" stroke-dasharray="4,3" rx="2"/>
+
+    <!-- Index labels -->
+    <text x="25" y="58" text-anchor="middle" font-size="10" fill="#666">0</text>
+    <text x="75" y="58" text-anchor="middle" font-size="10" fill="#666">1</text>
+    <text x="125" y="58" text-anchor="middle" font-size="10" fill="#666">2</text>
+    <text x="175" y="58" text-anchor="middle" font-size="10" fill="#666">3</text>
+    <text x="225" y="58" text-anchor="middle" font-size="10" fill="#666">4</text>
+    <text x="275" y="58" text-anchor="middle" font-size="10" fill="#666">5</text>
+    <text x="325" y="58" text-anchor="middle" font-size="10" fill="#999">6</text>
+    <text x="375" y="58" text-anchor="middle" font-size="10" fill="#999">7</text>
+    <text x="425" y="58" text-anchor="middle" font-size="10" fill="#999">8</text>
+    <text x="475" y="58" text-anchor="middle" font-size="10" fill="#999">9</text>
+  </g>
+
+  <!-- Size and capacity annotations -->
+  <!-- size bracket -->
+  <line x1="50" y1="115" x2="350" y2="115" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="50" y1="110" x2="50" y2="120" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="350" y1="110" x2="350" y2="120" stroke="#3498db" stroke-width="1.5"/>
+  <text x="200" y="132" text-anchor="middle" font-size="12" fill="#3498db" font-weight="bold">size = 6</text>
+
+  <!-- capacity bracket -->
+  <line x1="50" y1="148" x2="550" y2="148" stroke="#e74c3c" stroke-width="1.5"/>
+  <line x1="50" y1="143" x2="50" y2="153" stroke="#e74c3c" stroke-width="1.5"/>
+  <line x1="550" y1="143" x2="550" y2="153" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="300" y="166" text-anchor="middle" font-size="12" fill="#e74c3c" font-weight="bold">capacity = 10</text>
+
+  <!-- Memory address annotation -->
+  <text x="300" y="192" text-anchor="middle" font-size="11" fill="#666">← 连续内存地址：0x100, 0x104, 0x108, 0x10C ... →</text>
+</svg>

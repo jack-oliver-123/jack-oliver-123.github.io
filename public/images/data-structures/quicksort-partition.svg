@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" style="max-width:600px;width:100%" font-family="sans-serif">
+  <!-- Title -->
+  <text x="260" y="20" text-anchor="middle" font-size="13" fill="#666">分区前</text>
+
+  <!-- Before partition array -->
+  <rect x="40" y="30" width="55" height="40" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="67" y="55" text-anchor="middle" font-size="14" fill="#333">3</text>
+
+  <rect x="95" y="30" width="55" height="40" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="122" y="55" text-anchor="middle" font-size="14" fill="#333">7</text>
+
+  <rect x="150" y="30" width="55" height="40" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="177" y="55" text-anchor="middle" font-size="14" fill="#333">2</text>
+
+  <rect x="205" y="30" width="55" height="40" fill="#ffe8e5" stroke="#e74c3c" stroke-width="2"/>
+  <text x="232" y="55" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">5</text>
+
+  <rect x="260" y="30" width="55" height="40" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="287" y="55" text-anchor="middle" font-size="14" fill="#333">1</text>
+
+  <rect x="315" y="30" width="55" height="40" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="342" y="55" text-anchor="middle" font-size="14" fill="#333">8</text>
+
+  <rect x="370" y="30" width="55" height="40" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="397" y="55" text-anchor="middle" font-size="14" fill="#333">4</text>
+
+  <rect x="425" y="30" width="55" height="40" fill="#fff" stroke="#333" stroke-width="1.5"/>
+  <text x="452" y="55" text-anchor="middle" font-size="14" fill="#333">6</text>
+
+  <!-- Pivot label -->
+  <text x="232" y="86" text-anchor="middle" font-size="11" fill="#e74c3c">pivot</text>
+
+  <!-- i and j pointers -->
+  <text x="67" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">i →</text>
+  <text x="452" y="100" text-anchor="middle" font-size="12" font-weight="bold" fill="#3498db">← j</text>
+
+  <!-- Divider -->
+  <line x1="40" y1="120" x2="480" y2="120" stroke="#ddd" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- After partition -->
+  <text x="260" y="140" text-anchor="middle" font-size="13" fill="#666">分区后</text>
+
+  <!-- After partition array -->
+  <rect x="40" y="150" width="55" height="40" fill="#eaf6ff" stroke="#3498db" stroke-width="1.5"/>
+  <text x="67" y="175" text-anchor="middle" font-size="14" fill="#333">3</text>
+
+  <rect x="95" y="150" width="55" height="40" fill="#eaf6ff" stroke="#3498db" stroke-width="1.5"/>
+  <text x="122" y="175" text-anchor="middle" font-size="14" fill="#333">1</text>
+
+  <rect x="150" y="150" width="55" height="40" fill="#eaf6ff" stroke="#3498db" stroke-width="1.5"/>
+  <text x="177" y="175" text-anchor="middle" font-size="14" fill="#333">2</text>
+
+  <rect x="205" y="150" width="55" height="40" fill="#eaf6ff" stroke="#3498db" stroke-width="1.5"/>
+  <text x="232" y="175" text-anchor="middle" font-size="14" fill="#333">4</text>
+
+  <rect x="260" y="150" width="55" height="40" fill="#ffe8e5" stroke="#e74c3c" stroke-width="2"/>
+  <text x="287" y="175" text-anchor="middle" font-size="14" font-weight="bold" fill="#e74c3c">5</text>
+
+  <rect x="315" y="150" width="55" height="40" fill="#fff8f0" stroke="#333" stroke-width="1.5"/>
+  <text x="342" y="175" text-anchor="middle" font-size="14" fill="#333">8</text>
+
+  <rect x="370" y="150" width="55" height="40" fill="#fff8f0" stroke="#333" stroke-width="1.5"/>
+  <text x="397" y="175" text-anchor="middle" font-size="14" fill="#333">7</text>
+
+  <rect x="425" y="150" width="55" height="40" fill="#fff8f0" stroke="#333" stroke-width="1.5"/>
+  <text x="452" y="175" text-anchor="middle" font-size="14" fill="#333">6</text>
+
+  <!-- Labels below -->
+  <text x="150" y="210" text-anchor="middle" font-size="11" fill="#3498db">< pivot</text>
+  <text x="287" y="210" text-anchor="middle" font-size="11" fill="#e74c3c">pivot</text>
+  <text x="397" y="210" text-anchor="middle" font-size="11" fill="#666">> pivot</text>
+
+  <!-- Bracket below left section -->
+  <line x1="40" y1="218" x2="260" y2="218" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="40" y1="215" x2="40" y2="221" stroke="#3498db" stroke-width="1.5"/>
+  <line x1="260" y1="215" x2="260" y2="221" stroke="#3498db" stroke-width="1.5"/>
+
+  <!-- Bracket below right section -->
+  <line x1="315" y1="218" x2="480" y2="218" stroke="#666" stroke-width="1.5"/>
+  <line x1="315" y1="215" x2="315" y2="221" stroke="#666" stroke-width="1.5"/>
+  <line x1="480" y1="215" x2="480" y2="221" stroke="#666" stroke-width="1.5"/>
+
+  <!-- Bottom annotation -->
+  <text x="260" y="248" text-anchor="middle" font-size="11" fill="#666">分区完成后对左右两部分递归排序</text>
+</svg>

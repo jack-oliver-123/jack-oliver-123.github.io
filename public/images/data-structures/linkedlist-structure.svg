@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 160" style="max-width:600px;width:100%" font-family="sans-serif">
+  <!-- Title -->
+  <text x="300" y="20" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">双向链表节点结构（LinkedList 底层）</text>
+
+  <!-- Node 1 -->
+  <g transform="translate(30, 50)">
+    <rect x="0" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="18" y="23" text-anchor="middle" font-size="10" fill="#999">∅</text>
+    <rect x="36" y="0" width="44" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="58" y="23" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">A</text>
+    <rect x="80" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <circle cx="98" cy="18" r="4" fill="#333"/>
+    <!-- Labels -->
+    <text x="18" y="50" text-anchor="middle" font-size="9" fill="#666">prev</text>
+    <text x="58" y="50" text-anchor="middle" font-size="9" fill="#666">data</text>
+    <text x="98" y="50" text-anchor="middle" font-size="9" fill="#666">next</text>
+  </g>
+
+  <!-- Arrow 1→2 -->
+  <line x1="148" y1="68" x2="172" y2="68" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Arrow 2→1 -->
+  <line x1="172" y1="74" x2="148" y2="74" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Node 2 -->
+  <g transform="translate(172, 50)">
+    <rect x="0" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <circle cx="18" cy="18" r="4" fill="#333"/>
+    <rect x="36" y="0" width="44" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="58" y="23" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">B</text>
+    <rect x="80" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <circle cx="98" cy="18" r="4" fill="#333"/>
+  </g>
+
+  <!-- Arrow 2→3 -->
+  <line x1="290" y1="68" x2="314" y2="68" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Arrow 3→2 -->
+  <line x1="314" y1="74" x2="290" y2="74" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Node 3 -->
+  <g transform="translate(314, 50)">
+    <rect x="0" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <circle cx="18" cy="18" r="4" fill="#333"/>
+    <rect x="36" y="0" width="44" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="58" y="23" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">C</text>
+    <rect x="80" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <circle cx="98" cy="18" r="4" fill="#333"/>
+  </g>
+
+  <!-- Arrow 3→4 -->
+  <line x1="432" y1="68" x2="456" y2="68" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+  <!-- Arrow 4→3 -->
+  <line x1="456" y1="74" x2="432" y2="74" stroke="#333" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Node 4 -->
+  <g transform="translate(456, 50)">
+    <rect x="0" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <circle cx="18" cy="18" r="4" fill="#333"/>
+    <rect x="36" y="0" width="44" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="58" y="23" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">D</text>
+    <rect x="80" y="0" width="36" height="36" fill="#fff" stroke="#333" stroke-width="1.5" rx="2"/>
+    <text x="98" y="23" text-anchor="middle" font-size="10" fill="#999">∅</text>
+  </g>
+
+  <!-- head / tail labels -->
+  <text x="88" y="118" text-anchor="middle" font-size="12" fill="#3498db" font-weight="bold">head</text>
+  <line x1="88" y1="108" x2="88" y2="92" stroke="#3498db" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrBlue)"/>
+
+  <text x="514" y="118" text-anchor="middle" font-size="12" fill="#e74c3c" font-weight="bold">tail</text>
+  <line x1="514" y1="108" x2="514" y2="92" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arrRed)"/>
+
+  <!-- null annotations -->
+  <text x="48" y="140" text-anchor="middle" font-size="10" fill="#999">head.prev = null</text>
+  <text x="554" y="140" text-anchor="middle" font-size="10" fill="#999">tail.next = null</text>
+
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#333"/>
+    </marker>
+    <marker id="arrBlue" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#3498db"/>
+    </marker>
+    <marker id="arrRed" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <polygon points="0 0, 7 2.5, 0 5" fill="#e74c3c"/>
+    </marker>
+  </defs>
+</svg>

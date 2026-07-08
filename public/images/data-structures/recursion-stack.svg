@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" style="max-width:600px;width:100%;height:auto;font-family:sans-serif">
+  <!-- 标题 -->
+  <text x="300" y="28" font-size="14" fill="#333" text-anchor="middle" font-weight="bold">factorial(4) 递归调用栈</text>
+
+  <!-- 栈帧 - 从下到上 -->
+  <!-- factorial(4) - 底部 -->
+  <rect x="180" y="300" width="200" height="50" rx="4" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="280" y="330" font-size="13" fill="#333" text-anchor="middle">factorial(4)</text>
+
+  <!-- factorial(3) -->
+  <rect x="180" y="240" width="200" height="50" rx="4" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="280" y="270" font-size="13" fill="#333" text-anchor="middle">factorial(3)</text>
+
+  <!-- factorial(2) -->
+  <rect x="180" y="180" width="200" height="50" rx="4" fill="white" stroke="#333" stroke-width="1.5"/>
+  <text x="280" y="210" font-size="13" fill="#333" text-anchor="middle">factorial(2)</text>
+
+  <!-- factorial(1) - 顶部 -->
+  <rect x="180" y="120" width="200" height="50" rx="4" fill="white" stroke="#3498db" stroke-width="2"/>
+  <text x="280" y="150" font-size="13" fill="#3498db" text-anchor="middle" font-weight="bold">factorial(1) → 返回 1</text>
+
+  <!-- 调用箭头 -->
+  <path d="M280,300 L280,292" stroke="#666" stroke-width="1.2" marker-end="url(#arrowUp)"/>
+  <path d="M280,240 L280,232" stroke="#666" stroke-width="1.2" marker-end="url(#arrowUp)"/>
+  <path d="M280,180 L280,172" stroke="#666" stroke-width="1.2" marker-end="url(#arrowUp)"/>
+
+  <!-- 箭头定义 -->
+  <defs>
+    <marker id="arrowUp" markerWidth="8" markerHeight="6" refX="4" refY="6" orient="auto">
+      <polygon points="0,6 4,0 8,6" fill="#666"/>
+    </marker>
+  </defs>
+
+  <!-- 左侧大括号区域 -->
+  <path d="M165,125 C155,125 155,130 155,140 L155,260 C155,270 155,275 150,275 C155,275 155,280 155,290 L155,340 C155,350 155,355 165,355" fill="none" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="130" y="240" font-size="11" fill="#e74c3c" text-anchor="middle" transform="rotate(-90,130,240)">调用栈深度 = 4</text>
+
+  <!-- 右侧标注 -->
+  <text x="400" y="155" font-size="11" fill="#666">← 栈顶（最后调用）</text>
+  <text x="400" y="330" font-size="11" fill="#666">← 栈底（最先调用）</text>
+
+  <!-- 底部说明 -->
+  <text x="300" y="385" font-size="12" fill="#666" text-anchor="middle">每次递归调用占用一个栈帧，空间复杂度 = </text>
+  <text x="458" y="385" font-size="12" fill="#e74c3c" font-weight="bold">O(n)</text>
+
+  <!-- 右侧补充 -->
+  <rect x="420" y="220" width="140" height="60" rx="4" fill="#f9f9f9" stroke="#ddd" stroke-width="1"/>
+  <text x="490" y="240" font-size="11" fill="#333" text-anchor="middle">递归深度 = N</text>
+  <text x="490" y="258" font-size="11" fill="#333" text-anchor="middle">每帧占固定空间</text>
+  <text x="490" y="276" font-size="11" fill="#333" text-anchor="middle">总空间 ∝ N</text>
+</svg>

@@ -9,29 +9,39 @@ draft: false
 
 本系列围绕 **社招 3-5 年 Java 开发**岗位，梳理 Java 基础高频面试题。每篇按 A / B / C 三级热度划分，配合追问连环套和记忆锚点，帮助你建立可复述的知识体系。
 
-```mermaid
-mindmap
-  root((Java基础面试题))
-    语法与数据类型
-      == vs equals
-      基本类型与包装类
-      String 家族
-    面向对象
-      封装继承多态
-      抽象类vs接口
-      深拷贝浅拷贝
-    异常与内存
-      异常体系
-      JVM内存区域
-      GC算法
-    IO与并发
-      BIO/NIO/AIO
-      volatile
-      synchronized
-    设计模式与新特性
-      单例模式
-      Java8 Stream
-      CompletableFuture
+```markmap
+---
+markmap:
+  colorFreezeLevel: 2
+  maxWidth: 300
+---
+
+# Java基础面试题
+
+## 语法与数据类型
+- == vs equals
+- 基本类型与包装类
+- String 家族
+
+## 面向对象
+- 封装继承多态
+- 抽象类vs接口
+- 深拷贝浅拷贝
+
+## 异常与内存
+- 异常体系
+- JVM内存区域
+- GC算法
+
+## IO与并发
+- BIO/NIO/AIO
+- volatile
+- synchronized
+
+## 设计模式与新特性
+- 单例模式
+- Java8 Stream
+- CompletableFuture
 ```
 
 ---

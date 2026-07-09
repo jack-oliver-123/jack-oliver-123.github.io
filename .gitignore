@@ -6,7 +6,8 @@ dist/
 .astro/
 
 # obsidian相关的设置
-\src\content\blog\.obsidian
+src/content/blog/.obsidian/
+.obsidian/
 
 # 日志
 npm-debug.log*

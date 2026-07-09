@@ -1,7 +1,8 @@
 ---
 import type { MarkdownHeading } from 'astro';
 import type { BlogPost } from '@/lib/posts';
-import { getAdjacentPosts, getAllPosts, getPostUrl } from '@/lib/posts';
+import { getAdjacentPosts, getAllPosts, getPostUrl, getRelatedPosts } from '@/lib/posts';
+import { SITE } from '@/lib/site';
 import ArticleMeta from '@/components/ArticleMeta.astro';
 import CodeBlockCopy from '@/components/CodeBlockCopy.astro';
 import MarkmapRender from '@/components/MarkmapRender.astro';
@@ -19,9 +20,25 @@ const posts = await getAllPosts();
 const tocHeadings = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
 const hasToc = tocHeadings.length > 0;
 const { previous, next } = getAdjacentPosts(posts, post.id);
+const relatedPosts = getRelatedPosts(posts, post);
+
+const jsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  ...(post.data.updatedDate && { dateModified: post.data.updatedDate.toISOString() }),
+  author: { '@type': 'Person', name: SITE.author },
+  publisher: { '@type': 'Person', name: SITE.author },
+  url: new URL(getPostUrl(post), SITE.url).toString(),
+  inLanguage: SITE.language,
+  keywords: post.data.tags,
+});
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description} bodyClass="post-page">
+  <script type="application/ld+json" set:html={jsonLd} />
   <article class="post-layout">
     <a class="back-link" href="/blog/">← 返回全部文章</a>
 
@@ -46,6 +63,19 @@ const { previous, next } = getAdjacentPosts(posts, post.id);
         <CodeBlockCopy />
         <MermaidRender />
         <MarkmapRender />
+
+        {relatedPosts.length > 0 && (
+          <aside class="related-posts" aria-label="相关文章">
+            <h2 class="related-posts__title">相关文章</h2>
+            <ul class="related-posts__list">
+              {relatedPosts.map((related) => (
+                <li>
+                  <a href={getPostUrl(related)}>{related.data.title}</a>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        )}
 
         <nav class="post-neighbors" aria-label="相邻文章">
           {previous ? <a href={getPostUrl(previous)}><span>上一篇</span>{previous.data.title}</a> : <span></span>}

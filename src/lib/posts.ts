@@ -134,3 +134,23 @@ export function getAdjacentPosts(posts: BlogPost[], currentId: string) {
     next: index > 0 ? posts[index - 1] : undefined,
   };
 }
+
+/** 基于标签交集和同系列推荐相关文章 */
+export function getRelatedPosts(posts: BlogPost[], current: BlogPost, limit = 4) {
+  const currentTags = new Set(current.data.tags);
+  const currentSeries = current.id.includes('/') ? current.id.split('/')[0] : null;
+
+  return posts
+    .filter((post) => post.id !== current.id)
+    .map((post) => {
+      const commonTags = post.data.tags.filter((tag) => currentTags.has(tag)).length;
+      const postSeries = post.id.includes('/') ? post.id.split('/')[0] : null;
+      const sameSeries = currentSeries && postSeries === currentSeries ? 1 : 0;
+      const score = commonTags * 2 + sameSeries * 3;
+      return { post, score };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map(({ post }) => post);
+}

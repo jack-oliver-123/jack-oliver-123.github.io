@@ -42,19 +42,63 @@ const pathname = Astro.url.pathname;
   const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
   const nav = document.querySelector<HTMLElement>('[data-site-nav]');
 
+  function closeNav() {
+    if (!toggle || !nav) return;
+    toggle.setAttribute('aria-expanded', 'false');
+    nav.classList.remove('site-nav--open');
+    document.body.classList.remove('nav-open');
+    toggle.focus();
+  }
+
+  function openNav() {
+    if (!toggle || !nav) return;
+    toggle.setAttribute('aria-expanded', 'true');
+    nav.classList.add('site-nav--open');
+    document.body.classList.add('nav-open');
+    // 聚焦到导航内第一个链接
+    const firstLink = nav.querySelector<HTMLElement>('a, button');
+    firstLink?.focus();
+  }
+
   if (toggle && nav) {
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      nav.classList.toggle('site-nav--open');
-      document.body.classList.toggle('nav-open');
+      if (expanded) {
+        closeNav();
+      } else {
+        openNav();
+      }
+    });
+
+    // Escape 关闭导航
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('site-nav--open')) {
+        closeNav();
+      }
+    });
+
+    // 焦点陷阱：Tab 在导航内循环
+    nav.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || !nav.classList.contains('site-nav--open')) return;
+
+      const focusable = nav.querySelectorAll<HTMLElement>('a, button, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     });
 
     nav.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('a')) {
-        toggle.setAttribute('aria-expanded', 'false');
-        nav.classList.remove('site-nav--open');
-        document.body.classList.remove('nav-open');
+        closeNav();
       }
     });
   }

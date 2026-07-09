@@ -32,8 +32,10 @@
     });
 
     try {
-      const { Transformer } = await import('markmap-lib');
-      const { Markmap } = await import('markmap-view');
+      const [{ Transformer }, { Markmap }] = await Promise.all([
+        import('https://cdn.jsdelivr.net/npm/markmap-lib@0.18/+esm') as any,
+        import('https://cdn.jsdelivr.net/npm/markmap-view@0.18/+esm') as any,
+      ]);
       const transformer = new Transformer();
 
       for (const { container, svg, src } of blocks) {

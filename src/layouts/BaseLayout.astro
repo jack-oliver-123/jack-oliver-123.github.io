@@ -22,6 +22,7 @@ const { title, description, canonical, bodyClass = '' } = Astro.props;
     <Head title={title} description={description} canonical={canonical} />
   </head>
   <body class={bodyClass}>
+    <a class="skip-link" href="#main-content">跳转到正文</a>
     <div class="page-shell">
       <Header />
       <main id="main-content">

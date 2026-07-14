@@ -1,0 +1,312 @@
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: structural-breakdown
+- **Style**: technical-schematic
+- **Aspect Ratio**: 16:9
+- **Language**: zh
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+
+## Layout Guidelines
+
+# structural-breakdown
+
+Internal structure visualization with labeled parts or layers.
+
+## Structure
+
+- Central subject (object, system, body)
+- Parts or layers clearly shown
+- Labels with callout lines
+- Exploded or cutaway view
+- Optional zoomed detail sections
+
+## Variants
+
+| Variant | View Type | Visual Emphasis |
+|---------|-----------|-----------------|
+| **Exploded** | Parts separated outward | Component relationships |
+| **Cross-section** | Sliced/cutaway view | Internal layers, composition |
+
+## Best For
+
+- Product part breakdowns
+- Anatomy explanations
+- System components
+- Device teardowns
+- Material composition
+
+## Visual Elements
+
+- Main subject clearly rendered
+- Callout lines with dots/arrows
+- Label boxes at endpoints
+- Numbered parts optionally
+- Layer boundaries or separation
+
+## Text Placement
+
+- Title at top
+- Part/layer labels at callouts
+- Brief descriptions in boxes
+- Legend for numbered systems
+- Depth/thickness if relevant
+
+## Recommended Pairings
+
+- `technical-schematic`: Technical schematics
+- `aged-academia`: Classic anatomical style
+- `craft-handmade`: Friendly breakdowns
+
+
+## Style Guidelines
+
+# technical-schematic
+
+Technical diagrams with engineering precision and clean geometry.
+
+## Color Palette
+
+- Primary: Blues (#2563EB), teals, grays, white lines
+- Background: Deep blue (#1E3A5F), white, or light gray with grid
+- Accents: Amber highlights (#F59E0B), cyan callouts
+
+## Variants
+
+| Variant | Focus | Visual Emphasis |
+|---------|-------|-----------------|
+| **Blueprint** | Engineering schematics | White on blue, measurements, grid |
+| **Isometric** | 3D spatial representation | 30° angle blocks, clean fills |
+
+## Visual Elements
+
+- Geometric precision throughout
+- Grid pattern or isometric angle
+- Dimension lines and measurements
+- Technical symbols and annotations
+- Clean vector shapes
+- Consistent stroke weights
+
+## Typography
+
+- Technical stencil or clean sans-serif
+- All-caps labels
+- Measurement annotations
+- Floating labels for isometric
+
+## Best For
+
+Technical architecture, system diagrams, engineering specs, product breakdowns, data visualization
+
+
+---
+
+Generate the infographic based on the content below:
+
+# 2. 讲讲 Transformer 架构基本原理？Encoder 和 Decoder 是什么？
+
+## Overview
+
+解释 Transformer 的注意力、前馈网络、残差和归一化，并比较 Encoder、Decoder 与 Encoder-Decoder
+
+## Learning Objectives
+
+The viewer will understand:
+
+1. 说明“讲讲 Transformer 架构基本原理？Encoder 和 Decoder 是什么？”的组成部分及其关系
+2. 说明关键工程边界、失败模式与验证方法
+
+---
+
+## Source Content (Verbatim)
+
+## 60 秒回答
+
+Transformer 用注意力在序列位置之间交换信息，再用逐位置前馈网络变换表示。每层还包含残差连接和归一化。Encoder 能双向读取输入，适合理解和表征；Decoder 使用因果掩码，只读取当前位置之前的 Token，适合自回归生成；Encoder-Decoder 先编码输入，再由 Decoder 通过交叉注意力生成输出，常用于翻译等条件生成任务。
+
+现代 LLM 多采用 Decoder-only，但具体实现会调整归一化位置、激活函数、位置编码和注意力结构。因此，Transformer 是一个架构族，不是一套固定不变的层定义。
+
+## 详细解析
+
+给定隐藏状态 $X$，单个注意力头先做线性投影：
+
+$
+Q=XW_Q,\quad K=XW_K,\quad V=XW_V
+$
+
+然后计算缩放点积注意力：
+
+$
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}+M\right)V
+$
+
+$M$ 是掩码。Encoder 通常允许所有有效位置互相注意；Decoder 的因果掩码会屏蔽未来位置。多头注意力并行学习不同投影，再拼接回模型维度。
+
+注意力之后是前馈网络（Feed-Forward Network，FFN）。原始 Transformer 使用两层线性变换和 ReLU，许多 LLM 改用 SwiGLU 等门控 FFN。残差连接保留输入路径，LayerNorm 或 RMSNorm 控制数值尺度。Pre-Norm 把归一化放在子层前，深层训练通常更稳定；Post-Norm 是原始论文结构，两者不能仅凭名称判断效果。
+
+三种主干结构的差异如下：
+
+| 结构 | 可见上下文 | 典型训练目标 | 常见用途 |
+|---|---|---|---|
+| Encoder-only | 双向输入 | 掩码建模、判别目标 | 表征、分类、检索 |
+| Decoder-only | 因果前缀 | 下一个 Token 预测 | 对话、代码、通用生成 |
+| Encoder-Decoder | 编码端双向，解码端因果 | 条件生成 | 翻译、摘要、文本转换 |
+
+## 工程实践与边界
+
+标准全注意力对长度 $n$ 的注意力矩阵计算和内存复杂度为 $O(n^2)$。FlashAttention、稀疏注意力和分块策略可改变实际内存访问或计算范围，但不能把所有实现都概括为线性复杂度。
+
+自回归服务通常缓存历史 Key 和 Value，避免每次生成都重算前缀。Encoder 场景则更适合批处理。部署前应结合输入长度、输出长度、批大小和硬件测量吞吐，而不是仅按“Decoder-only 更先进”选型。
+
+## 常见误区
+
+- **把注意力当作解释**：注意力权重是模型计算的一部分，不等同于可靠的人类可解释性
+- **忽略 FFN**：FFN 占据大量参数和计算，Transformer 不只有注意力
+- **认为 Encoder 不能生成**：它可参与 Encoder-Decoder 生成，只是不按 Decoder 的因果方式独立续写
+- **认为所有 LLM 层完全相同**：归一化、门控、位置编码和 KV 头设计存在显著差异
+
+## 面试追问
+
+**问：Decoder 训练时为什么能并行，生成时却逐 Token？**
+
+**答：** 训练时整段目标已知，因果掩码允许并行计算所有位置的损失；生成时下一个 Token 依赖刚生成的结果，因此存在顺序依赖。
+
+**问：残差连接解决什么问题？**
+
+**答：** 它为信号和梯度提供恒等路径，减轻深层优化难度。它不能单独消除数值不稳定，仍需配合初始化、归一化和优化器设置。
+
+---
+
+## On-Image Content Plan
+
+Asset focus: primary
+
+### Visual Section 1: 60 秒回答
+
+**Key Concept**: 60 秒回答
+
+**Content**:
+
+Transformer 用注意力在序列位置之间交换信息，再用逐位置前馈网络变换表示。每层还包含残差连接和归一化。Encoder 能双向读取输入，适合理解和表征；Decoder 使用因果掩码，只读取当前位置之前的 Token，适合自回归生成；Encoder-Decoder 先编码输入，再由 Decoder 通过交叉注意力生成输出，常用于翻译等条件生成任务。
+
+现代 LLM 多采用 Decoder-only，但具体实现会调整归一化位置、激活函数、位置编码和注意力结构。因此，Transformer 是一个架构族，不是一套固定不变的层定义。
+
+**Visual Element**: Type: labeled system component; Subject: 原文组件与关系；Treatment: 中心结构配合标注线
+
+**Text Labels**:
+
+- Headline: "60 秒回答"
+
+---
+
+### Visual Section 2: 详细解析
+
+**Key Concept**: 详细解析
+
+**Content**:
+
+给定隐藏状态 $X$，单个注意力头先做线性投影：
+
+$
+Q=XW_Q,\quad K=XW_K,\quad V=XW_V
+$
+
+然后计算缩放点积注意力：
+
+$
+\operatorname{Attention}(Q,K,V)=\operatorname{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}+M\right)V
+$
+
+**Visual Element**: Type: labeled system component; Subject: 原文组件与关系；Treatment: 中心结构配合标注线
+
+**Text Labels**:
+
+- Headline: "详细解析"
+
+---
+
+### Visual Section 3: 工程实践与边界
+
+**Key Concept**: 工程实践与边界
+
+**Content**:
+
+标准全注意力对长度 $n$ 的注意力矩阵计算和内存复杂度为 $O(n^2)$。FlashAttention、稀疏注意力和分块策略可改变实际内存访问或计算范围，但不能把所有实现都概括为线性复杂度。
+
+自回归服务通常缓存历史 Key 和 Value，避免每次生成都重算前缀。Encoder 场景则更适合批处理。部署前应结合输入长度、输出长度、批大小和硬件测量吞吐，而不是仅按“Decoder-only 更先进”选型。
+
+**Visual Element**: Type: labeled system component; Subject: 原文组件与关系；Treatment: 中心结构配合标注线
+
+**Text Labels**:
+
+- Headline: "工程实践与边界"
+
+---
+
+### Visual Section 4: 常见误区
+
+**Key Concept**: 常见误区
+
+**Content**:
+
+- **把注意力当作解释**：注意力权重是模型计算的一部分，不等同于可靠的人类可解释性
+- **忽略 FFN**：FFN 占据大量参数和计算，Transformer 不只有注意力
+- **认为 Encoder 不能生成**：它可参与 Encoder-Decoder 生成，只是不按 Decoder 的因果方式独立续写
+- **认为所有 LLM 层完全相同**：归一化、门控、位置编码和 KV 头设计存在显著差异
+
+**Visual Element**: Type: labeled system component; Subject: 原文组件与关系；Treatment: 中心结构配合标注线
+
+**Text Labels**:
+
+- Headline: "常见误区"
+
+---
+
+## Data Points (Verbatim)
+
+- 标准全注意力对长度 $n$ 的注意力矩阵计算和内存复杂度为 $O(n^2)$。FlashAttention、稀疏注意力和分块策略可改变实际内存访问或计算范围，但不能把所有实现都概括为线性复杂度。
+
+---
+
+## Design Instructions
+
+### Style Preferences
+
+- 使用 manifest 中已确认的版式与风格
+- 保持简体中文清晰可读，技术名词按原文拼写
+
+### Layout Preferences
+
+- 横版 16:9
+- 标题突出，主要信息区不超过 4 个
+
+### Other Requirements
+
+- 仅使用上面的原文内容，不添加事实、示例、数值或来源
+- 不生成品牌标志、水印、页脚引用或装饰性长文
+
+
+Text labels (in zh):
+- 2. 讲讲 Transformer 架构基本原理？Encoder 和 Decoder 是什么？
+- 60 秒回答
+- 详细解析
+- 工程实践与边界
+- 常见误区

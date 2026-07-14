@@ -1,0 +1,319 @@
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: linear-progression
+- **Style**: hand-drawn-edu
+- **Aspect Ratio**: 16:9
+- **Language**: zh
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+
+## Layout Guidelines
+
+# linear-progression
+
+Sequential progression showing steps, timeline, or chronological events.
+
+## Structure
+
+- Linear arrangement (horizontal or vertical)
+- Nodes/markers at key points
+- Connecting line or path between nodes
+- Clear start and end points
+- Directional flow indicators
+
+## Variants
+
+| Variant | Focus | Visual Emphasis |
+|---------|-------|-----------------|
+| **Timeline** | Chronological events, dates | Time markers, period labels |
+| **Process** | Action steps, numbered sequence | Step numbers, action icons |
+
+## Best For
+
+- Step-by-step tutorials and how-tos
+- Historical timelines and evolution
+- Project milestones and roadmaps
+- Workflow documentation
+- Onboarding processes
+
+## Visual Elements
+
+- Numbered steps or date markers
+- Arrows or connectors showing direction
+- Icons representing each step/event
+- Consistent node spacing
+- Progress indicators optional
+
+## Text Placement
+
+- Title at top
+- Step/event titles at each node
+- Brief descriptions below nodes
+- Dates or numbers clearly visible
+
+## Recommended Pairings
+
+- `craft-handmade`: Friendly tutorials and timelines
+- `ikea-manual`: Clean assembly instructions
+- `corporate-memphis`: Business process flows
+- `aged-academia`: Historical discoveries
+
+
+## Style Guidelines
+
+# hand-drawn-edu
+
+Hand-drawn educational infographic with macaron pastel color blocks on warm cream paper texture.
+
+## Color Palette
+
+- Background: Warm cream (#F5F0E8) with subtle paper grain texture
+- Primary text: Deep charcoal (#2D2D2D) for headlines, outlines
+- Macaron Blue: #A8D8EA for cool-toned information zones
+- Macaron Mint: #B5E5CF for growth/positive zones
+- Macaron Lavender: #D5C6E0 for abstract/concept zones
+- Macaron Peach: #FFD5C2 for warm-toned zones
+- Accent: Coral Red (#E8655A) for key data, warnings, emphasis
+- Muted annotations: Warm gray (#6B6B6B) for secondary labels
+
+## Visual Elements
+
+- Macaron pastel rounded cards as distinct information zones
+- Hand-drawn wavy connection lines and arrows with small text labels
+- Simple stick-figure characters and cartoon icons to humanize concepts
+- Doodle decorations: small stars, underlines, spirals, sparkles
+- Color fills don't completely fill outlines — preserve casual hand-drawn feel
+- Dashed borders for secondary or contained zones
+- Small icon doodles (clipboard, lock, checkmark, lightbulb) to reinforce concepts
+- Bold centered quote or takeaway at the bottom
+- Slight hand-drawn wobble on all lines and shapes
+
+## Variants
+
+| Variant | Focus | Visual Emphasis |
+|---------|-------|-----------------|
+| **Sketch-notes** | Concept mapping | More stick figures, thought bubbles, connecting arrows |
+| **Pastel cards** | Structured info | Cleaner macaron blocks, less doodle, more white space |
+
+## Typography
+
+- Main title: Bold hand-drawn lettering with organic strokes, large confident letterforms with slight wobble
+- Section headers: Hand-lettered text on or inside macaron color blocks
+- Body text: Clear handwritten print style, legible but not mechanical
+- Annotations: Warm gray (#6B6B6B), smaller, neat handwritten labels
+- Keywords: Bold emphasis within body text
+
+## Style Enforcement
+
+- All lines must have slight hand-drawn wobble — no perfect geometry
+- Each information zone uses a distinct macaron color block
+- Maintain consistent wobble quality across all shapes and lines
+- Include at least one simple cartoon character or stick figure
+- Generous white space between zones — each zone should breathe
+- Maximum 4 macaron colors per infographic
+
+## Avoid
+
+- Perfect geometric shapes or straight lines
+- Photorealistic elements or stock illustration style
+- Pure white backgrounds
+- Flat vector icons or digital-precision graphics
+- Overcrowded layouts — let zones breathe
+- Corporate or clinical aesthetic
+
+## Best For
+
+Educational diagrams, process explainers, concept maps, knowledge summaries, tutorial walkthroughs, onboarding visuals
+
+
+---
+
+Generate the infographic based on the content below:
+
+# 12. 如何润色用户的 Query（Query Rewrite）？目的是什么？
+
+## Overview
+
+介绍 Query Rewrite 的目标和实现方式，梳理指代消解、问题扩写、查询改写与检索效果提升之间的关系
+
+## Learning Objectives
+
+The viewer will understand:
+
+1. 复述“如何润色用户的 Query（Query Rewrite）？目的是什么？”的关键流程与控制点
+2. 说明关键工程边界、失败模式与验证方法
+
+---
+
+## Source Content (Verbatim)
+
+## 60 秒回答
+
+Query Rewrite 不是让问题“更好看”，而是把用户表达转换成更适合目标检索器的查询，同时保持原意。常见目标包括指代消解、拼写与实体规范化、补充必要上下文、拆分复合问题、为不同数据源生成查询，以及多查询扩展。
+
+我会保留原查询作为基线或并行召回路，并约束改写器不得臆造实体与条件。上线前按查询类型比较原查询和改写后的 Recall@K、无答案误召、延迟与成本；失败时回退原查询。HyDE、Step-back 和多查询扩展都是可选策略，不应默认对所有请求启用。
+
+## 详细解析
+
+### 规则与模型改写
+
+日期、产品编号和术语可用确定性规则规范化；会话指代和自然语言歧义可由模型处理。改写输出最好是结构化对象，包含独立问题、实体、时间范围、过滤条件与置信信息，并将用户原始约束原样保留。
+
+### 查询扩展与分解
+
+多查询扩展从不同措辞召回候选，适合表达多样的语义问题，但会增加噪声。问题分解适合多跳问题，每个子问题独立检索，再按依赖关系合并。Step-back 生成更抽象的问题以查找背景原则；它可能丢失具体限定，因此应与原查询并行。
+
+HyDE 先生成假想答案或文档，再对其做向量检索。它的价值来自更接近文档分布的表示，不代表假想内容是真实证据；最终回答仍只能依据实际召回文档。
+
+## 工程实践与边界
+
+- 在 Prompt 中把会话历史和检索语料明确分隔，减少文档指令影响改写器。
+- 对实体、日期和否定条件做前后校验，检测语义漂移。
+- 限制生成查询数量、长度和并发，并对重复查询去重。
+- 记录原查询、改写和各自候选，才能定位收益或回归。
+
+## 常见误区
+
+- **“改写越详细越好”**：模型补出的细节可能缩窄召回或改变用户意图。
+- **“聊天历史全部拼入查询”**：会引入无关信息和越权上下文。
+- **“HyDE 生成的文档可以直接作证据”**：它只是检索中间表示。
+- **“Recall 提升就代表端到端提升”**：噪声、延迟和上下文竞争也会增加。
+
+## 面试追问
+
+1. **如何检测语义漂移？** 比较实体、时间、否定词和约束，抽样人工审核，并保留原查询召回作为保护路。
+2. **何时使用问题分解？** 问题包含多个实体关系、步骤或必须先得到中间答案时；简单事实不值得增加链路。
+3. **改写器被注入怎么办？** 将用户输入视为数据，使用最小权限、结构化输出和长度限制，不允许它直接决定 ACL。
+
+---
+
+## On-Image Content Plan
+
+Asset focus: primary
+
+### Visual Section 1: 60 秒回答
+
+**Key Concept**: 60 秒回答
+
+**Content**:
+
+Query Rewrite 不是让问题“更好看”，而是把用户表达转换成更适合目标检索器的查询，同时保持原意。常见目标包括指代消解、拼写与实体规范化、补充必要上下文、拆分复合问题、为不同数据源生成查询，以及多查询扩展。
+
+我会保留原查询作为基线或并行召回路，并约束改写器不得臆造实体与条件。上线前按查询类型比较原查询和改写后的 Recall@K、无答案误召、延迟与成本；失败时回退原查询。HyDE、Step-back 和多查询扩展都是可选策略，不应默认对所有请求启用。
+
+**Visual Element**: Type: numbered process node; Subject: 60 秒回答；Treatment: 从左到右连接并标明第 1 阶段
+
+**Text Labels**:
+
+- Headline: "60 秒回答"
+
+---
+
+### Visual Section 2: 详细解析
+
+**Key Concept**: 详细解析
+
+**Content**:
+
+### 规则与模型改写
+日期、产品编号和术语可用确定性规则规范化；
+
+### 查询扩展与分解
+多查询扩展从不同措辞召回候选，适合表达多样的语义问题，但会增加噪声。
+
+HyDE 先生成假想答案或文档，再对其做向量检索。它的价值来自更接近文档分布的表示，不代表假想内容是真实证据；最终回答仍只能依据实际召回文档。
+
+**Visual Element**: Type: numbered process node; Subject: 详细解析；Treatment: 从左到右连接并标明第 2 阶段
+
+**Text Labels**:
+
+- Headline: "详细解析"
+
+---
+
+### Visual Section 3: 工程实践与边界
+
+**Key Concept**: 工程实践与边界
+
+**Content**:
+
+- 在 Prompt 中把会话历史和检索语料明确分隔，减少文档指令影响改写器。
+- 对实体、日期和否定条件做前后校验，检测语义漂移。
+- 限制生成查询数量、长度和并发，并对重复查询去重。
+- 记录原查询、改写和各自候选，才能定位收益或回归。
+
+**Visual Element**: Type: numbered process node; Subject: 工程实践与边界；Treatment: 从左到右连接并标明第 3 阶段
+
+**Text Labels**:
+
+- Headline: "工程实践与边界"
+
+---
+
+### Visual Section 4: 常见误区
+
+**Key Concept**: 常见误区
+
+**Content**:
+
+- **“改写越详细越好”**：模型补出的细节可能缩窄召回或改变用户意图。
+- **“聊天历史全部拼入查询”**：会引入无关信息和越权上下文。
+- **“HyDE 生成的文档可以直接作证据”**：它只是检索中间表示。
+- **“Recall 提升就代表端到端提升”**：噪声、延迟和上下文竞争也会增加。
+
+**Visual Element**: Type: numbered process node; Subject: 常见误区；Treatment: 从左到右连接并标明第 4 阶段
+
+**Text Labels**:
+
+- Headline: "常见误区"
+
+---
+
+## Data Points (Verbatim)
+
+- 本图不使用额外定量数据。
+
+---
+
+## Design Instructions
+
+### Style Preferences
+
+- 使用 manifest 中已确认的版式与风格
+- 保持简体中文清晰可读，技术名词按原文拼写
+
+### Layout Preferences
+
+- 横版 16:9
+- 标题突出，主要信息区不超过 4 个
+
+### Other Requirements
+
+- 仅使用上面的原文内容，不添加事实、示例、数值或来源
+- 不生成品牌标志、水印、页脚引用或装饰性长文
+
+
+Text labels (in zh):
+- 12. 如何润色用户的 Query（Query Rewrite）？目的是什么？
+- 60 秒回答
+- 详细解析
+- 工程实践与边界
+- 常见误区

@@ -1,0 +1,99 @@
+---
+title: "8. 什么是向量数据库？有没有做过向量数据库的对比选型？"
+topic: "RAG engineering"
+data_type: "comparison"
+complexity: "moderate"
+point_count: 4
+source_language: "zh"
+user_language: "zh"
+---
+
+## Main Topic
+
+系统介绍向量数据库的核心能力，梳理向量索引、相似度检索、过滤查询和数据库选型中的关键指标
+
+## Learning Objectives
+
+After viewing this infographic, the viewer should understand:
+
+1. 比较“什么是向量数据库？有没有做过向量数据库的对比选型？”涉及的主要方案与选型维度
+2. 说明关键工程边界、失败模式与验证方法
+
+## Target Audience
+
+- **Knowledge Level**: Intermediate to Expert
+- **Context**: 准备 AI 应用开发与大模型工程面试
+- **Expectations**: 在短时间内建立可口述、可追问、可落地的答案结构
+
+## Content Type Analysis
+
+- **Data Structure**: comparison
+- **Key Relationships**: 核心概念、工程实现、边界条件与常见误区之间的关系
+- **Visual Opportunities**: 使用原文流程、比较表、组件关系、指标或分区摘要进行可视化
+
+## Key Data Points (Verbatim)
+
+- 原文没有需要单独强调的定量数据或规范关键词。
+
+## Source Evidence (Verbatim)
+
+## 60 秒回答
+
+向量数据库或带向量能力的数据库，负责保存向量及其关联数据，并按距离函数进行近邻检索。生产能力不只包括 ANN，还包括元数据过滤、更新删除、持久化、复制、备份、权限、监控和混合检索。
+
+我会先从约束选型：现有数据库栈、数据规模与增长、过滤选择性、更新频率、可接受延迟、可用性和运维方式。然后用同一批真实向量与查询，在目标硬件上比较召回率-延迟曲线、过滤后召回、写入与索引构建、资源成本和故障恢复。不同产品的默认索引、度量、过滤和一致性行为不同，不能用默认配置直接下结论。
+
+## 详细解析
+
+### 核心组成
+
+数据库保存向量、主键和元数据，以 brute-force 或 HNSW、IVF 等近似索引搜索候选。ANN 以允许近似结果换取速度和资源效率，索引参数影响构建、内存、查询延迟与召回。元数据过滤可在候选生成前、中或后执行，实现方式会影响高选择性查询的表现。
+
+### 选型维度
+
+- **数据与查询**：向量数量、维度、度量、Top-K、过滤字段和查询并发。
+- **写入与生命周期**：批量导入、增量更新、删除语义、索引刷新时间和备份恢复。
+- **部署与治理**：托管或自建、多租户、加密、审计、地域与成本。
+- **生态**：客户端、监控、迁移工具，以及现有 SQL 或搜索系统的整合成本。
+
+pgvector 适合把向量与 PostgreSQL 事务数据放在一起；Milvus、Qdrant 等提供面向向量检索的独立服务能力。这里没有脱离负载的“最佳产品”。
+
+## 工程实践与边界
+
+- 先用精确搜索产出 ground truth，再测 ANN 的 Recall@K 与延迟。
+- 测试必须包括真实过滤分布、热冷查询、并发写入和节点故障，而非只跑无过滤单查询。
+- 显式配置距离函数、索引类型和搜索参数，并固定产品版本。
+- 验证删除何时对搜索不可见、备份是否覆盖索引，以及恢复后能否复现结果。
+
+## 常见误区
+
+- **“向量库默认就是余弦加 HNSW”**：默认值随产品、版本和字段配置不同。
+- **“QPS 越高越好”**：必须同时报告召回、并发、硬件、数据量、过滤和延迟分位数。
+- **“有向量索引就不需要原数据库”**：权威业务数据、事务和复杂关系常仍由原系统管理。
+- **“ANN 结果完全稳定”**：近似算法、并发更新和实现细节可能影响结果，需要以契约和测试为准。
+
+## 面试追问
+
+1. **过滤为什么会拖慢检索？** 过滤策略与索引结构交互；候选被大量淘汰时可能需要扩大搜索或使用过滤感知索引。
+2. **如何迁移向量库？** 双写新旧系统，回填并校验数量与抽样结果，影子读比较后灰度切流，保留回滚窗口。
+3. **HNSW 和 IVF 怎么选？** 用目标数据比较质量、内存、构建和查询；选择取决于产品实现和负载。
+
+## Layout × Style Signals
+
+- Content type: comparison → suggests comparison-matrix
+- Tone: 专业、教育、工程导向 → suggests corporate-memphis
+- Audience: AI 工程岗位候选人 → suggests 清晰层级与可扫描标签
+- Complexity: moderate → suggests 4 个以内主要信息区
+
+## Design Instructions (from user input)
+
+- 每篇文章至少一张原创信息图，使用简体中文
+- 横版 16:9，信息准确，正文链接由 PicGo 提供
+- 保留专业技术名称，不添加原文没有的数据或结论
+- 当前资产焦点：primary
+
+## Recommended Combinations
+
+1. **comparison-matrix + corporate-memphis** (Recommended): 与该文章的数据结构和已确认的系列视觉方案一致
+2. **binary-comparison + corporate-memphis**: 可作为更强调关系或密度的备选
+3. **dense-modules + pop-laboratory**: 可作为更强调工程细节的备选

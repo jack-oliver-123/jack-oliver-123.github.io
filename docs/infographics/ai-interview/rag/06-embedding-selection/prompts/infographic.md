@@ -1,0 +1,326 @@
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: linear-progression
+- **Style**: hand-drawn-edu
+- **Aspect Ratio**: 16:9
+- **Language**: zh
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+
+## Layout Guidelines
+
+# linear-progression
+
+Sequential progression showing steps, timeline, or chronological events.
+
+## Structure
+
+- Linear arrangement (horizontal or vertical)
+- Nodes/markers at key points
+- Connecting line or path between nodes
+- Clear start and end points
+- Directional flow indicators
+
+## Variants
+
+| Variant | Focus | Visual Emphasis |
+|---------|-------|-----------------|
+| **Timeline** | Chronological events, dates | Time markers, period labels |
+| **Process** | Action steps, numbered sequence | Step numbers, action icons |
+
+## Best For
+
+- Step-by-step tutorials and how-tos
+- Historical timelines and evolution
+- Project milestones and roadmaps
+- Workflow documentation
+- Onboarding processes
+
+## Visual Elements
+
+- Numbered steps or date markers
+- Arrows or connectors showing direction
+- Icons representing each step/event
+- Consistent node spacing
+- Progress indicators optional
+
+## Text Placement
+
+- Title at top
+- Step/event titles at each node
+- Brief descriptions below nodes
+- Dates or numbers clearly visible
+
+## Recommended Pairings
+
+- `craft-handmade`: Friendly tutorials and timelines
+- `ikea-manual`: Clean assembly instructions
+- `corporate-memphis`: Business process flows
+- `aged-academia`: Historical discoveries
+
+
+## Style Guidelines
+
+# hand-drawn-edu
+
+Hand-drawn educational infographic with macaron pastel color blocks on warm cream paper texture.
+
+## Color Palette
+
+- Background: Warm cream (#F5F0E8) with subtle paper grain texture
+- Primary text: Deep charcoal (#2D2D2D) for headlines, outlines
+- Macaron Blue: #A8D8EA for cool-toned information zones
+- Macaron Mint: #B5E5CF for growth/positive zones
+- Macaron Lavender: #D5C6E0 for abstract/concept zones
+- Macaron Peach: #FFD5C2 for warm-toned zones
+- Accent: Coral Red (#E8655A) for key data, warnings, emphasis
+- Muted annotations: Warm gray (#6B6B6B) for secondary labels
+
+## Visual Elements
+
+- Macaron pastel rounded cards as distinct information zones
+- Hand-drawn wavy connection lines and arrows with small text labels
+- Simple stick-figure characters and cartoon icons to humanize concepts
+- Doodle decorations: small stars, underlines, spirals, sparkles
+- Color fills don't completely fill outlines — preserve casual hand-drawn feel
+- Dashed borders for secondary or contained zones
+- Small icon doodles (clipboard, lock, checkmark, lightbulb) to reinforce concepts
+- Bold centered quote or takeaway at the bottom
+- Slight hand-drawn wobble on all lines and shapes
+
+## Variants
+
+| Variant | Focus | Visual Emphasis |
+|---------|-------|-----------------|
+| **Sketch-notes** | Concept mapping | More stick figures, thought bubbles, connecting arrows |
+| **Pastel cards** | Structured info | Cleaner macaron blocks, less doodle, more white space |
+
+## Typography
+
+- Main title: Bold hand-drawn lettering with organic strokes, large confident letterforms with slight wobble
+- Section headers: Hand-lettered text on or inside macaron color blocks
+- Body text: Clear handwritten print style, legible but not mechanical
+- Annotations: Warm gray (#6B6B6B), smaller, neat handwritten labels
+- Keywords: Bold emphasis within body text
+
+## Style Enforcement
+
+- All lines must have slight hand-drawn wobble — no perfect geometry
+- Each information zone uses a distinct macaron color block
+- Maintain consistent wobble quality across all shapes and lines
+- Include at least one simple cartoon character or stick figure
+- Generous white space between zones — each zone should breathe
+- Maximum 4 macaron colors per infographic
+
+## Avoid
+
+- Perfect geometric shapes or straight lines
+- Photorealistic elements or stock illustration style
+- Pure white backgrounds
+- Flat vector icons or digital-precision graphics
+- Overcrowded layouts — let zones breathe
+- Corporate or clinical aesthetic
+
+## Best For
+
+Educational diagrams, process explainers, concept maps, knowledge summaries, tutorial walkthroughs, onboarding visuals
+
+
+---
+
+Generate the infographic based on the content below:
+
+# 6. 在 RAG 中 Embedding 究竟是什么？如何选择和评估一个 Embedding 模型？
+
+## Overview
+
+系统介绍 Embedding 在 RAG 中的作用，梳理向量表示、语义相似度、模型选择和效果评估的关键指标
+
+## Learning Objectives
+
+The viewer will understand:
+
+1. 复述“在 RAG 中 Embedding 究竟是什么？如何选择和评估一个 Embedding 模型？”的关键流程与控制点
+2. 说明关键工程边界、失败模式与验证方法
+
+---
+
+## Source Content (Verbatim)
+
+## 60 秒回答
+
+Embedding 模型把查询和文本映射到向量空间，使语义相关内容可以通过向量相似度召回。在双塔检索中，查询与文档分别编码，文档向量可离线计算，查询向量在线生成。向量维度、最大输入长度、池化方式和归一化要求由具体模型决定，不能从“维度越高”直接推导检索越好。
+
+选型时先看语言、领域、许可、输入长度和部署约束，再用自有查询集比较 Recall@K、MRR 或 nDCG，并测量目标硬件上的编码吞吐、P95 延迟、索引大小和成本。相似度函数必须与模型说明及索引配置一致；最终还要验证端到端答案质量。
+
+## 详细解析
+
+### 表示与相似度
+
+句向量通常来自 Transformer 输出的池化或专门训练的表示头。对比学习让相关查询与文档靠近、不相关样本远离。若向量做了 L2 归一化，点积与余弦排序等价；未归一化时二者不是一回事。
+
+余弦相似度在数学上的范围是 `[-1, 1]`，但具体模型输出的经验分布可能只覆盖其中一部分。数据库还可能返回“距离”而非“相似度”，方向和换算方式依产品与度量配置而异，不能直接把“分数越大”解释为“越相似”。
+
+### 选型与评估
+
+MTEB 提供多任务基准，但公开榜单只能用于初筛。领域术语、查询长度、文档语言和负样本分布都可能改变排序。生产评测应包含真实查询、可接受文档集合和困难负样本，并在相同切块、索引与检索参数下做对照。
+
+维度影响存储和距离计算成本，却不是单调的质量旋钮。有些模型支持 Matryoshka 表示截断，但只有模型经过相应训练并按说明使用时才成立。
+
+## 工程实践与边界
+
+- 记录模型名称、修订版本、tokenizer、归一化和查询/文档前缀；任一变化都可能要求重建索引。
+- 用精确搜索建立小规模基准，检查 ANN 索引本身造成的召回损失。
+- 阈值必须在当前模型、数据和度量上校准，并按查询类型观察分布漂移。
+- 多语言或专业领域先做分层评测，不要用总体均值掩盖弱势语言。
+
+## 常见误区
+
+- **“维度越高就越准”**：质量取决于训练目标与数据，维度还会增加存储和计算。
+- **“Embedding 就是 BERT 的 CLS”**：实现很多，BERT 本身是 Transformer 编码器；直接取某个 token 并不自动得到优质句向量。
+- **“余弦分数 0.8 是通用相关阈值”**：分数分布随模型、数据和任务变化。
+- **“公开榜单第一就是线上最佳”**：领域分布、延迟与许可要求可能使结论反转。
+
+## 面试追问
+
+1. **换模型为什么常要重建索引？** 新旧向量空间通常不可比较，查询向量与旧文档向量混用没有语义保证。
+2. **如何比较不同维度模型？** 在同一标注集与检索配置下比较质量，同时报告索引大小、编码和检索资源。
+3. **ANN 参数怎么评估？** 以精确检索结果为参照，画召回与延迟曲线，再结合业务 SLO 选点。
+
+---
+
+## On-Image Content Plan
+
+Asset focus: primary
+
+### Visual Section 1: 60 秒回答
+
+**Key Concept**: 60 秒回答
+
+**Content**:
+
+Embedding 模型把查询和文本映射到向量空间，使语义相关内容可以通过向量相似度召回。在双塔检索中，查询与文档分别编码，文档向量可离线计算，查询向量在线生成。向量维度、最大输入长度、池化方式和归一化要求由具体模型决定，不能从“维度越高”直接推导检索越好。
+
+选型时先看语言、领域、许可、输入长度和部署约束，再用自有查询集比较 Recall@K、MRR 或 nDCG，并测量目标硬件上的编码吞吐、P95 延迟、索引大小和成本。相似度函数必须与模型说明及索引配置一致；最终还要验证端到端答案质量。
+
+**Visual Element**: Type: numbered process node; Subject: 60 秒回答；Treatment: 从左到右连接并标明第 1 阶段
+
+**Text Labels**:
+
+- Headline: "60 秒回答"
+
+---
+
+### Visual Section 2: 详细解析
+
+**Key Concept**: 详细解析
+
+**Content**:
+
+### 表示与相似度
+句向量通常来自 Transformer 输出的池化或专门训练的表示头。
+
+余弦相似度在数学上的范围是 `[-1, 1]`，但具体模型输出的经验分布可能只覆盖其中一部分。数据库还可能返回“距离”而非“相似度”，方向和换算方式依产品与度量配置而异，不能直接把“分数越大”解释为“越相似”。
+
+### 选型与评估
+MTEB 提供多任务基准，但公开榜单只能用于初筛。
+
+维度影响存储和距离计算成本，却不是单调的质量旋钮。有些模型支持 Matryoshka 表示截断，但只有模型经过相应训练并按说明使用时才成立。
+
+**Visual Element**: Type: numbered process node; Subject: 详细解析；Treatment: 从左到右连接并标明第 2 阶段
+
+**Text Labels**:
+
+- Headline: "详细解析"
+
+---
+
+### Visual Section 3: 工程实践与边界
+
+**Key Concept**: 工程实践与边界
+
+**Content**:
+
+- 记录模型名称、修订版本、tokenizer、归一化和查询/文档前缀；任一变化都可能要求重建索引。
+- 用精确搜索建立小规模基准，检查 ANN 索引本身造成的召回损失。
+- 阈值必须在当前模型、数据和度量上校准，并按查询类型观察分布漂移。
+- 多语言或专业领域先做分层评测，不要用总体均值掩盖弱势语言。
+
+**Visual Element**: Type: numbered process node; Subject: 工程实践与边界；Treatment: 从左到右连接并标明第 3 阶段
+
+**Text Labels**:
+
+- Headline: "工程实践与边界"
+
+---
+
+### Visual Section 4: 常见误区
+
+**Key Concept**: 常见误区
+
+**Content**:
+
+- **“维度越高就越准”**：质量取决于训练目标与数据，维度还会增加存储和计算。
+- **“Embedding 就是 BERT 的 CLS”**：实现很多，BERT 本身是 Transformer 编码器；直接取某个 token 并不自动得到优质句向量。
+- **“余弦分数 0.8 是通用相关阈值”**：分数分布随模型、数据和任务变化。
+- **“公开榜单第一就是线上最佳”**：领域分布、延迟与许可要求可能使结论反转。
+
+**Visual Element**: Type: numbered process node; Subject: 常见误区；Treatment: 从左到右连接并标明第 4 阶段
+
+**Text Labels**:
+
+- Headline: "常见误区"
+
+---
+
+## Data Points (Verbatim)
+
+- 选型时先看语言、领域、许可、输入长度和部署约束，再用自有查询集比较 Recall@K、MRR 或 nDCG，并测量目标硬件上的编码吞吐、P95 延迟、索引大小和成本。相似度函数必须与模型说明及索引配置一致；最终还要验证端到端答案质量。
+- 句向量通常来自 Transformer 输出的池化或专门训练的表示头。对比学习让相关查询与文档靠近、不相关样本远离。若向量做了 L2 归一化，点积与余弦排序等价；未归一化时二者不是一回事。
+- 余弦相似度在数学上的范围是 `[-1, 1]`，但具体模型输出的经验分布可能只覆盖其中一部分。数据库还可能返回“距离”而非“相似度”，方向和换算方式依产品与度量配置而异，不能直接把“分数越大”解释为“越相似”。
+- **“余弦分数 0.8 是通用相关阈值”**：分数分布随模型、数据和任务变化。
+
+---
+
+## Design Instructions
+
+### Style Preferences
+
+- 使用 manifest 中已确认的版式与风格
+- 保持简体中文清晰可读，技术名词按原文拼写
+
+### Layout Preferences
+
+- 横版 16:9
+- 标题突出，主要信息区不超过 4 个
+
+### Other Requirements
+
+- 仅使用上面的原文内容，不添加事实、示例、数值或来源
+- 不生成品牌标志、水印、页脚引用或装饰性长文
+
+
+Text labels (in zh):
+- 6. 在 RAG 中 Embedding 究竟是什么？如何选择和评估一个 Embedding 模型？
+- 60 秒回答
+- 详细解析
+- 工程实践与边界
+- 常见误区

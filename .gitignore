@@ -23,3 +23,9 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Agent 工作记录与信息图本地位图
+.superpowers/
+.playwright-mcp/
+docs/infographics/ai-interview/**/infographic*.png
+docs/infographics/ai-interview/**/*-backup-*.md

@@ -1,0 +1,336 @@
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: linear-progression
+- **Style**: hand-drawn-edu
+- **Aspect Ratio**: 16:9
+- **Language**: zh
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+
+## Layout Guidelines
+
+# linear-progression
+
+Sequential progression showing steps, timeline, or chronological events.
+
+## Structure
+
+- Linear arrangement (horizontal or vertical)
+- Nodes/markers at key points
+- Connecting line or path between nodes
+- Clear start and end points
+- Directional flow indicators
+
+## Variants
+
+| Variant | Focus | Visual Emphasis |
+|---------|-------|-----------------|
+| **Timeline** | Chronological events, dates | Time markers, period labels |
+| **Process** | Action steps, numbered sequence | Step numbers, action icons |
+
+## Best For
+
+- Step-by-step tutorials and how-tos
+- Historical timelines and evolution
+- Project milestones and roadmaps
+- Workflow documentation
+- Onboarding processes
+
+## Visual Elements
+
+- Numbered steps or date markers
+- Arrows or connectors showing direction
+- Icons representing each step/event
+- Consistent node spacing
+- Progress indicators optional
+
+## Text Placement
+
+- Title at top
+- Step/event titles at each node
+- Brief descriptions below nodes
+- Dates or numbers clearly visible
+
+## Recommended Pairings
+
+- `craft-handmade`: Friendly tutorials and timelines
+- `ikea-manual`: Clean assembly instructions
+- `corporate-memphis`: Business process flows
+- `aged-academia`: Historical discoveries
+
+
+## Style Guidelines
+
+# hand-drawn-edu
+
+Hand-drawn educational infographic with macaron pastel color blocks on warm cream paper texture.
+
+## Color Palette
+
+- Background: Warm cream (#F5F0E8) with subtle paper grain texture
+- Primary text: Deep charcoal (#2D2D2D) for headlines, outlines
+- Macaron Blue: #A8D8EA for cool-toned information zones
+- Macaron Mint: #B5E5CF for growth/positive zones
+- Macaron Lavender: #D5C6E0 for abstract/concept zones
+- Macaron Peach: #FFD5C2 for warm-toned zones
+- Accent: Coral Red (#E8655A) for key data, warnings, emphasis
+- Muted annotations: Warm gray (#6B6B6B) for secondary labels
+
+## Visual Elements
+
+- Macaron pastel rounded cards as distinct information zones
+- Hand-drawn wavy connection lines and arrows with small text labels
+- Simple stick-figure characters and cartoon icons to humanize concepts
+- Doodle decorations: small stars, underlines, spirals, sparkles
+- Color fills don't completely fill outlines — preserve casual hand-drawn feel
+- Dashed borders for secondary or contained zones
+- Small icon doodles (clipboard, lock, checkmark, lightbulb) to reinforce concepts
+- Bold centered quote or takeaway at the bottom
+- Slight hand-drawn wobble on all lines and shapes
+
+## Variants
+
+| Variant | Focus | Visual Emphasis |
+|---------|-------|-----------------|
+| **Sketch-notes** | Concept mapping | More stick figures, thought bubbles, connecting arrows |
+| **Pastel cards** | Structured info | Cleaner macaron blocks, less doodle, more white space |
+
+## Typography
+
+- Main title: Bold hand-drawn lettering with organic strokes, large confident letterforms with slight wobble
+- Section headers: Hand-lettered text on or inside macaron color blocks
+- Body text: Clear handwritten print style, legible but not mechanical
+- Annotations: Warm gray (#6B6B6B), smaller, neat handwritten labels
+- Keywords: Bold emphasis within body text
+
+## Style Enforcement
+
+- All lines must have slight hand-drawn wobble — no perfect geometry
+- Each information zone uses a distinct macaron color block
+- Maintain consistent wobble quality across all shapes and lines
+- Include at least one simple cartoon character or stick figure
+- Generous white space between zones — each zone should breathe
+- Maximum 4 macaron colors per infographic
+
+## Avoid
+
+- Perfect geometric shapes or straight lines
+- Photorealistic elements or stock illustration style
+- Pure white backgrounds
+- Flat vector icons or digital-precision graphics
+- Overcrowded layouts — let zones breathe
+- Corporate or clinical aesthetic
+
+## Best For
+
+Educational diagrams, process explainers, concept maps, knowledge summaries, tutorial walkthroughs, onboarding visuals
+
+
+---
+
+Generate the infographic based on the content below:
+
+# 9. Agent 的长短期记忆系统怎么做的？记忆是怎么存的？粒度是多少？怎么用的？
+
+## Overview
+
+介绍 Agent 长短期记忆的存储方式、记忆粒度和调用流程，分析向量库、结构化存储与上下文管理的配合方式
+
+## Learning Objectives
+
+The viewer will understand:
+
+1. 复述“Agent 的长短期记忆系统怎么做的？记忆是怎么存的？粒度是多少？怎么用的？”的关键流程与控制点
+2. 说明关键工程边界、失败模式与验证方法
+
+---
+
+## Source Content (Verbatim)
+
+## 60 秒回答
+
+短期记忆服务于当前任务，通常由消息窗口、阶段摘要和外部检查点组成；长期记忆跨任务保存，按数据形态放入关系库、键值库、向量索引或对象存储。读取链路先从可信身份生成租户和资源约束，在存储或检索层执行过滤，再召回、重排并注入；禁止先做跨租户召回后再由应用层过滤。
+
+粒度不按固定字数决定，而按独立语义和更新边界决定：一条记忆应能单独授权、版本化、更正和删除。太细会丢上下文并增加噪声，太粗会降低召回精度并扩大敏感数据暴露。用真实查询集评测 recall、precision、时效性和下游任务收益。
+
+## 详细解析
+
+短期状态不能只存在进程内存。长任务要把会话、计划、工具结果摘要和下一步位置写入检查点，以便进程重启后恢复。近期消息保持原文，较旧内容可转成结构化事实或阶段摘要；关键约束单独固定，避免被摘要丢失。
+
+长期记忆采用多存储组合：
+
+| 数据 | 推荐存储 | 查询方式 |
+| --- | --- | --- |
+| 用户偏好、实体属性 | 关系或键值存储 | 精确键、版本和权限过滤 |
+| 文档与事件摘要 | 向量索引加元数据 | 混合检索与重排 |
+| 原始文件与证据 | 对象存储 | 通过受控引用读取 |
+| 审计记录 | 追加式日志 | 按任务、时间和主体查询 |
+
+写入时先抽取候选事实，再做敏感数据检查、去重和冲突处理。检索时先限制租户、用户、项目和时间范围，再结合关键词与向量召回，最后重排。注入上下文时携带来源、时间和置信依据，任务结束后只写回经验证且允许持久化的新信息。
+
+## 工程实践与边界
+
+- 将记忆正文与 embedding 版本分离；更换模型时可重建索引而不丢原始内容。
+- 每条记忆带稳定 ID 和版本，更新使用乐观并发控制，避免多个会话互相覆盖。
+- 向量库元数据过滤必须在检索阶段生效，并对越权查询做自动化测试。
+- 召回结果限制数量和总 Token；低置信结果可用于提出澄清，不能直接覆盖权威数据。
+- 执行删除时维护 tombstone 或删除任务，清理缓存、索引和备份保留策略中的副本。
+
+## 常见误区
+
+- **“每句话存成一个向量”**：会破坏事件边界，且同一事实的碎片可能互相矛盾。
+- **“top_k 固定即可”**：查询类型、片段长度和重排策略都会改变合适的候选数。
+- **“短期记忆就是完整聊天记录”**：长任务还需要结构化状态和可恢复检查点。
+- **“召回率越高越好”**：过多无关记忆会占上下文并干扰决策，应看下游任务效果。
+
+## 面试追问
+
+> **面试官：** 如何确定一条记忆的粒度？
+>
+> **候选人：** 以一个可独立理解、更新、授权和删除的事实或事件为单位，再通过检索评测调整分块。
+
+> **面试官：** 记忆冲突怎么处理？
+>
+> **候选人：** 保存来源、时间和版本，按权威级别与有效期选择当前值；无法自动判断时保留冲突并向用户确认。
+
+> **面试官：** 如何证明记忆模块有用？
+>
+> **候选人：** 建立包含已知相关记忆和干扰项的查询集，测召回与精度，再做有/无记忆的任务成功率、延迟和成本对照。
+
+---
+
+## On-Image Content Plan
+
+Asset focus: primary
+
+### Visual Section 1: 60 秒回答
+
+**Key Concept**: 60 秒回答
+
+**Content**:
+
+短期记忆服务于当前任务，通常由消息窗口、阶段摘要和外部检查点组成；长期记忆跨任务保存，按数据形态放入关系库、键值库、向量索引或对象存储。读取链路先从可信身份生成租户和资源约束，在存储或检索层执行过滤，再召回、重排并注入；禁止先做跨租户召回后再由应用层过滤。
+
+粒度不按固定字数决定，而按独立语义和更新边界决定：一条记忆应能单独授权、版本化、更正和删除。太细会丢上下文并增加噪声，太粗会降低召回精度并扩大敏感数据暴露。用真实查询集评测 recall、precision、时效性和下游任务收益。
+
+**Visual Element**: Type: numbered process node; Subject: 60 秒回答；Treatment: 从左到右连接并标明第 1 阶段
+
+**Text Labels**:
+
+- Headline: "60 秒回答"
+
+---
+
+### Visual Section 2: 详细解析
+
+**Key Concept**: 详细解析
+
+**Content**:
+
+短期状态不能只存在进程内存。长任务要把会话、计划、工具结果摘要和下一步位置写入检查点，以便进程重启后恢复。近期消息保持原文，较旧内容可转成结构化事实或阶段摘要；关键约束单独固定，避免被摘要丢失。
+
+长期记忆采用多存储组合：
+
+| 数据 | 推荐存储 | 查询方式 |
+| --- | --- | --- |
+| 用户偏好、实体属性 | 关系或键值存储 | 精确键、版本和权限过滤 |
+| 文档与事件摘要 | 向量索引加元数据 | 混合检索与重排 |
+| 原始文件与证据 | 对象存储 | 通过受控引用读取 |
+| 审计记录 | 追加式日志 | 按任务、时间和主体查询 |
+
+写入时先抽取候选事实，再做敏感数据检查、去重和冲突处理。检索时先限制租户、用户、项目和时间范围，再结合关键词与向量召回，最后重排。注入上下文时携带来源、时间和置信依据，任务结束后只写回经验证且允许持久化的新信息。
+
+**Visual Element**: Type: numbered process node; Subject: 详细解析；Treatment: 从左到右连接并标明第 2 阶段
+
+**Text Labels**:
+
+- Headline: "详细解析"
+
+---
+
+### Visual Section 3: 工程实践与边界
+
+**Key Concept**: 工程实践与边界
+
+**Content**:
+
+- 将记忆正文与 embedding 版本分离；更换模型时可重建索引而不丢原始内容。
+- 每条记忆带稳定 ID 和版本，更新使用乐观并发控制，避免多个会话互相覆盖。
+- 向量库元数据过滤必须在检索阶段生效，并对越权查询做自动化测试。
+- 召回结果限制数量和总 Token；低置信结果可用于提出澄清，不能直接覆盖权威数据。
+
+**Visual Element**: Type: numbered process node; Subject: 工程实践与边界；Treatment: 从左到右连接并标明第 3 阶段
+
+**Text Labels**:
+
+- Headline: "工程实践与边界"
+
+---
+
+### Visual Section 4: 常见误区
+
+**Key Concept**: 常见误区
+
+**Content**:
+
+- **“每句话存成一个向量”**：会破坏事件边界，且同一事实的碎片可能互相矛盾。
+- **“top_k 固定即可”**：查询类型、片段长度和重排策略都会改变合适的候选数。
+- **“短期记忆就是完整聊天记录”**：长任务还需要结构化状态和可恢复检查点。
+- **“召回率越高越好”**：过多无关记忆会占上下文并干扰决策，应看下游任务效果。
+
+**Visual Element**: Type: numbered process node; Subject: 常见误区；Treatment: 从左到右连接并标明第 4 阶段
+
+**Text Labels**:
+
+- Headline: "常见误区"
+
+---
+
+## Data Points (Verbatim)
+
+- 本图不使用额外定量数据。
+
+---
+
+## Design Instructions
+
+### Style Preferences
+
+- 使用 manifest 中已确认的版式与风格
+- 保持简体中文清晰可读，技术名词按原文拼写
+
+### Layout Preferences
+
+- 横版 16:9
+- 标题突出，主要信息区不超过 4 个
+
+### Other Requirements
+
+- 仅使用上面的原文内容，不添加事实、示例、数值或来源
+- 不生成品牌标志、水印、页脚引用或装饰性长文
+
+
+Text labels (in zh):
+- 9. Agent 的长短期记忆系统怎么做的？记忆是怎么存的？粒度是多少？怎么用的？
+- 60 秒回答
+- 详细解析
+- 工程实践与边界
+- 常见误区

@@ -32,9 +32,11 @@
     });
 
     try {
+      const markmapLibUrl = 'https://cdn.jsdelivr.net/npm/markmap-lib@0.18/+esm';
+      const markmapViewUrl = 'https://cdn.jsdelivr.net/npm/markmap-view@0.18/+esm';
       const [{ Transformer }, { Markmap }] = await Promise.all([
-        import('https://cdn.jsdelivr.net/npm/markmap-lib@0.18/+esm') as any,
-        import('https://cdn.jsdelivr.net/npm/markmap-view@0.18/+esm') as any,
+        import(/* @vite-ignore */ markmapLibUrl) as any,
+        import(/* @vite-ignore */ markmapViewUrl) as any,
       ]);
       const transformer = new Transformer();
 

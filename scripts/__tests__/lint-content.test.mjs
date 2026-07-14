@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import {
   existsSync,
@@ -186,6 +187,28 @@ function lintFixture(fixture, overrides = {}) {
 
 test('accepts a complete article while infographic checks are deferred', () => {
   assert.deepEqual(lint(`${VALID_FRONTMATTER}\n${VALID_BODY}`), []);
+});
+
+test('CLI does not require infographic uploads by default', () => {
+  const result = spawnSync(process.execPath, ['scripts/lint-content.mjs'], {
+    cwd: path.resolve('.'),
+    encoding: 'utf8',
+  });
+  const summary = result.stdout.trim().split(/\r?\n/u).at(-1) ?? result.stderr;
+
+  assert.equal(result.status, 0, summary);
+  assert.match(result.stdout, /检查 107 个文件：0 errors，0 warnings/u);
+});
+
+test('CLI can require infographic uploads explicitly', () => {
+  const result = spawnSync(process.execPath, ['scripts/lint-content.mjs', '--require-images'], {
+    cwd: path.resolve('.'),
+    encoding: 'utf8',
+  });
+
+  assert.equal(result.status, 1);
+  assert.match(result.stdout, /\[infographic-(?:manifest|artifact|content-hash)/u);
+  assert.match(result.stdout, /检查 107 个文件：[1-9]\d* errors/u);
 });
 
 test('accepts a complete v2 infographic evidence chain', (t) => {

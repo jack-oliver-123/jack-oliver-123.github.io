@@ -16,11 +16,13 @@ const CONTENT_ROOT = path.join(REPO_ROOT, 'src', 'content', 'blog', 'AI应用开
 const DEFAULT_MANIFEST = path.join(REPO_ROOT, 'docs', 'infographics', 'ai-interview', 'manifest.json');
 
 function parseArguments(argv) {
-  const options = { requireInfographic: true, manifestPath: DEFAULT_MANIFEST, targets: [] };
+  const options = { requireInfographic: false, manifestPath: DEFAULT_MANIFEST, targets: [] };
   for (let index = 0; index < argv.length; index += 1) {
     const argument = argv[index];
     if (argument === '--no-images') {
       options.requireInfographic = false;
+    } else if (argument === '--require-images') {
+      options.requireInfographic = true;
     } else if (argument === '--manifest') {
       index += 1;
       if (!argv[index]) throw new Error('--manifest 需要一个文件路径');

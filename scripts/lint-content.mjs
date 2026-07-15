@@ -10,6 +10,7 @@ import {
   lintMarkdown,
   lintNumbering,
 } from './content-lint/rules.mjs';
+import { isInfographicCorpusArticle } from './generate-infographic-manifest.mjs';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT_ROOT = path.join(REPO_ROOT, 'src', 'content', 'blog', 'AI应用开发');
@@ -80,7 +81,8 @@ async function main() {
       content: await readFile(absolutePath, 'utf8'),
       manifest,
       repoRoot: REPO_ROOT,
-      requireInfographic: options.requireInfographic,
+      requireInfographic: options.requireInfographic
+        && isInfographicCorpusArticle(absolutePath, REPO_ROOT),
       fileExists: existsSync,
     }));
   }

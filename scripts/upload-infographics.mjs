@@ -37,7 +37,8 @@ const DEFAULT_GUI_UPLOADER = path.join(
 );
 const MAX_BATCH_SIZE = 5;
 const SERIES = new Set(['overview', 'agent', 'rag', 'tools', 'llm']);
-const SERIES_COUNTS = { overview: 1, agent: 23, rag: 27, tools: 24, llm: 32 };
+const SERIES_COUNTS = { overview: 1, tools: 24, llm: 32 };
+const COMPLETE_CORPUS_COUNT = Object.values(SERIES_COUNTS).reduce((sum, count) => sum + count, 0);
 const ASSET_IDS = new Set(['primary', 'secondary-02', 'secondary-03']);
 const ASSET_STATUSES = new Set(['planned', 'generated', 'upload-failed', 'uploaded']);
 const SAFE_UPLOAD_FIELDS = ['imgUrl', 'fileName', 'type', 'size', 'width', 'height'];
@@ -178,7 +179,9 @@ function validateManifestShape(manifest, { repoRoot = REPO_ROOT, requireComplete
     errors.push('defaults must be aspect=16:9, language=zh, backend=imagegen');
   }
   if (items.length === 0) errors.push('items must not be empty');
-  if (requireCompleteCorpus && items.length !== 107) errors.push(`expected 107 articles, found ${items.length}`);
+  if (requireCompleteCorpus && items.length !== COMPLETE_CORPUS_COUNT) {
+    errors.push(`expected ${COMPLETE_CORPUS_COUNT} articles, found ${items.length}`);
+  }
 
   const articles = new Set();
   const identities = new Set();

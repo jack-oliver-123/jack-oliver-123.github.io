@@ -9,7 +9,8 @@ import { acquireManifestLock } from './infographic-manifest-lock.mjs';
 
 const SCRIPT_PATH = fileURLToPath(import.meta.url);
 const DEFAULT_REPO_ROOT = path.resolve(path.dirname(SCRIPT_PATH), '..');
-const EXPECTED_COUNTS = { overview: 1, agent: 23, rag: 27, tools: 24, llm: 32 };
+const EXPECTED_COUNTS = { overview: 1 };
+const EXPECTED_TOTAL = Object.values(EXPECTED_COUNTS).reduce((sum, count) => sum + count, 0);
 const SERIES_ORDER = Object.keys(EXPECTED_COUNTS);
 const LAYOUTS = new Set([
   'bento-grid',
@@ -67,6 +68,14 @@ const SLUGS = {
 
 function normalize(value) {
   return value.replaceAll('\\', '/');
+}
+
+export function isInfographicCorpusArticle(article, repoRoot = DEFAULT_REPO_ROOT) {
+  const relativePath = normalize(path.relative(repoRoot, article));
+  return !relativePath.includes('/01.Agent面试专题/')
+    && !relativePath.includes('/02.RAG面试专题/')
+    && !relativePath.includes('/03.LLM工具调用面试专题/')
+    && !relativePath.includes('/04.大模型工程面试专题/');
 }
 
 function stableIdentity(series, number) {
@@ -303,7 +312,9 @@ export function validateInfographicManifest(manifest) {
     || manifest?.defaults?.backend !== 'imagegen') {
     errors.push('defaults: invalid rendering defaults');
   }
-  if (items.length !== 107) errors.push(`expected 107 items, found ${items.length}`);
+  if (items.length !== EXPECTED_TOTAL) {
+    errors.push(`expected ${EXPECTED_TOTAL} items, found ${items.length}`);
+  }
 
   for (const [series, expected] of Object.entries(EXPECTED_COUNTS)) {
     const seriesItems = items.filter((item) => item?.series === series);
@@ -501,7 +512,8 @@ async function main() {
   await mkdir(path.dirname(outputPath), { recursive: true });
   const releaseLock = await acquireManifestLock(outputPath);
   try {
-    const files = await collectMarkdown(contentRoot);
+    const files = (await collectMarkdown(contentRoot))
+      .filter((article) => isInfographicCorpusArticle(article, repoRoot));
     const records = await Promise.all(files.map(async (article) => ({
       article,
       content: await readFile(article, 'utf8'),

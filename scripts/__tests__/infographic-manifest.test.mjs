@@ -7,6 +7,7 @@ import test from 'node:test';
 import {
   buildInfographicManifest,
   hashArticleContent,
+  isInfographicCorpusArticle,
   validateInfographicManifest,
 } from '../generate-infographic-manifest.mjs';
 
@@ -25,7 +26,8 @@ async function collectMarkdown(directory) {
 }
 
 async function repositoryRecords() {
-  const articles = await collectMarkdown(CONTENT_ROOT);
+  const articles = (await collectMarkdown(CONTENT_ROOT))
+    .filter((article) => isInfographicCorpusArticle(article, REPO_ROOT));
   return Promise.all(articles.map(async (article) => ({
     article,
     content: await readFile(article, 'utf8'),
@@ -54,21 +56,62 @@ function uploadedPrimary(item, overrides = {}) {
   };
 }
 
-test('builds manifest v2 with one primary asset for all 107 articles', async () => {
+function secondaryAsset(item, overrides = {}) {
+  const workDir = item.workDir;
+  return {
+    ...item.assets[0],
+    assetId: 'secondary-02',
+    role: 'secondary',
+    position: 'after-detailed-analysis',
+    localPath: `${workDir}/infographic-02.png`,
+    sourcePath: `${workDir}/source.md`,
+    analysisPath: `${workDir}/analysis-02.md`,
+    structuredContentPath: `${workDir}/structured-content-02.md`,
+    promptPath: `${workDir}/prompts/infographic-02.md`,
+    uploadRecordPath: `${workDir}/upload-02.json`,
+    contentHash: item.contentHash,
+    promptHash: '',
+    imageHash: '',
+    remoteUrl: '',
+    status: 'planned',
+    ...overrides,
+  };
+}
+
+test('excludes all interview-series articles from the infographic corpus', () => {
+  assert.equal(isInfographicCorpusArticle(
+    path.join(CONTENT_ROOT, '01.Agent面试专题', '01.示例.md'),
+    REPO_ROOT,
+  ), false);
+  assert.equal(isInfographicCorpusArticle(
+    path.join(CONTENT_ROOT, '02.RAG面试专题', '01.示例.md'),
+    REPO_ROOT,
+  ), false);
+  assert.equal(isInfographicCorpusArticle(
+    path.join(CONTENT_ROOT, '03.LLM工具调用面试专题', '01.示例.md'),
+    REPO_ROOT,
+  ), false);
+  assert.equal(isInfographicCorpusArticle(
+    path.join(CONTENT_ROOT, '04.大模型工程面试专题', '01.示例.md'),
+    REPO_ROOT,
+  ), false);
+});
+
+test('builds manifest v2 for the single infographic-eligible overview article', async () => {
   const manifest = buildInfographicManifest(await repositoryRecords(), { repoRoot: REPO_ROOT });
 
   assert.equal(manifest.version, 2);
-  assert.equal(manifest.items.length, 107);
+  assert.equal(manifest.items.length, 1);
   assert.deepEqual(
     Object.fromEntries(
       Object.entries(Object.groupBy(manifest.items, (item) => item.series))
         .map(([series, items]) => [series, items.length]),
     ),
-    { overview: 1, agent: 23, rag: 27, tools: 24, llm: 32 },
+    { overview: 1 },
   );
   assert.equal(validateInfographicManifest(manifest).length, 0);
 
-  const item = manifest.items.find(({ series, number }) => series === 'agent' && number === 1);
+  const item = manifest.items.find(({ series, number }) => series === 'overview' && number === 0);
   assert.match(item.contentHash, /^[a-f0-9]{64}$/u);
   assert.deepEqual(item.assets, [{
     assetId: 'primary',
@@ -250,17 +293,17 @@ test('migrates a v1 item to a v2 primary asset without trusting its unhashed URL
 
 test('validator rejects duplicate stable identities, invalid HTTPS state, and non-fixed asset paths', async () => {
   const manifest = buildInfographicManifest(await repositoryRecords(), { repoRoot: REPO_ROOT });
-  const duplicate = structuredClone(manifest.items[1]);
+  const duplicate = structuredClone(manifest.items[0]);
   duplicate.article = duplicate.article.replace(/\.md$/u, '-copy.md');
   manifest.items.push(duplicate);
 
-  const target = manifest.items.find(({ series, number }) => series === 'rag' && number === 1);
-  target.assets[0].remoteUrl = 'http://cdn.example.com/rag.png';
+  const target = manifest.items.find(({ series, number }) => series === 'overview' && number === 0);
+  target.assets[0].remoteUrl = 'http://cdn.example.com/tools.png';
   target.assets[0].status = 'uploaded';
   target.assets[0].localPath = '../secret.env';
 
   const errors = validateInfographicManifest(manifest);
-  assert.ok(errors.some((error) => error.includes('expected 107 items')));
+  assert.ok(errors.some((error) => error.includes('expected 1 items')));
   assert.ok(errors.some((error) => error.includes('duplicate article identity')));
   assert.ok(errors.some((error) => error.includes('remoteUrl must use HTTPS')));
   assert.ok(errors.some((error) => error.includes('localPath must equal')));
@@ -268,16 +311,19 @@ test('validator rejects duplicate stable identities, invalid HTTPS state, and no
 
 test('validator enforces required fields, allowed asset ids, unique URLs, and status consistency', async () => {
   const manifest = buildInfographicManifest(await repositoryRecords(), { repoRoot: REPO_ROOT });
-  const first = manifest.items[0];
-  const second = manifest.items[1];
-  delete first.title;
-  first.assets[0].assetId = 'secondary-04';
-  first.assets[0].role = 'secondary';
-  first.assets[0].remoteUrl = 'https://cdn.example.com/shared.png';
-  first.assets[0].status = 'planned';
-  second.assets[0].remoteUrl = 'https://cdn.example.com/shared.png';
-  second.assets[0].status = 'uploaded';
-  second.assets[0].contentHash = HASH;
+  const item = manifest.items[0];
+  const first = item.assets[0];
+  const second = secondaryAsset(item, {
+    remoteUrl: 'https://cdn.example.com/shared.png',
+    status: 'uploaded',
+    contentHash: HASH,
+  });
+  item.assets.push(second);
+  delete item.title;
+  first.assetId = 'secondary-04';
+  first.role = 'secondary';
+  first.remoteUrl = 'https://cdn.example.com/shared.png';
+  first.status = 'planned';
 
   const errors = validateInfographicManifest(manifest);
   assert.ok(errors.some((error) => error.includes('title: missing value')));
@@ -289,12 +335,14 @@ test('validator enforces required fields, allowed asset ids, unique URLs, and st
 
 test('validator rejects HTTPS-looking URLs without a host or with credentials', async () => {
   const manifest = buildInfographicManifest(await repositoryRecords(), { repoRoot: REPO_ROOT });
-  const first = manifest.items[0].assets[0];
+  const item = manifest.items[0];
+  const first = item.assets[0];
   first.remoteUrl = 'https://?x';
   first.status = 'uploaded';
-  const second = manifest.items[1].assets[0];
-  second.remoteUrl = 'https://user:password@cdn.example.com/image.png';
-  second.status = 'uploaded';
+  item.assets.push(secondaryAsset(item, {
+    remoteUrl: 'https://user:password@cdn.example.com/image.png',
+    status: 'uploaded',
+  }));
 
   const errors = validateInfographicManifest(manifest);
   assert.ok(errors.filter((error) => error.includes('remoteUrl must use HTTPS')).length >= 2);

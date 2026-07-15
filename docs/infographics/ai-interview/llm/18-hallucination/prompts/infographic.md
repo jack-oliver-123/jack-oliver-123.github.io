@@ -1,0 +1,311 @@
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: dashboard
+- **Style**: pop-laboratory
+- **Aspect Ratio**: 16:9
+- **Language**: zh
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+
+## Layout Guidelines
+
+# dashboard
+
+Multi-metric display with charts, numbers, and KPI indicators.
+
+## Structure
+
+- Multiple data widgets
+- Charts, graphs, numbers
+- Grid or modular layout
+- Key metrics prominent
+- Status indicators
+
+## Best For
+
+- KPI summaries
+- Performance metrics
+- Analytics overviews
+- Status reports
+- Data snapshots
+
+## Visual Elements
+
+- Chart types (bar, line, pie, gauge)
+- Big numbers for KPIs
+- Trend arrows (up/down)
+- Color-coded status (green/red)
+- Clean data visualization
+
+## Text Placement
+
+- Title at top
+- Widget titles above each section
+- Metric labels and values
+- Units clearly shown
+- Time period indicated
+
+## Recommended Pairings
+
+- `corporate-memphis`: Business dashboards
+- `ui-wireframe`: Technical dashboards
+- `cyberpunk-neon`: Futuristic displays
+
+
+## Style Guidelines
+
+# pop-laboratory
+
+Lab manual precision meets pop art color impact—coordinate systems, technical diagrams, and fluorescent accents on blueprint grid.
+
+## Color Palette
+
+- Background: Professional grayish-white with faint blueprint grid texture (#F2F2F2)
+- Primary: Muted teal/sage green (#B8D8BE) for major functional blocks and data zones
+- High-alert accent: Vibrant fluorescent pink (#E91E63) strictly for warnings, critical data, or "winner" highlights
+- Marker highlights: Vivid lemon yellow (#FFF200) as translucent highlighter effect for keywords
+- Line art: Ultra-fine charcoal brown (#2D2926) for technical grids, coordinates, and hairlines
+
+## Visual Elements
+
+- Coordinate-style labels on every module (e.g., R-20, G-02, SEC-08)
+- Technical diagrams: exploded views, cross-sections with anchor points, architectural skeletal lines
+- Vertical/horizontal rulers with precise markers (0.5mm, 1.8mm, 45°)
+- "Marker-over-print" effect: color blocks slightly offset from text, postmodern print feel
+- Cross-hair targets, mathematical symbols (Σ, Δ, ∞), directional arrows (X/Y axis)
+- Microscopic detail annotations alongside macroscopic bold headers
+- Corner metadata: tiny barcodes, timestamps, technical parameters
+- High contrast between massive bold headers and tiny 8pt-style annotations
+
+## Typography
+
+- Headers: Bold brutalist characters, high visual impact
+- Body: Professional sans-serif or crisp technical print
+- Numbers: Large, highlighted with yellow or blue to stand out
+- Annotations: Ultra-crisp, small technical labels
+
+## Style Enforcement
+
+- Strictly systematic color usage: only teal, pink, yellow, charcoal—no rainbow palette
+- Sufficient fine grid lines and coordinate annotations throughout
+- Maintain tension between large impactful headers and small precise parameters
+- Lab manual aesthetic: mix of microscopic details and macroscopic data
+
+## Avoid
+
+- Cute or cartoonish doodles
+- Soft pastels or generic textures
+- Empty white space
+- Flat vector stock icons
+- Organic or hand-drawn imperfections
+
+## Best For
+
+Technical product guides, specification comparisons, precision-focused data visualization, engineering-adjacent content
+
+
+---
+
+Generate the infographic based on the content below:
+
+# 18. 大模型为什么会出现幻觉？怎么缓解？
+
+## Overview
+
+区分知识、检索、推理、引用和工具执行错误，并给出数据、检索、约束、验证与监控的分层治理方法
+
+## Learning Objectives
+
+The viewer will understand:
+
+1. 识别“大模型为什么会出现幻觉？怎么缓解？”的核心指标、信号与评估边界
+2. 说明关键工程边界、失败模式与验证方法
+
+---
+
+## Source Content (Verbatim)
+
+## 60 秒回答
+
+“幻觉”不是单一故障，通常指输出流畅但缺乏依据或与事实、上下文、工具结果冲突。原因可能来自训练数据缺失或矛盾、语言建模目标只优化下一个 Token、Prompt 信息不足、检索召回错误、长上下文利用失败、采样随机性和错误推理。
+
+缓解要先分类，再分层处理：知识问题接入带权限和版本的检索；回答附证据并检查引用支持；结构化输出使用约束和校验；计算与动作交给可验证工具；低置信或高风险场景拒答或转人工；上线后用真实失败样本持续评测。任何单项方法都不能把开放生成变成事实数据库。
+
+## 详细解析
+
+生产排障可用以下分类：
+
+| 类型 | 例子 | 优先检查 |
+|---|---|---|
+| 参数知识错误 | 日期、政策、产品规格过期 | 来源时效、模型知识边界 |
+| 检索错误 | 没召回或召回无关文档 | Query、ACL、索引版本、Reranker |
+| 忠实度错误 | 证据正确，回答却超出证据 | Prompt、上下文截断、引用对齐 |
+| 推理错误 | 数学、逻辑或多跳组合错误 | 分解、验证器、采样预算 |
+| 工具错误 | 参数错、结果未检查 | Schema、权限、超时、结果验证 |
+| 引用伪造 | 链接或页码不存在 | 引用必须来自检索元数据 |
+
+模型的最大似然目标奖励训练分布中的文本预测，不直接优化事实真实性。即使模型“知道”某事实，问题表述、上下文冲突和解码也会改变输出。相反，降低 Temperature 只减少随机性，可能稳定复现同一个错误。
+
+检索增强生成（Retrieval-Augmented Generation，RAG）提供外部证据和更新通道，但会增加解析、切分、召回、权限与注入风险。模型应只引用系统实际返回的文档 ID，应用层再把 ID 映射为链接，避免模型自由编造来源。
+
+## 工程实践与边界
+
+先定义“可接受事实”的来源层级和时效。离线集按故障类型标注，分别测检索 Recall、上下文 Precision、回答 Faithfulness、答案正确率和拒答。高风险领域还要抽样人工审核，并保存证据版本。
+
+工具调用采用最小权限、参数白名单、幂等键和动作后验证。外部文档是不可信数据，应过滤或隔离其中的提示注入。模型置信文本不是经过校准的概率，不可直接作为审批阈值。
+
+## 常见误区
+
+- **把所有错误都叫幻觉**：检索、解析、权限和业务代码错误需要不同责任人
+- **认为 RAG 会消除幻觉**：错误证据或错误使用证据仍会生成错误答案
+- **让模型自己生成引用**：引用应来自受控检索元数据
+- **只要求“不要编造”**：自然语言约束缺少验证与执行边界
+
+## 面试追问
+
+**问：怎么衡量回答是否忠实于上下文？**
+
+**答：** 把回答拆成可验证声明，检查每条是否被给定证据支持。可用人工、自然语言推断模型或 LLM Judge 辅助，但要在标注集上校准评分器。
+
+**问：什么时候应拒答？**
+
+**答：** 缺少授权证据、来源冲突、工具失败或风险超过业务阈值时返回明确状态，并提供补充信息或人工处理路径。
+
+---
+
+## On-Image Content Plan
+
+Asset focus: primary
+
+### Visual Section 1: 60 秒回答
+
+**Key Concept**: 60 秒回答
+
+**Content**:
+
+“幻觉”不是单一故障，通常指输出流畅但缺乏依据或与事实、上下文、工具结果冲突。原因可能来自训练数据缺失或矛盾、语言建模目标只优化下一个 Token、Prompt 信息不足、检索召回错误、长上下文利用失败、采样随机性和错误推理。
+
+缓解要先分类，再分层处理：知识问题接入带权限和版本的检索；回答附证据并检查引用支持；结构化输出使用约束和校验；计算与动作交给可验证工具；低置信或高风险场景拒答或转人工；上线后用真实失败样本持续评测。任何单项方法都不能把开放生成变成事实数据库。
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "60 秒回答"
+
+---
+
+### Visual Section 2: 详细解析
+
+**Key Concept**: 详细解析
+
+**Content**:
+
+生产排障可用以下分类：
+
+| 类型 | 例子 | 优先检查 |
+|---|---|---|
+| 参数知识错误 | 日期、政策、产品规格过期 | 来源时效、模型知识边界 |
+| 检索错误 | 没召回或召回无关文档 | Query、ACL、索引版本、Reranker |
+| 忠实度错误 | 证据正确，回答却超出证据 | Prompt、上下文截断、引用对齐 |
+| 推理错误 | 数学、逻辑或多跳组合错误 | 分解、验证器、采样预算 |
+| 工具错误 | 参数错、结果未检查 | Schema、权限、超时、结果验证 |
+| 引用伪造 | 链接或页码不存在 | 引用必须来自检索元数据 |
+
+模型的最大似然目标奖励训练分布中的文本预测，不直接优化事实真实性。即使模型“知道”某事实，问题表述、上下文冲突和解码也会改变输出。相反，降低 Temperature 只减少随机性，可能稳定复现同一个错误。
+
+检索增强生成（Retrieval-Augmented Generation，RAG）提供外部证据和更新通道，但会增加解析、切分、召回、权限与注入风险。模型应只引用系统实际返回的文档 ID，应用层再把 ID 映射为链接，避免模型自由编造来源。
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "详细解析"
+
+---
+
+### Visual Section 3: 工程实践与边界
+
+**Key Concept**: 工程实践与边界
+
+**Content**:
+
+先定义“可接受事实”的来源层级和时效。离线集按故障类型标注，分别测检索 Recall、上下文 Precision、回答 Faithfulness、答案正确率和拒答。高风险领域还要抽样人工审核，并保存证据版本。
+
+工具调用采用最小权限、参数白名单、幂等键和动作后验证。外部文档是不可信数据，应过滤或隔离其中的提示注入。模型置信文本不是经过校准的概率，不可直接作为审批阈值。
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "工程实践与边界"
+
+---
+
+### Visual Section 4: 常见误区
+
+**Key Concept**: 常见误区
+
+**Content**:
+
+- **把所有错误都叫幻觉**：检索、解析、权限和业务代码错误需要不同责任人
+- **认为 RAG 会消除幻觉**：错误证据或错误使用证据仍会生成错误答案
+- **让模型自己生成引用**：引用应来自受控检索元数据
+- **只要求“不要编造”**：自然语言约束缺少验证与执行边界
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "常见误区"
+
+---
+
+## Data Points (Verbatim)
+
+- 本图不使用额外定量数据。
+
+---
+
+## Design Instructions
+
+### Style Preferences
+
+- 使用 manifest 中已确认的版式与风格
+- 保持简体中文清晰可读，技术名词按原文拼写
+
+### Layout Preferences
+
+- 横版 16:9
+- 标题突出，主要信息区不超过 4 个
+
+### Other Requirements
+
+- 仅使用上面的原文内容，不添加事实、示例、数值或来源
+- 不生成品牌标志、水印、页脚引用或装饰性长文
+
+
+Text labels (in zh):
+- 18. 大模型为什么会出现幻觉？怎么缓解？
+- 60 秒回答
+- 详细解析
+- 工程实践与边界
+- 常见误区

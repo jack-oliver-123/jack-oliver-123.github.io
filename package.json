@@ -7,7 +7,14 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "lint:content": "node scripts/lint-content.mjs",
+    "test:content": "node --test scripts/__tests__/*.test.mjs",
+    "manifest:infographics": "node scripts/generate-infographic-manifest.mjs",
+    "prepare:infographics": "node scripts/prepare-infographics.mjs",
+    "record:infographics": "node scripts/record-generated-infographics.mjs",
+    "insert:infographics": "node scripts/insert-infographic-links.mjs",
+    "upload:infographics": "node scripts/upload-infographics.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^6.0.3",

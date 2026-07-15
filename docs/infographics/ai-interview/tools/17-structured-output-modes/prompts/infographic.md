@@ -1,0 +1,300 @@
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: comparison-matrix
+- **Style**: corporate-memphis
+- **Aspect Ratio**: 16:9
+- **Language**: zh
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+
+## Layout Guidelines
+
+# comparison-matrix
+
+Grid-based multi-factor comparison across multiple items.
+
+## Structure
+
+- Table/grid layout
+- Rows: items being compared
+- Columns: comparison criteria
+- Cells: scores, checks, or values
+- Header row and column clearly marked
+
+## Best For
+
+- Product feature comparisons
+- Tool/software evaluations
+- Multi-criteria decisions
+- Specification sheets
+- Rating comparisons
+
+## Visual Elements
+
+- Clear grid lines or cell boundaries
+- Checkmarks, X marks, or scores in cells
+- Color coding for quick scanning
+- Icons for criteria categories
+- Highlight for recommended option
+
+## Text Placement
+
+- Title at top
+- Item names in first column
+- Criteria in header row
+- Brief values in cells
+- Legend if using symbols
+
+## Recommended Pairings
+
+- `corporate-memphis`: Business tool comparisons
+- `ui-wireframe`: Technical feature matrices
+- `blueprint`: Specification comparisons
+
+
+## Style Guidelines
+
+# corporate-memphis
+
+Flat vector people with vibrant geometric fills
+
+## Color Palette
+
+- Primary: Bright, saturated - purple, orange, teal, yellow
+- Background: White or light pastels
+- Accents: Gradient fills, geometric patterns
+
+## Visual Elements
+
+- Flat vector illustration
+- Disproportionate human figures
+- Abstract body shapes
+- Floating geometric elements
+- No outlines, solid fills
+- Plant and object accents
+
+## Typography
+
+- Clean sans-serif
+- Bold headings
+- Professional but friendly
+- Minimal decoration
+
+## Best For
+
+Business presentations, tech products, marketing materials, corporate training
+
+
+---
+
+Generate the infographic based on the content below:
+
+# 17. Structured Outputs、JSON Mode 和 Function Calling 有什么区别？
+
+## Overview
+
+区分 Structured Outputs、JSON Mode 和 Function Calling 的约束范围，说明结构化响应与工具调用的选型边界
+
+## Learning Objectives
+
+The viewer will understand:
+
+1. 比较“Structured Outputs、JSON Mode 和 Function Calling 有什么区别？”涉及的主要方案与选型维度
+2. 说明关键工程边界、失败模式与验证方法
+
+---
+
+## Source Content (Verbatim)
+
+👔面试官：JSON Mode 已经输出 JSON，为什么还需要 Structured Outputs？
+
+🙋我：JSON Mode 只保证 JSON 语法，不保证字段、类型和枚举符合业务 Schema。
+
+👔面试官：Structured Outputs 能替代 Function Calling 吗？
+
+🙋我：不能。前者约束模型响应形状，后者表达调用外部工具的意图；Function Calling 也可开启严格 Schema。
+
+## 60 秒回答
+
+JSON Mode 约束模型返回可解析 JSON，但不会保证必填字段、类型或枚举。Structured Outputs 让输出符合所提供的 JSON Schema，但只支持供应商声明的 Schema 子集，也要处理拒绝、截断和服务错误。Function Calling 则让模型产生工具名与参数，宿主据此执行外部能力。
+
+需要结构化展示或抽取结果时，用 Structured Outputs；只要求兼容旧模型的合法 JSON 时才退回 JSON Mode；需要查数据或产生动作时，用 Function Calling。它们都不能代替服务端业务校验和授权。
+
+## 详细解析
+
+### 三种机制的约束对象
+
+| 机制 | 约束对象 | 保证范围 | 是否触发外部执行 |
+| --- | --- | --- | --- |
+| JSON Mode | 文本响应 | JSON 语法 | 否 |
+| Structured Outputs | 文本响应 | 支持子集内的 JSON Schema | 否 |
+| Function Calling | 工具调用参数 | 由工具 Schema 与 strict 设置决定 | 由宿主决定 |
+
+Function Calling 的“调用”只是一种模型输出。应用可以拒绝、修改或延后执行。Structured Outputs 返回的数据也可能包含错误事实，结构正确不代表内容真实。
+
+### 失败分支
+
+严格结构输出仍可能遇到安全拒绝、达到输出上限、请求取消或供应商错误。应用应先检查响应状态，再解析数据，不能假设每次都有目标对象。
+
+JSON Mode 还需要在提示中明确要求 JSON，并自行验证字段。若解析失败，不要把原始文本直接拼接成可执行参数。
+
+### Schema 是接口契约
+
+Schema 应受版本控制，并与消费端类型和校验器保持一致。修改 required、enum 或嵌套结构可能破坏旧客户端。对于跨供应商系统，要取各家支持 Schema 关键字的交集，不能假定完整 JSON Schema 2020-12 都可用。
+
+## 工程实践与边界
+
+结构化抽取采用“响应状态检查、Schema 校验、业务校验”三层。工具调用再增加主体授权、用户确认、超时、有限重试、幂等、补偿和审计。
+
+不要把模型生成的 URL、SQL、文件路径或命令因为“通过 Schema”就直接执行。Schema 只能约束形状，SSRF、注入、越权与资源状态仍需专门策略。
+
+## 常见误区
+
+- **合法 JSON 等于符合 Schema**：JSON Mode 不验证字段契约
+- **符合 Schema 等于事实正确**：模型仍可能填入错误值
+- **Function Calling 会自动执行函数**：执行权始终在宿主
+- **完整 JSON Schema 都受支持**：不同供应商只支持各自声明的子集
+
+## 面试追问
+
+**追问：什么时候选 Structured Outputs，而不是 Function Calling？**
+
+当目标是让模型返回供 UI 或业务代码消费的结构化答案，而不是请求外部动作时。
+
+**追问：Strict 模式后为什么还要业务校验？**
+
+因为金额上限、资源归属、权限和状态不属于通用 Schema 能表达的全部语义。
+
+---
+
+## On-Image Content Plan
+
+Asset focus: primary
+
+### Visual Section 1: 60 秒回答
+
+**Key Concept**: 60 秒回答
+
+**Content**:
+
+JSON Mode 约束模型返回可解析 JSON，但不会保证必填字段、类型或枚举。Structured Outputs 让输出符合所提供的 JSON Schema，但只支持供应商声明的 Schema 子集，也要处理拒绝、截断和服务错误。Function Calling 则让模型产生工具名与参数，宿主据此执行外部能力。
+
+需要结构化展示或抽取结果时，用 Structured Outputs；只要求兼容旧模型的合法 JSON 时才退回 JSON Mode；需要查数据或产生动作时，用 Function Calling。它们都不能代替服务端业务校验和授权。
+
+**Visual Element**: Type: comparison grid; Subject: 原文方案与维度；Treatment: 清晰表头、短标签、重点列高亮
+
+**Text Labels**:
+
+- Headline: "60 秒回答"
+
+---
+
+### Visual Section 2: 详细解析
+
+**Key Concept**: 详细解析
+
+**Content**:
+
+### 三种机制的约束对象
+| 机制 | 约束对象 | 保证范围 | 是否触发外部执行 | | --- | --- | --- | --- | | JSON Mode | 文本响应 | JSON 语法 | 否 | | Structured Outputs | 文本响应 | 支持子集内的 JSON Schema | 否 | | Function Calling | 工具调用参数 | 由工具 Schema 与 strict 设置决定 | 由宿主决定 |
+
+Function Calling 的“调用”只是一种模型输出。应用可以拒绝、修改或延后执行。Structured Outputs 返回的数据也可能包含错误事实，结构正确不代表内容真实。
+
+### 失败分支
+严格结构输出仍可能遇到安全拒绝、达到输出上限、请求取消或供应商错误。
+
+JSON Mode 还需要在提示中明确要求 JSON，并自行验证字段。若解析失败，不要把原始文本直接拼接成可执行参数。
+
+**Visual Element**: Type: comparison grid; Subject: 原文方案与维度；Treatment: 清晰表头、短标签、重点列高亮
+
+**Text Labels**:
+
+- Headline: "详细解析"
+
+---
+
+### Visual Section 3: 工程实践与边界
+
+**Key Concept**: 工程实践与边界
+
+**Content**:
+
+结构化抽取采用“响应状态检查、Schema 校验、业务校验”三层。工具调用再增加主体授权、用户确认、超时、有限重试、幂等、补偿和审计。
+
+不要把模型生成的 URL、SQL、文件路径或命令因为“通过 Schema”就直接执行。Schema 只能约束形状，SSRF、注入、越权与资源状态仍需专门策略。
+
+**Visual Element**: Type: comparison grid; Subject: 原文方案与维度；Treatment: 清晰表头、短标签、重点列高亮
+
+**Text Labels**:
+
+- Headline: "工程实践与边界"
+
+---
+
+### Visual Section 4: 常见误区
+
+**Key Concept**: 常见误区
+
+**Content**:
+
+- **合法 JSON 等于符合 Schema**：JSON Mode 不验证字段契约
+- **符合 Schema 等于事实正确**：模型仍可能填入错误值
+- **Function Calling 会自动执行函数**：执行权始终在宿主
+- **完整 JSON Schema 都受支持**：不同供应商只支持各自声明的子集
+
+**Visual Element**: Type: comparison grid; Subject: 原文方案与维度；Treatment: 清晰表头、短标签、重点列高亮
+
+**Text Labels**:
+
+- Headline: "常见误区"
+
+---
+
+## Data Points (Verbatim)
+
+- Schema 应受版本控制，并与消费端类型和校验器保持一致。修改 required、enum 或嵌套结构可能破坏旧客户端。对于跨供应商系统，要取各家支持 Schema 关键字的交集，不能假定完整 JSON Schema 2020-12 都可用。
+
+---
+
+## Design Instructions
+
+### Style Preferences
+
+- 使用 manifest 中已确认的版式与风格
+- 保持简体中文清晰可读，技术名词按原文拼写
+
+### Layout Preferences
+
+- 横版 16:9
+- 标题突出，主要信息区不超过 4 个
+
+### Other Requirements
+
+- 仅使用上面的原文内容，不添加事实、示例、数值或来源
+- 不生成品牌标志、水印、页脚引用或装饰性长文
+
+
+Text labels (in zh):
+- 17. Structured Outputs、JSON Mode 和 Function Calling 有什么区别？
+- 60 秒回答
+- 详细解析
+- 工程实践与边界
+- 常见误区

@@ -1,0 +1,303 @@
+Create a professional infographic following these specifications:
+
+## Image Specifications
+
+- **Type**: Infographic
+- **Layout**: dashboard
+- **Style**: pop-laboratory
+- **Aspect Ratio**: 16:9
+- **Language**: zh
+
+## Core Principles
+
+- Follow the layout structure precisely for information architecture
+- Apply style aesthetics consistently throughout
+- If content involves sensitive or copyrighted figures, create stylistically similar alternatives
+- Keep information concise, highlight keywords and core concepts
+- Use ample whitespace for visual clarity
+- Maintain clear visual hierarchy
+
+## Text Requirements
+
+- All text must match the specified style treatment
+- Main titles should be prominent and readable
+- Key concepts should be visually emphasized
+- Labels should be clear and appropriately sized
+- Use the specified language for all text content
+
+## Layout Guidelines
+
+# dashboard
+
+Multi-metric display with charts, numbers, and KPI indicators.
+
+## Structure
+
+- Multiple data widgets
+- Charts, graphs, numbers
+- Grid or modular layout
+- Key metrics prominent
+- Status indicators
+
+## Best For
+
+- KPI summaries
+- Performance metrics
+- Analytics overviews
+- Status reports
+- Data snapshots
+
+## Visual Elements
+
+- Chart types (bar, line, pie, gauge)
+- Big numbers for KPIs
+- Trend arrows (up/down)
+- Color-coded status (green/red)
+- Clean data visualization
+
+## Text Placement
+
+- Title at top
+- Widget titles above each section
+- Metric labels and values
+- Units clearly shown
+- Time period indicated
+
+## Recommended Pairings
+
+- `corporate-memphis`: Business dashboards
+- `ui-wireframe`: Technical dashboards
+- `cyberpunk-neon`: Futuristic displays
+
+
+## Style Guidelines
+
+# pop-laboratory
+
+Lab manual precision meets pop art color impact—coordinate systems, technical diagrams, and fluorescent accents on blueprint grid.
+
+## Color Palette
+
+- Background: Professional grayish-white with faint blueprint grid texture (#F2F2F2)
+- Primary: Muted teal/sage green (#B8D8BE) for major functional blocks and data zones
+- High-alert accent: Vibrant fluorescent pink (#E91E63) strictly for warnings, critical data, or "winner" highlights
+- Marker highlights: Vivid lemon yellow (#FFF200) as translucent highlighter effect for keywords
+- Line art: Ultra-fine charcoal brown (#2D2926) for technical grids, coordinates, and hairlines
+
+## Visual Elements
+
+- Coordinate-style labels on every module (e.g., R-20, G-02, SEC-08)
+- Technical diagrams: exploded views, cross-sections with anchor points, architectural skeletal lines
+- Vertical/horizontal rulers with precise markers (0.5mm, 1.8mm, 45°)
+- "Marker-over-print" effect: color blocks slightly offset from text, postmodern print feel
+- Cross-hair targets, mathematical symbols (Σ, Δ, ∞), directional arrows (X/Y axis)
+- Microscopic detail annotations alongside macroscopic bold headers
+- Corner metadata: tiny barcodes, timestamps, technical parameters
+- High contrast between massive bold headers and tiny 8pt-style annotations
+
+## Typography
+
+- Headers: Bold brutalist characters, high visual impact
+- Body: Professional sans-serif or crisp technical print
+- Numbers: Large, highlighted with yellow or blue to stand out
+- Annotations: Ultra-crisp, small technical labels
+
+## Style Enforcement
+
+- Strictly systematic color usage: only teal, pink, yellow, charcoal—no rainbow palette
+- Sufficient fine grid lines and coordinate annotations throughout
+- Maintain tension between large impactful headers and small precise parameters
+- Lab manual aesthetic: mix of microscopic details and macroscopic data
+
+## Avoid
+
+- Cute or cartoonish doodles
+- Soft pastels or generic textures
+- Empty white space
+- Flat vector stock icons
+- Organic or hand-drawn imperfections
+
+## Best For
+
+Technical product guides, specification comparisons, precision-focused data visualization, engineering-adjacent content
+
+
+---
+
+Generate the infographic based on the content below:
+
+# 29. 长上下文模型是怎么扩展的？如何评测有效上下文长度？
+
+## Overview
+
+解释位置缩放、持续训练和稀疏注意力等扩展方法，并用多任务评测区分标称窗口与有效上下文
+
+## Learning Objectives
+
+The viewer will understand:
+
+1. 识别“长上下文模型是怎么扩展的？如何评测有效上下文长度？”的核心指标、信号与评估边界
+2. 说明关键工程边界、失败模式与验证方法
+
+---
+
+## Source Content (Verbatim)
+
+## 60 秒回答
+
+长上下文扩展通常组合位置编码缩放或插值、长序列持续训练、注意力内核优化，以及滑动窗口、稀疏或分块注意力。扩大配置中的窗口只解决张量可运行问题；模型是否能利用远处信息，还取决于训练长度、数据、位置分辨率和任务。
+
+有效上下文不能只看厂商声明或单个 Needle-in-a-Haystack。应测试不同深度的精确检索、多证据聚合、顺序敏感、长文摘要、代码仓库理解和干扰鲁棒性，同时报告输入长度、任务、准确率、TTFT、吞吐与 KV Cache 成本。
+
+## 详细解析
+
+常见技术分为三层：
+
+- **位置层**：RoPE 插值、NTK-aware scaling、YaRN 等调整位置频率
+- **训练层**：使用长样本继续预训练或微调，让模型适应新的位置范围
+- **注意力层**：FlashAttention 降低中间内存，滑动/稀疏注意力减少可见连接或计算
+
+FlashAttention 让密集注意力更高效，但理论连接仍是全局；滑动窗口减少每个 Token 可见范围，需要全局 Token、层间传播或检索补偿。位置插值能复用已训练角度范围，却可能压缩短距离分辨率。
+
+“Lost in the Middle” 表明模型对相同证据放在输入不同位置的利用率可能不同。RULER 等评测进一步覆盖多针、变量追踪和聚合任务。困惑度也可检测长序列建模，但低困惑度不保证能完成多步业务任务。
+
+标称上下文还受输入和输出共享窗口、Tokenizer、系统 Prompt、图像 Token 及工具消息影响。产品可用预算通常小于模型声明值。
+
+## 工程实践与边界
+
+按长度和证据位置做二维切片，至少重复多组随机内容，防止记住固定模板。测试真实文档解析后的 Token，而不是干净合成文本。记录截断策略和输出预算。
+
+长上下文成本随 Prefill、KV Cache 和尾延迟增长。先比较检索、层级摘要和缓存；需要全局交叉引用时再使用完整长窗口。包含多租户文档时，必须在拼接前执行 ACL。
+
+## 常见误区
+
+- **把配置窗口等同于有效窗口**：可运行不代表能稳定利用
+- **只做单针检索**：真实任务常需要多证据、排序和聚合
+- **认为长上下文替代 RAG**：更新、权限、引用和成本仍需要检索系统
+- **忽略输出 Token**：输入与输出通常共享上下文预算
+
+## 面试追问
+
+**问：为什么长窗口中间信息更难利用？**
+
+**答：** 位置训练分布、注意力竞争和任务提示都会影响证据权重。现象不是固定定律，应按模型与任务测量。
+
+**问：如何决定 RAG 还是长上下文？**
+
+**答：** 比较召回损失与全量阅读成本。需要高召回全局分析且文档可放入时可用长上下文；需要频繁更新、权限过滤和可引用证据时 RAG 更合适，两者也可组合。
+
+---
+
+## On-Image Content Plan
+
+Asset focus: primary
+
+### Visual Section 1: 60 秒回答
+
+**Key Concept**: 60 秒回答
+
+**Content**:
+
+长上下文扩展通常组合位置编码缩放或插值、长序列持续训练、注意力内核优化，以及滑动窗口、稀疏或分块注意力。扩大配置中的窗口只解决张量可运行问题；模型是否能利用远处信息，还取决于训练长度、数据、位置分辨率和任务。
+
+有效上下文不能只看厂商声明或单个 Needle-in-a-Haystack。应测试不同深度的精确检索、多证据聚合、顺序敏感、长文摘要、代码仓库理解和干扰鲁棒性，同时报告输入长度、任务、准确率、TTFT、吞吐与 KV Cache 成本。
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "60 秒回答"
+
+---
+
+### Visual Section 2: 详细解析
+
+**Key Concept**: 详细解析
+
+**Content**:
+
+常见技术分为三层：
+
+- **位置层**：RoPE 插值、NTK-aware scaling、YaRN 等调整位置频率
+- **训练层**：使用长样本继续预训练或微调，让模型适应新的位置范围
+- **注意力层**：FlashAttention 降低中间内存，滑动/稀疏注意力减少可见连接或计算
+
+FlashAttention 让密集注意力更高效，但理论连接仍是全局；滑动窗口减少每个 Token 可见范围，需要全局 Token、层间传播或检索补偿。位置插值能复用已训练角度范围，却可能压缩短距离分辨率。
+
+“Lost in the Middle” 表明模型对相同证据放在输入不同位置的利用率可能不同。RULER 等评测进一步覆盖多针、变量追踪和聚合任务。困惑度也可检测长序列建模，但低困惑度不保证能完成多步业务任务。
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "详细解析"
+
+---
+
+### Visual Section 3: 工程实践与边界
+
+**Key Concept**: 工程实践与边界
+
+**Content**:
+
+按长度和证据位置做二维切片，至少重复多组随机内容，防止记住固定模板。测试真实文档解析后的 Token，而不是干净合成文本。记录截断策略和输出预算。
+
+长上下文成本随 Prefill、KV Cache 和尾延迟增长。先比较检索、层级摘要和缓存；需要全局交叉引用时再使用完整长窗口。包含多租户文档时，必须在拼接前执行 ACL。
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "工程实践与边界"
+
+---
+
+### Visual Section 4: 常见误区
+
+**Key Concept**: 常见误区
+
+**Content**:
+
+- **把配置窗口等同于有效窗口**：可运行不代表能稳定利用
+- **只做单针检索**：真实任务常需要多证据、排序和聚合
+- **认为长上下文替代 RAG**：更新、权限、引用和成本仍需要检索系统
+- **忽略输出 Token**：输入与输出通常共享上下文预算
+
+**Visual Element**: Type: metric widget; Subject: 原文指标或信号；Treatment: 大数字只用于原文确有的数值，其余使用状态标签
+
+**Text Labels**:
+
+- Headline: "常见误区"
+
+---
+
+## Data Points (Verbatim)
+
+- 本图不使用额外定量数据。
+
+---
+
+## Design Instructions
+
+### Style Preferences
+
+- 使用 manifest 中已确认的版式与风格
+- 保持简体中文清晰可读，技术名词按原文拼写
+
+### Layout Preferences
+
+- 横版 16:9
+- 标题突出，主要信息区不超过 4 个
+
+### Other Requirements
+
+- 仅使用上面的原文内容，不添加事实、示例、数值或来源
+- 不生成品牌标志、水印、页脚引用或装饰性长文
+
+
+Text labels (in zh):
+- 29. 长上下文模型是怎么扩展的？如何评测有效上下文长度？
+- 60 秒回答
+- 详细解析
+- 工程实践与边界
+- 常见误区

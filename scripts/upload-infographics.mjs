@@ -36,7 +36,7 @@ const DEFAULT_GUI_UPLOADER = path.join(
   'gui-upload.mjs',
 );
 const MAX_BATCH_SIZE = 5;
-const SERIES_COUNTS = { overview: 1, llm: 32 };
+const SERIES_COUNTS = { overview: 1 };
 const SERIES = new Set(['overview', 'agent', 'rag', 'tools', 'llm']);
 const COMPLETE_CORPUS_COUNT = Object.values(SERIES_COUNTS).reduce((sum, count) => sum + count, 0);
 const ASSET_IDS = new Set(['primary', 'secondary-02', 'secondary-03']);

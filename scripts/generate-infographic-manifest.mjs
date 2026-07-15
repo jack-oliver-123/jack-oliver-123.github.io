@@ -9,7 +9,7 @@ import { acquireManifestLock } from './infographic-manifest-lock.mjs';
 
 const SCRIPT_PATH = fileURLToPath(import.meta.url);
 const DEFAULT_REPO_ROOT = path.resolve(path.dirname(SCRIPT_PATH), '..');
-const EXPECTED_COUNTS = { overview: 1, tools: 24, llm: 32 };
+const EXPECTED_COUNTS = { overview: 1, llm: 32 };
 const EXPECTED_TOTAL = Object.values(EXPECTED_COUNTS).reduce((sum, count) => sum + count, 0);
 const SERIES_ORDER = Object.keys(EXPECTED_COUNTS);
 const LAYOUTS = new Set([
@@ -73,7 +73,8 @@ function normalize(value) {
 export function isInfographicCorpusArticle(article, repoRoot = DEFAULT_REPO_ROOT) {
   const relativePath = normalize(path.relative(repoRoot, article));
   return !relativePath.includes('/01.Agent面试专题/')
-    && !relativePath.includes('/02.RAG面试专题/');
+    && !relativePath.includes('/02.RAG面试专题/')
+    && !relativePath.includes('/03.LLM工具调用面试专题/');
 }
 
 function stableIdentity(series, number) {

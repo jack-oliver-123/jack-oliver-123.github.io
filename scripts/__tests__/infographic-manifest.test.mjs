@@ -56,7 +56,7 @@ function uploadedPrimary(item, overrides = {}) {
   };
 }
 
-test('excludes Agent and RAG articles from the infographic corpus', () => {
+test('excludes Agent, RAG, and tool-calling articles from the infographic corpus', () => {
   assert.equal(isInfographicCorpusArticle(
     path.join(CONTENT_ROOT, '01.Agent面试专题', '01.示例.md'),
     REPO_ROOT,
@@ -68,24 +68,28 @@ test('excludes Agent and RAG articles from the infographic corpus', () => {
   assert.equal(isInfographicCorpusArticle(
     path.join(CONTENT_ROOT, '03.LLM工具调用面试专题', '01.示例.md'),
     REPO_ROOT,
+  ), false);
+  assert.equal(isInfographicCorpusArticle(
+    path.join(CONTENT_ROOT, '04.大模型工程面试专题', '01.示例.md'),
+    REPO_ROOT,
   ), true);
 });
 
-test('builds manifest v2 for all 57 infographic-eligible articles', async () => {
+test('builds manifest v2 for all 33 infographic-eligible articles', async () => {
   const manifest = buildInfographicManifest(await repositoryRecords(), { repoRoot: REPO_ROOT });
 
   assert.equal(manifest.version, 2);
-  assert.equal(manifest.items.length, 57);
+  assert.equal(manifest.items.length, 33);
   assert.deepEqual(
     Object.fromEntries(
       Object.entries(Object.groupBy(manifest.items, (item) => item.series))
         .map(([series, items]) => [series, items.length]),
     ),
-    { overview: 1, tools: 24, llm: 32 },
+    { overview: 1, llm: 32 },
   );
   assert.equal(validateInfographicManifest(manifest).length, 0);
 
-  const item = manifest.items.find(({ series, number }) => series === 'tools' && number === 1);
+  const item = manifest.items.find(({ series, number }) => series === 'llm' && number === 1);
   assert.match(item.contentHash, /^[a-f0-9]{64}$/u);
   assert.deepEqual(item.assets, [{
     assetId: 'primary',
@@ -271,13 +275,13 @@ test('validator rejects duplicate stable identities, invalid HTTPS state, and no
   duplicate.article = duplicate.article.replace(/\.md$/u, '-copy.md');
   manifest.items.push(duplicate);
 
-  const target = manifest.items.find(({ series, number }) => series === 'tools' && number === 1);
+  const target = manifest.items.find(({ series, number }) => series === 'llm' && number === 1);
   target.assets[0].remoteUrl = 'http://cdn.example.com/tools.png';
   target.assets[0].status = 'uploaded';
   target.assets[0].localPath = '../secret.env';
 
   const errors = validateInfographicManifest(manifest);
-  assert.ok(errors.some((error) => error.includes('expected 57 items')));
+  assert.ok(errors.some((error) => error.includes('expected 33 items')));
   assert.ok(errors.some((error) => error.includes('duplicate article identity')));
   assert.ok(errors.some((error) => error.includes('remoteUrl must use HTTPS')));
   assert.ok(errors.some((error) => error.includes('localPath must equal')));

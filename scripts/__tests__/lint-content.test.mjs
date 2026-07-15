@@ -197,7 +197,7 @@ test('CLI does not require infographic uploads by default', () => {
   const summary = result.stdout.trim().split(/\r?\n/u).at(-1) ?? result.stderr;
 
   assert.equal(result.status, 0, summary);
-  assert.match(result.stdout, /检查 111 个文件：0 errors，0 warnings/u);
+  assert.match(result.stdout, /检查 113 个文件：0 errors，0 warnings/u);
 });
 
 test('CLI can require infographic uploads explicitly', () => {
@@ -208,7 +208,7 @@ test('CLI can require infographic uploads explicitly', () => {
 
   assert.equal(result.status, 1);
   assert.match(result.stdout, /\[infographic-(?:manifest|artifact|content-hash)/u);
-  assert.match(result.stdout, /检查 111 个文件：[1-9]\d* errors/u);
+  assert.match(result.stdout, /检查 113 个文件：[1-9]\d* errors/u);
 });
 
 test('accepts a complete v2 infographic evidence chain', (t) => {
